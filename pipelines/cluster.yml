@@ -1,0 +1,39 @@
+resource_types:
+- name: terraform
+  type: registry-image
+  source:
+    repository: ljfranklin/terraform-resource
+    tag: '0.12.24'
+
+resources:
+# - name: greenpeace
+#   type: git
+#   source:
+#     uri: git@github.com:concourse/greenpeace.git
+#     private_key: ((greenpeace_private_key))
+
+- name: hush-house
+  type: git
+  source:
+    uri: https://github.com/concourse/hush-house
+    branch: greenpeace
+
+- name: production
+  type: terraform
+  source:
+    env_name: production
+    backend_type: gcs
+    backend_config:
+      bucket: concourse-greenpeace
+      prefix: terraform
+      credentials: ((state_bucket_credentials))
+    vars:
+      credentials: ((gcp_credentials_json))
+
+jobs:
+- name: terraform
+  plan:
+  - get: hush-house
+  - put: production
+    params:
+      terraform_source: hush-house/terraform/production

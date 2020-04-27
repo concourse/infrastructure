@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e -u -x
+
+# log in as someone who can manage our account
+# gcloud auth application-default login
+
+cd $(dirname $0)
+
+terraform init
+terraform apply
+
+# credentials for creating the bucket
+# need to create terraform bucket
+
+# credentials for terraform bucket
+# credentials for *running* terraform
+
+# operator needs to manually create the service account key (and manage it somehow)
