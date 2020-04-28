@@ -27,8 +27,13 @@ resource "google_project_iam_member" "greenpeace_terraform_policy" {
     "container" = "roles/container.admin"
     "dns" = "roles/dns.admin"
     "networks" = "roles/servicenetworking.networksAdmin"
+
+    # needed for vault
     "kmsAdmin" = "roles/cloudkms.admin"
     "kmsEncrypt" = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+
+    # needed for creating node pools
+    "serviceAccountUser" = "roles/iam.serviceAccountUser"
   }
 
   role = each.value
