@@ -1,13 +1,11 @@
 #!/bin/bash
 
-set -e -u -x
-
-# log in as someone who can manage our account
-# gcloud auth application-default login
+set -e -u
 
 cd $(dirname $0)
 
 terraform init
+
 terraform apply
 
 # credentials for creating the bucket
@@ -16,4 +14,17 @@ terraform apply
 # credentials for terraform bucket
 # credentials for *running* terraform
 
-# operator needs to manually create the service account key (and manage it somehow)
+greenpeace_terraform_state_email=$(terraform output greenpeace_terraform_state_email)
+
+gcloud iam service-accounts keys list \
+  --iam-account $greenpeace_terraform_state_email \
+  --managed-by user \
+  --format json | jq -r .[].name | while read key _; do
+  gcloud iam service-accounts keys delete $key \
+    --iam-account $greenpeace_terraform_state_email \
+    --quiet
+done
+
+gcloud iam service-accounts keys create \
+  ../keys/greenpeace-terraform-state.json \
+  --iam-account $greenpeace_terraform_state_email
