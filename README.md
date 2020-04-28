@@ -26,8 +26,8 @@ This will create the following:
 1. The `concourse-greenpeace` bucket, which will store the Terraform state
    for all of our deployments.
 
-1. A `greenpeace-terraform-state` service account, which has permissions to
-   write to the bucket.
+1. A `greenpeace-terraform` service account, which has permissions to write
+   to the bucket and perform various operations within the GCP project.
 
 After these have been created, it will revoke any existing keys for the
 service account and generate a new one, placing it under `keys/`.
@@ -38,4 +38,11 @@ be checked in. (Be careful not to have any credentials as outputs.)
 ### configuring the pipeline
 
 From here on, all setup is done through the pipelines under the `pipelines/`
-directory.
+directory. These pipelines can be configured like so:
+
+```sh
+fly -t ci set-pipeline \
+   -p greenpeace \
+   -c pipelines/cluster.yml \
+   -l sensitive/vars.yml
+```

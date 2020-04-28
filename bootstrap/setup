@@ -8,23 +8,21 @@ terraform init
 
 terraform apply
 
-# credentials for creating the bucket
-# need to create terraform bucket
-
-# credentials for terraform bucket
-# credentials for *running* terraform
-
-greenpeace_terraform_state_email=$(terraform output greenpeace_terraform_state_email)
+greenpeace_terraform_email=$(terraform output greenpeace_terraform_email)
 
 gcloud iam service-accounts keys list \
-  --iam-account $greenpeace_terraform_state_email \
+  --iam-account $greenpeace_terraform_email \
   --managed-by user \
   --format json | jq -r .[].name | while read key _; do
   gcloud iam service-accounts keys delete $key \
-    --iam-account $greenpeace_terraform_state_email \
+    --iam-account $greenpeace_terraform_email \
     --quiet
 done
 
 gcloud iam service-accounts keys create \
-  ../keys/greenpeace-terraform-state.json \
-  --iam-account $greenpeace_terraform_state_email
+  ../sensitive/greenpeace-terraform.json \
+  --iam-account $greenpeace_terraform_email
+
+jq -n '{ "gcp_credentials_json": $credentials[] | tojson }' \
+  --slurpfile credentials ../sensitive/greenpeace-terraform.json \
+  > ../sensitive/vars.yml

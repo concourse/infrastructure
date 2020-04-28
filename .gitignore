@@ -1,3 +1,4 @@
-keys/*
+sensitive/*
+!sensitive/.gitkeep
 bootstrap/.terraform/
 bootstrap/*.backup
