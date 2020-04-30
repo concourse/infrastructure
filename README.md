@@ -32,6 +32,14 @@ This will create the following:
 After these have been created, it will revoke any existing keys for the
 service account and generate a new one, placing it under `keys/`.
 
+It will also prompt you to ensure that the required secrets have been added
+to GCP Secret Manager. The following secrets must be created:
+
+* `production-ci-github_client_id` - the client ID of the Github application
+  for authenticating with the CI concourse deployment
+* `production-ci-github_client_secret` - the client ID of the Github
+  application for authenticating with the CI concourse deployment
+
 Note: after all this is done, the `bootstrap/terraform.tfstate` file needs to
 be checked in. (Be careful not to have any credentials as outputs.)
 

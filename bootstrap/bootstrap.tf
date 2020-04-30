@@ -34,6 +34,8 @@ resource "google_project_iam_member" "greenpeace_terraform_policy" {
 
     # needed for creating node pools
     "serviceAccountUser" = "roles/iam.serviceAccountUser"
+
+    "secretManager" = "roles/secretmanager.admin"
   }
 
   role = each.value
