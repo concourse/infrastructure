@@ -40,11 +40,11 @@ pushd production-terraform/
   200)
     echo "vault is unsealed and initialized"
     token="$(gsutil cat "gs://${gcs_bucket_name}/vault/root-token.enc" | \
-      base64 --decode | \
-        gcloud kms decrypt \
-          --key $(terraform output vault_crypto_key_self_link) \
-          --ciphertext-file - \
-          --plaintext-file -)"
+      gcloud kms decrypt \
+        --key $(terraform output vault_crypto_key_self_link) \
+        --ciphertext-file - \
+        --plaintext-file - | \
+          base64 --decode)"
     ;;
   501)
     echo "vault is not yet initialized"
