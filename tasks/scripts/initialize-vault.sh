@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu
+set -euo pipefail
 
 echo "$GCP_CREDENTIALS_JSON" > /tmp/service-account.json
 # gcloud config set auth/credential_file_override /tmp/service-account.json
@@ -54,7 +54,7 @@ pushd production-terraform/
       "secret_threshold": 3,
       "stored_shares": 1,
       "recovery_shares": 1,
-      "recovery_threshold": 1,
+      "recovery_threshold": 1
     }')
     token="$(echo "$response" | jq -r '.root_token')"
     encrypted_token="$(echo "$token" | \
