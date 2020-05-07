@@ -78,5 +78,4 @@ pushd production-terraform/
   esac
 popd
 
-mkdir vault-token
 echo "$token" > vault-token/token
