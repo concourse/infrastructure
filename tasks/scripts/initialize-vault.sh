@@ -6,8 +6,6 @@ echo "$GCP_CREDENTIALS_JSON" > /tmp/service-account.json
 # gcloud config set auth/credential_file_override /tmp/service-account.json
 gcloud auth activate-service-account --key-file /tmp/service-account.json
 
-set -x
-
 apt-get update
 apt-get install -y unzip jq
 
