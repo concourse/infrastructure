@@ -33,7 +33,7 @@ pushd production-terraform/
   trap finish EXIT
 
   # TODO: wait until server is up (maybe use timeout + nc + until loop)
-  sleep 5
+  sleep 15
 
   status_code="$(curl -k -I -s -o /dev/null -w "%{http_code}" https://127.0.0.1:8200/v1/sys/health)"
 
