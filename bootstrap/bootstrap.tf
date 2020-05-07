@@ -28,6 +28,8 @@ resource "google_project_iam_member" "greenpeace_terraform_policy" {
     "dns" = "roles/dns.admin"
     "networks" = "roles/servicenetworking.networksAdmin"
     "storage" = "roles/storage.admin"
+    "serviceAccountAdmin" = "roles/iam.serviceAccountAdmin"
+    "iamAdmin" = "roles/resourcemanager.projectIamAdmin"
 
     # needed for vault
     "kmsAdmin" = "roles/cloudkms.admin"
