@@ -57,7 +57,6 @@ pushd production-terraform/
     }')
     token="$(echo "$response" | jq -r '.root_token')"
     encrypted_token="$(echo -n "$token" | \
-      base64 | \
       gcloud kms encrypt \
         --key "$(terraform output vault_crypto_key_self_link)" \
         --plaintext-file - \
