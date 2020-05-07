@@ -2,7 +2,7 @@
 
 set -eu
 
-echo $SERVICE_ACCOUNT_JSON > /tmp/service-account.json
+echo "$GCP_CREDENTIALS_JSON" > /tmp/service-account.json
 # gcloud config set auth/credential_file_override /tmp/service-account.json
 gcloud auth activate-service-account --key-file /tmp/service-account.json
 

@@ -11,5 +11,8 @@ inputs:
 outputs:
   - name: vault_token
 
+params:
+  GCP_CREDENTIALS_JSON:
+
 run:
   path: greenpeace/tasks/scripts/initialize-vault.sh
