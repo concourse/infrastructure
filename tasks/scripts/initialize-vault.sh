@@ -40,11 +40,11 @@ pushd production-terraform/
   200)
     echo "vault is unsealed and initialized"
     token="$(gsutil cat "gs://${gcs_bucket_name}/vault/root-token.enc" | \
-      gcloud kms decrypt \
-        --key $(terraform output vault_crypto_key_self_link) \
-        --ciphertext-file - \
-        --plaintext-file - | \
-          base64 --decode)"
+      base64 --decode | \
+        gcloud kms decrypt \
+          --key $(terraform output vault_crypto_key_self_link) \
+          --ciphertext-file - \
+          --plaintext-file -)"
     ;;
   501)
     echo "vault is not yet initialized"
@@ -61,14 +61,15 @@ pushd production-terraform/
       gcloud kms encrypt \
         --key "$(terraform output vault_crypto_key_self_link)" \
         --plaintext-file - \
-        --ciphertext-file -)"
+        --ciphertext-file - | \
+          base64)"
       echo -n "${encrypted_token}" | gsutil cp - "gs://${gcs_bucket_name}/vault/root-token.enc"
       encrypted_init_response="$(echo -n "$response" | \
-        base64 | \
         gcloud kms encrypt \
         --key "$(terraform output vault_crypto_key_self_link)" \
         --plaintext-file - \
-        --ciphertext-file -)"
+        --ciphertext-file - | \
+          base64)"
       echo -n "${encrypted_init_response}" | gsutil cp - "gs://${gcs_bucket_name}/vault/init-response.json.enc"
     ;;
   *)
