@@ -57,20 +57,20 @@ pushd production-terraform/
       "recovery_threshold": 1
     }')
     token="$(echo "$response" | jq -r '.root_token')"
-    encrypted_token="$(echo "$token" | \
+    encrypted_token="$(echo -n "$token" | \
       base64 | \
       gcloud kms encrypt \
         --key "$(terraform output vault_crypto_key_self_link)" \
         --plaintext-file - \
         --ciphertext-file -)"
-      echo "${encrypted_token}" | gsutil cp - "gs://${gcs_bucket_name}/vault/root-token.enc"
-      encrypted_init_response="$(echo "$response" | \
+      echo -n "${encrypted_token}" | gsutil cp - "gs://${gcs_bucket_name}/vault/root-token.enc"
+      encrypted_init_response="$(echo -n "$response" | \
         base64 | \
         gcloud kms encrypt \
         --key "$(terraform output vault_crypto_key_self_link)" \
         --plaintext-file - \
         --ciphertext-file -)"
-      echo "${encrypted_init_response}" | gsutil cp - "gs://${gcs_bucket_name}/vault/init-response.json.enc"
+      echo -n "${encrypted_init_response}" | gsutil cp - "gs://${gcs_bucket_name}/vault/init-response.json.enc"
     ;;
   *)
     echo "unsupported status code $status_code"
