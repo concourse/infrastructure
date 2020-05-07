@@ -14,11 +14,11 @@ unzip "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 chmod +x terraform
 mv terraform /usr/local/bin/
 
-pushd greenpeace/bootstrap/
+pushd greenpeace/bootstrap/ > /dev/null
   gcs_bucket_name="$(terraform output greenpeace_bucket_name)"
-popd
+popd > /dev/null
 
-pushd production-terraform/
+pushd production-terraform/ > /dev/null
   printf "fetching cluster credentials...\n\n"
   gcloud container clusters get-credentials "$(terraform output cluster_name)" --zone "$(terraform output cluster_zone)" --project "$(terraform output project)"
 
@@ -83,6 +83,6 @@ pushd production-terraform/
     exit 1
     ;;
   esac
-popd
+popd > /dev/null
 
 echo "$token" > vault-token/token
