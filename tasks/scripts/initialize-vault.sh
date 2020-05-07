@@ -21,7 +21,7 @@ pushd greenpeace/bootstrap/
   gcs_bucket_name="$(terraform output greenpeace_bucket_name)"
 popd
 
-pushd terraform-production-state/
+pushd production-terraform/
   gcloud container clusters get-credentials "$(terraform output cluster_name)" --zone "$(terraform output cluster_zone)" --project "$(terraform output project)"
 
   kubectl port-forward service/vault -n "$(terraform output vault_namespace)" 8200:8200 &

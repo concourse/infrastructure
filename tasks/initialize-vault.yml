@@ -6,7 +6,7 @@ config:
 
 inputs:
   - name: greenpeace
-  - name: production-terraform-state
+  - name: production-terraform
 
 run:
   path: greenpeace/tasks/scripts/initialize-vault.sh
