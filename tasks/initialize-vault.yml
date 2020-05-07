@@ -1,12 +1,15 @@
 platform: linux
-config:
-  image_resource:
-    type: registry-image
-    source: { repository: google/cloud-sdk }
+
+image_resource:
+  type: registry-image
+  source: { repository: google/cloud-sdk }
 
 inputs:
   - name: greenpeace
   - name: production-terraform
+
+outputs:
+  - name: vault_token
 
 run:
   path: greenpeace/tasks/scripts/initialize-vault.sh
