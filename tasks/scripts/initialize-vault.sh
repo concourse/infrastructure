@@ -9,9 +9,8 @@ gcloud auth activate-service-account --key-file /tmp/service-account.json
 apt-get update
 apt-get install -y unzip jq
 
-export TF_VERSION=0.12.24
-curl -O "https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip"
-unzip "terraform_${TF_VERSION}_linux_amd64.zip"
+curl -O "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+unzip "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 chmod +x terraform
 mv terraform /usr/local/bin/
 
