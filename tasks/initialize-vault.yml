@@ -9,7 +9,7 @@ inputs:
   - name: production-terraform
 
 outputs:
-  - name: vault_token
+  - name: vault-token
 
 params:
   GCP_CREDENTIALS_JSON:
