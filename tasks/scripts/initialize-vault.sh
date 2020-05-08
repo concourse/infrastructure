@@ -83,7 +83,7 @@ pushd production-terraform/ > /dev/null
     ;;
   esac
 
-  kubectl exec vault-0 -n "$(terraform output vault_namespace)" -- vault login "$token"
+  kubectl exec vault-0 -n "$(terraform output vault_namespace)" -- vault login "$token" > /dev/null
 popd > /dev/null
 
 echo "$token" > vault-token/token
