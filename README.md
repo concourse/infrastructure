@@ -73,6 +73,6 @@ directory. These pipelines can be configured like so:
 ```sh
 fly -t ci set-pipeline \
    -p greenpeace \
-   -c pipelines/cluster.yml \
+   -c pipelines/production.yml \
    -l sensitive/vars.yml
 ```
