@@ -30,7 +30,7 @@ gcloud secrets versions list concourse_bot_private_key \
   > ../sensitive/concourse_bot_private_key
 
 jq -n '{ "gcp_credentials_json": $credentials[] | tojson,
-         "greenpeace_private_key": $private_key | tojson }' \
+         "greenpeace_private_key": $private_key }' \
   --slurpfile credentials ../sensitive/greenpeace-terraform.json \
   --arg private_key "$(cat ../sensitive/concourse_bot_private_key)" \
   > ../sensitive/vars.yml
