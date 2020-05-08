@@ -19,10 +19,9 @@ pushd greenpeace/bootstrap/ > /dev/null
 popd > /dev/null
 
 pushd production-terraform/ > /dev/null
-  printf "fetching cluster credentials...\n\n"
   gcloud container clusters get-credentials "$(terraform output cluster_name)" --zone "$(terraform output cluster_zone)" --project "$(terraform output project)"
 
-  printf "port-forwarding the vault service to port 8200...\n\n"
+  printf "\nport-forwarding the vault service to port 8200...\n"
   kubectl port-forward service/vault -n "$(terraform output vault_namespace)" 8200:8200 >/dev/null &
   port_forward_pid=$!
 
@@ -31,16 +30,16 @@ pushd production-terraform/ > /dev/null
   }
   trap finish EXIT
   
-  printf "waiting for port 8200 to be available...\n\n"
+  printf "waiting for port 8200 to be listening...\n"
   timeout 30 bash -c 'until echo 2>>/dev/null >>/dev/tcp/127.0.0.1/8200; do sleep 1; done'
 
-  printf "checking the status of vault...\n"
+  printf "\nchecking the status of vault...\n"
   status_code="$(curl -k -I -s -o /dev/null -w "%{http_code}" https://127.0.0.1:8200/v1/sys/health)"
 
   case "$status_code" in
   200)
-    printf "vault is unsealed and initialized\n\n"
-    printf "fetching stored root token from GCS (bucket: ${gcs_bucket_name})...\n\n"
+    printf "vault is unsealed and initialized\n"
+    printf "\nfetching stored root token from GCS (bucket: ${gcs_bucket_name})...\n\n"
     token="$(gsutil cat "gs://${gcs_bucket_name}/vault/root-token.enc" | \
       base64 --decode | \
         gcloud kms decrypt \
@@ -49,8 +48,8 @@ pushd production-terraform/ > /dev/null
           --plaintext-file -)"
     ;;
   501)
-    printf "vault is not yet initialized\n\n"
-    printf "initializing vault...\n\n"
+    printf "vault is not yet initialized\n"
+    printf "\ninitializing vault...\n"
     response=$(curl -k -X PUT -H 'Content-Type: application/json' https://127.0.0.1:8200/v1/sys/init -d '{
       "secret_shares": 5,
       "secret_threshold": 3,
@@ -59,7 +58,7 @@ pushd production-terraform/ > /dev/null
       "recovery_threshold": 1
     }')
 
-    printf "storing root token to gs://${gcs_bucket_name}/vault/root-token.enc...\n\n"
+    printf "\nstoring root token to gs://${gcs_bucket_name}/vault/root-token.enc...\n"
     token="$(echo "$response" | jq -r '.root_token')"
     encrypted_token="$(echo -n "$token" | \
       gcloud kms encrypt \
@@ -69,7 +68,7 @@ pushd production-terraform/ > /dev/null
           base64)"
       echo -n "${encrypted_token}" | gsutil cp - "gs://${gcs_bucket_name}/vault/root-token.enc"
 
-      printf "storing full init response to gs://${gcs_bucket_name}/vault/init-response.json.enc...\n\n"
+      printf "\nstoring full init response to gs://${gcs_bucket_name}/vault/init-response.json.enc (contains recovery keys)...\n"
       encrypted_init_response="$(echo -n "$response" | \
         gcloud kms encrypt \
         --key "$(terraform output vault_crypto_key_self_link)" \
@@ -79,7 +78,7 @@ pushd production-terraform/ > /dev/null
       echo -n "${encrypted_init_response}" | gsutil cp - "gs://${gcs_bucket_name}/vault/init-response.json.enc"
     ;;
   *)
-    printf "unsupported status code $status_code"
+    printf "\nunsupported status code $status_code\n"
     exit 1
     ;;
   esac
