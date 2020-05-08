@@ -6,11 +6,11 @@ resource_types:
     tag: '0.12.24'
 
 resources:
-# - name: greenpeace
-#   type: git
-#   source:
-#     uri: git@github.com:concourse/greenpeace.git
-#     private_key: ((greenpeace_private_key))
+- name: greenpeace
+  type: git
+  source:
+    uri: git@github.com:concourse/greenpeace.git
+    private_key: ((greenpeace_private_key))
 
 - name: hush-house
   type: git
@@ -18,7 +18,7 @@ resources:
     uri: https://github.com/concourse/hush-house
     branch: greenpeace
 
-- name: production
+- name: production-terraform
   type: terraform
   source:
     env_name: production
@@ -33,7 +33,15 @@ resources:
 jobs:
 - name: terraform
   plan:
-  - get: hush-house
-  - put: production
+  - in_parallel:
+    - get: hush-house
+    - get: greenpeace
+  - put: production-terraform
     params:
       terraform_source: hush-house/terraform/production
+    get_params:
+      output_statefile: true
+  - task: initialize-vault
+    file: greenpeace/tasks/initialize-vault.yml
+    params:
+      GCP_CREDENTIALS_JSON: ((gcp_credentials_json))
