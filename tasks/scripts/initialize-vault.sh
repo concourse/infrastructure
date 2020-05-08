@@ -39,7 +39,7 @@ pushd production-terraform/ > /dev/null
   case "$status_code" in
   200)
     printf "vault is unsealed and initialized\n"
-    printf "\nfetching stored root token from GCS (bucket: ${gcs_bucket_name})...\n\n"
+    printf "\nfetching stored root token from gs://${gcs_bucket_name}/vault/root-token.enc...\n\n"
     token="$(gsutil cat "gs://${gcs_bucket_name}/vault/root-token.enc" | \
       base64 --decode | \
         gcloud kms decrypt \
