@@ -23,8 +23,16 @@ gcloud iam service-accounts keys create \
   ../sensitive/greenpeace-terraform.json \
   --iam-account $greenpeace_terraform_email
 
-jq -n '{ "gcp_credentials_json": $credentials[] | tojson }' \
+gcloud secrets versions list concourse_bot_private_key \
+  --format json \
+  | jq -r '[.[] | select(.state == "ENABLED")] | first | .name' \
+  | xargs gcloud secrets versions access \
+  > ../sensitive/concourse_bot_private_key
+
+jq -n '{ "gcp_credentials_json": $credentials[] | tojson,
+         "greenpeace_private_key": $private_key | tojson }' \
   --slurpfile credentials ../sensitive/greenpeace-terraform.json \
+  --arg private_key "$(cat ../sensitive/concourse_bot_private_key)" \
   > ../sensitive/vars.yml
 
 # TODO: actually validate that these secrets are present with gcloud cli
