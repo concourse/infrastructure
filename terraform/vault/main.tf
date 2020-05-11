@@ -6,7 +6,7 @@ terraform {
 provider "vault" {
   # Configured via environment variables:
   # * VAULT_TOKEN
-  # * VAULT_ADDRESS
+  # * VAULT_ADDR
 }
 
 resource "vault_auth_backend" "cert" {
