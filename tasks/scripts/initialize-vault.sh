@@ -3,7 +3,6 @@
 set -euo pipefail
 
 echo "$GCP_CREDENTIALS_JSON" > /tmp/service-account.json
-# gcloud config set auth/credential_file_override /tmp/service-account.json
 gcloud auth activate-service-account --key-file /tmp/service-account.json
 
 apt-get update
@@ -86,4 +85,13 @@ pushd production-terraform/ > /dev/null
   kubectl exec vault-0 -n "$(terraform output vault_namespace)" -- vault login "$token" > /dev/null
 popd > /dev/null
 
-echo "$token" > vault-token/token
+pushd greenpeace/terraform/vault > /dev/null
+  export VAULT_TOKEN="${token}"
+  export VAULT_ADDRESS="https://127.0.0.1:8200"
+  export VAULT_SKIP_VERIFY="true"
+
+  export TF_VAR_credentials="${GCP_CREDENTIALS}"
+
+  terraform init
+  terraform apply
+popd > /dev/null

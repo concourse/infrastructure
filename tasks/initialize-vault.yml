@@ -8,9 +8,6 @@ inputs:
   - name: greenpeace
   - name: production-terraform
 
-outputs:
-  - name: vault-token
-
 params:
   GCP_CREDENTIALS_JSON:
   TERRAFORM_VERSION: 0.12.24
