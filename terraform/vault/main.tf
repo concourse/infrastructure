@@ -1,8 +1,5 @@
 terraform {
   backend "gcs" {
-    credentials = var.gcp_credentials
-    bucket      = var.gcs_bucket
-    prefix      = var.gcs_bucket_prefix
   }
 }
 

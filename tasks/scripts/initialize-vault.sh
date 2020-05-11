@@ -90,8 +90,9 @@ pushd greenpeace/terraform/vault > /dev/null
   export VAULT_ADDRESS="https://127.0.0.1:8200"
   export VAULT_SKIP_VERIFY="true"
 
-  export TF_VAR_credentials="${GCP_CREDENTIALS_JSON}"
-
-  terraform init
+  terraform init \
+    -backend-config "credentials=${GCP_CREDENTIALS_JSON}" \
+    -backend-config "bucket=concourse-greenpeace" \
+    -backend-config "prefix=terraform"
   terraform apply
 popd > /dev/null
