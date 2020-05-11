@@ -95,5 +95,7 @@ pushd greenpeace/terraform/vault > /dev/null
     -backend-config "bucket=concourse-greenpeace" \
     -backend-config "prefix=terraform"
   terraform workspace select production-vault || terraform workspace new production-vault
-  terraform apply
+  terraform apply \
+    -auto-approve \
+    -input=false
 popd > /dev/null
