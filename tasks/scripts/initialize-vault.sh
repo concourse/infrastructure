@@ -90,10 +90,10 @@ pushd greenpeace/terraform/vault > /dev/null
   export VAULT_ADDRESS="https://127.0.0.1:8200"
   export VAULT_SKIP_VERIFY="true"
 
-  terraform workspace new production-vault
   terraform init \
     -backend-config "credentials=${GCP_CREDENTIALS_JSON}" \
     -backend-config "bucket=concourse-greenpeace" \
     -backend-config "prefix=terraform"
+  terraform workspace select production-vault || terraform workspace new production-vault
   terraform apply
 popd > /dev/null
