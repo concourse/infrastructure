@@ -83,6 +83,8 @@ pushd production-terraform/ > /dev/null
   esac
 
   kubectl exec vault-0 -n "$(terraform output vault_namespace)" -- vault login "$token" > /dev/null
+
+  vault_ca_cert="$(terraform output vault_ca_cert)"
 popd > /dev/null
 
 pushd greenpeace/terraform/vault > /dev/null
@@ -97,5 +99,6 @@ pushd greenpeace/terraform/vault > /dev/null
   terraform workspace select production-vault || terraform workspace new production-vault
   terraform apply \
     -auto-approve \
-    -input=false
+    -input=false \
+    -var "concourse_cert=${vault_ca_cert}"
 popd > /dev/null
