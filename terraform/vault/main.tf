@@ -51,3 +51,17 @@ EOT
     vault_mount.concourse,
   ]
 }
+
+resource "vault_generic_secret" "greenpeace_private_key" {
+  path = "concourse/main/greenpeace_private_key"
+
+  data_json = <<EOT
+{
+  "value": ${jsonencode(var.greenpeace_private_key)}
+}
+EOT
+
+  depends_on = [
+    vault_mount.concourse,
+  ]
+}

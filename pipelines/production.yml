@@ -45,3 +45,4 @@ jobs:
     file: greenpeace/tasks/initialize-vault.yml
     params:
       GCP_CREDENTIALS_JSON: ((gcp_credentials_json))
+      GREENPEACE_PRIVATE_KEY: ((greenpeace_private_key))

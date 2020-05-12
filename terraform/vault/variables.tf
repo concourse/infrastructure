@@ -7,3 +7,8 @@ variable "credentials" {
   type = string
   description = "gcp credentials for the pipeline to access gcp"
 }
+
+variable "greenpeace_private_key" {
+  type = string
+  description = "github private key with access to concourse/greenpeace"
+}

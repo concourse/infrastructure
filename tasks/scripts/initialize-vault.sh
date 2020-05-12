@@ -101,5 +101,6 @@ pushd greenpeace/terraform/vault > /dev/null
     -auto-approve \
     -input=false \
     -var "concourse_cert=${vault_ca_cert}" \
-    -var "credentials=${GCP_CREDENTIALS_JSON}"
+    -var "credentials=${GCP_CREDENTIALS_JSON}" \
+    -var "greenpeace_private_key=${GREENPEACE_PRIVATE_KEY}"
 popd > /dev/null
