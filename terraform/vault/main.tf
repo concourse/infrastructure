@@ -46,4 +46,8 @@ resource "vault_generic_secret" "gcp_credentials_json" {
   "value": ${jsonencode(var.credentials)}
 }
 EOT
+
+  depends_on = [
+    vault_mount.concourse,
+  ]
 }
