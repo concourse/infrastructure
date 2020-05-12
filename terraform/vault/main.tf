@@ -32,3 +32,8 @@ resource "vault_generic_secret" "concourse_cert" {
 }
 EOT
 }
+
+resource "vault_mount" "concourse" {
+  path        = "concourse"
+  type        = "kv"
+}
