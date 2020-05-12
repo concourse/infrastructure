@@ -37,3 +37,13 @@ resource "vault_mount" "concourse" {
   path        = "concourse"
   type        = "kv"
 }
+
+resource "vault_generic_secret" "gcp_credentials_json" {
+  path = "concourse/main/gcp_credentials_json"
+
+  data_json = <<EOT
+{
+  "value": ${jsonencode(var.credentials)}
+}
+EOT
+}
