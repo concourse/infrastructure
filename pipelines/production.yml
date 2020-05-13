@@ -12,12 +12,6 @@ resources:
     uri: git@github.com:concourse/greenpeace.git
     private_key: ((greenpeace_private_key))
 
-- name: hush-house
-  type: git
-  source:
-    uri: https://github.com/concourse/hush-house
-    branch: greenpeace
-
 - name: production-terraform
   type: terraform
   source:
@@ -33,12 +27,10 @@ resources:
 jobs:
 - name: terraform
   plan:
-  - in_parallel:
-    - get: hush-house
-    - get: greenpeace
+  - get: greenpeace
   - put: production-terraform
     params:
-      terraform_source: hush-house/terraform/production
+      terraform_source: greenpeace/terraform/production
     get_params:
       output_statefile: true
   - task: initialize-vault
