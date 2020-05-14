@@ -12,10 +12,10 @@ resources:
     uri: git@github.com:concourse/greenpeace.git
     private_key: ((greenpeace_private_key))
 
-- name: production-terraform
+- name: terraform
   type: terraform
   source:
-    env_name: production
+    env_name: ((cluster))
     backend_type: gcs
     backend_config:
       bucket: concourse-greenpeace
@@ -28,9 +28,9 @@ jobs:
 - name: terraform
   plan:
   - get: greenpeace
-  - put: production-terraform
+  - put: terraform
     params:
-      terraform_source: greenpeace/terraform/production
+      terraform_source: greenpeace/terraform/((cluster))
     get_params:
       output_statefile: true
   - task: initialize-vault
@@ -38,3 +38,4 @@ jobs:
     params:
       GCP_CREDENTIALS_JSON: ((gcp_credentials_json))
       GREENPEACE_PRIVATE_KEY: ((greenpeace_private_key))
+      CLUSTER_NAME: ((cluster))

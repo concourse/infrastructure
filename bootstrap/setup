@@ -40,3 +40,13 @@ echo
 echo "ensure that the following secrets have been added to GCP Secret Manager:"
 echo "- production-ci-github_client_id"
 echo "- production-ci-github_client_secret"
+echo "- dispatcher-concourse-github_client_id"
+echo "- dispatcher_concourse-github_client_secret"
+
+echo
+echo "set the initial bootstrapping pipeline to a running concourse:"
+echo 'fly -t dev set-pipeline \'
+echo '  -p dispatcher_greenpeace \'
+echo '  -c pipelines/greenpeace.yml \'
+echo '  -l sensitive/vars.yml \'
+echo '  -v cluster=dispatcher'

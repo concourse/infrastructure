@@ -6,11 +6,12 @@ image_resource:
 
 inputs:
   - name: greenpeace
-  - name: production-terraform
+  - name: terraform
 
 params:
   GCP_CREDENTIALS_JSON:
   GREENPEACE_PRIVATE_KEY:
+  CLUSTER_NAME:
   TERRAFORM_VERSION: 0.12.24
 
 run:
