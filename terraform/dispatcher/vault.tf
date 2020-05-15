@@ -13,9 +13,9 @@ resource "google_kms_crypto_key" "vault" {
   name            = "dispatcher-vault-unseal-key"
   key_ring        = google_kms_key_ring.vault.self_link
 
-  # lifecycle {
-  #   prevent_destroy = true
-  # }
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "tls_private_key" "vault_ca" {
