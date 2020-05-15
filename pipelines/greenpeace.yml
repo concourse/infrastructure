@@ -26,6 +26,7 @@ resources:
 
 jobs:
 - name: terraform
+  max_in_flight: 1
   plan:
   - get: greenpeace
   - put: terraform
