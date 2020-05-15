@@ -29,11 +29,6 @@ web:
     type: LoadBalancer
     loadBalancerIP: ${lb_address}
 
-persistence:
-  worker:
-    storageClass: ssd
-    size: 75Gi
-
 worker:
   replicas: 1
   annotations:
