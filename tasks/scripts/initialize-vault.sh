@@ -37,8 +37,8 @@ pushd terraform/ > /dev/null
   case "$status_code" in
   200)
     printf "vault is unsealed and initialized\n"
-    printf "\nfetching stored root token from gs://${gcs_bucket_name}/vault/root-token.enc...\n\n"
-    token="$(gsutil cat "gs://${gcs_bucket_name}/vault/root-token.enc" | \
+    printf "\nfetching stored root token from gs://${gcs_bucket_name}/vault/${CLUSTER_NAME}/root-token.enc...\n\n"
+    token="$(gsutil cat "gs://${gcs_bucket_name}/vault/${CLUSTER_NAME}/root-token.enc" | \
       base64 --decode | \
         gcloud kms decrypt \
           --key $(terraform output vault_crypto_key_self_link) \
@@ -56,7 +56,7 @@ pushd terraform/ > /dev/null
       "recovery_threshold": 1
     }')
 
-    printf "\nstoring root token to gs://${gcs_bucket_name}/vault/root-token.enc...\n"
+    printf "\nstoring root token to gs://${gcs_bucket_name}/vault/${CLUSTER_NAME}/root-token.enc...\n"
     token="$(echo "$response" | jq -r '.root_token')"
     encrypted_token="$(echo -n "$token" | \
       gcloud kms encrypt \
@@ -64,16 +64,16 @@ pushd terraform/ > /dev/null
         --plaintext-file - \
         --ciphertext-file - | \
           base64)"
-      echo -n "${encrypted_token}" | gsutil cp - "gs://${gcs_bucket_name}/vault/root-token.enc"
+      echo -n "${encrypted_token}" | gsutil cp - "gs://${gcs_bucket_name}/vault/${CLUSTER_NAME}/root-token.enc"
 
-      printf "\nstoring full init response to gs://${gcs_bucket_name}/vault/init-response.json.enc (contains recovery keys)...\n"
+      printf "\nstoring full init response to gs://${gcs_bucket_name}/vault/${CLUSTER_NAME}/init-response.json.enc (contains recovery keys)...\n"
       encrypted_init_response="$(echo -n "$response" | \
         gcloud kms encrypt \
         --key "$(terraform output vault_crypto_key_self_link)" \
         --plaintext-file - \
         --ciphertext-file - | \
           base64)"
-      echo -n "${encrypted_init_response}" | gsutil cp - "gs://${gcs_bucket_name}/vault/init-response.json.enc"
+      echo -n "${encrypted_init_response}" | gsutil cp - "gs://${gcs_bucket_name}/vault/${CLUSTER_NAME}/init-response.json.enc"
     ;;
   *)
     printf "\nunsupported status code $status_code\n"
