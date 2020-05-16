@@ -13,6 +13,11 @@ resource "vault_auth_backend" "cert" {
   type = "cert"
 }
 
+resource "vault_mount" "concourse" {
+  path        = "concourse"
+  type        = "kv"
+}
+
 resource "vault_policy" "concourse" {
   name   = "concourse"
   policy = <<EOT
@@ -31,11 +36,10 @@ resource "vault_generic_secret" "concourse_cert" {
   "certificate": ${jsonencode(var.concourse_cert)}
 }
 EOT
-}
 
-resource "vault_mount" "concourse" {
-  path        = "concourse"
-  type        = "kv"
+  depends_on = [
+    vault_auth_backend.cert,
+  ]
 }
 
 resource "vault_generic_secret" "gcp_credentials_json" {
