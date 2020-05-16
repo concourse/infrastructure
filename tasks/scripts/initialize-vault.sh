@@ -9,9 +9,8 @@ apt-get update
 apt-get install -y unzip jq
 
 curl -O "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-unzip "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-chmod +x terraform
-mv terraform /usr/local/bin/
+unzip "terraform_${TERRAFORM_VERSION}_linux_amd64.zip" -d /usr/local/bin
+chmod +x /usr/local/bin/terraform
 
 pushd greenpeace/bootstrap/ > /dev/null
   gcs_bucket_name="$(terraform output greenpeace_bucket_name)"
