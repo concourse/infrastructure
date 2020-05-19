@@ -6,6 +6,20 @@ provider "google" {
 resource "google_storage_bucket" "concourse_greenpeace" {
   name = "concourse-greenpeace"
   bucket_policy_only = true
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+
+    condition {
+      num_newer_versions = 3
+    }
+  }
 }
 
 resource "google_service_account" "greenpeace_terraform" {
