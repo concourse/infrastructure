@@ -61,18 +61,33 @@ to GCP Secret Manager. The following secrets must be created:
   for authenticating with the CI concourse deployment
 * `production-ci-github_client_secret` - the client ID of the Github
   application for authenticating with the CI concourse deployment
+* `dispatcher-concourse-github_client_id` - the client ID of the Github
+  application for authenticating with the concourse deployment in the
+  dispatcher cluster
+* `dispatcher-concourse-github_client_secret` - the client secret of the Github
+  application for authenticating with the concourse deployment in the
+  dispatcher cluster
 
 Note: after all this is done, the `bootstrap/terraform.tfstate` file needs to
 be checked in. (Be careful not to have any credentials as outputs.)
 
-### configuring the pipeline
+### deploy the dispatcher
 
-From here on, all setup is done through the pipelines under the `pipelines/`
-directory. These pipelines can be configured like so:
+The next step is to deploy the `dispatcher` cluster. This cluster is solely
+responsible for continuously deploying the `production` cluster.
+
+`dispatcher` is deployed through a Concourse pipeline. If this is the first
+deploy, you should run this pipeline on a local Concourse:
 
 ```sh
-fly -t ci set-pipeline \
-   -p greenpeace \
-   -c pipelines/production.yml \
-   -l sensitive/vars.yml
+fly -t dev set-pipeline \
+   -p dispatcher_greenpeace \
+   -c pipelines/greenpeace.yml \
+   -l sensitive/vars.yml \
+   -v cluster=dispatcher
 ```
+
+After the `production` cluster is up, the pipeline can be run from CI to update
+Concourse on the `dispatcher`.
+
+`dispatcher`'s Concourse can be accessed at `dispatcher.concourse-ci.org`.
