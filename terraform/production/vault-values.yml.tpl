@@ -14,8 +14,6 @@ server:
   standalone:
     enabled: true
     config: |
-      ui = true
-
       listener "tcp" {
         address = "[::]:8200"
         cluster_address = "[::]:8201"
@@ -37,10 +35,6 @@ server:
   serviceAccount:
     annotations:
       iam.gke.io/gcp-service-account: "${gcp_serviceaccount}"
-
-ui:
-  enabled: true
-  externalPort: 8200
 
 ca: ${vault_ca_cert}
 crt: ${vault_server_cert}
