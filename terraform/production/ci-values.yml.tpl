@@ -68,6 +68,7 @@ concourse:
     maxActiveTasksPerWorker: 5
     enableGlobalResources: true
     encryption: { enabled: true }
+    enableArchivePipeline: true
     kubernetes:
       keepNamespaces: false
       enabled: false
