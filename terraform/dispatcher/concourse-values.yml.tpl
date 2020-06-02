@@ -65,7 +65,7 @@ concourse:
     containerPlacementStrategy: limit-active-tasks
     maxActiveTasksPerWorker: 5
     enableGlobalResources: true
-    # encryption: { enabled: true }
+    encryption: { enabled: true }
     enableArchivePipeline: true
     kubernetes:
       keepNamespaces: false
