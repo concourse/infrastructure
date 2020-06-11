@@ -9,7 +9,7 @@ postgresql:
 
 web:
   annotations:
-    rollingUpdate: "3"
+    rollingUpdate: "4"
   replicas: 1
   nodeSelector:
     cloud.google.com/gke-nodepool: default
