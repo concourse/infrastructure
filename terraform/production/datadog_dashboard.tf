@@ -6,7 +6,7 @@ module "ci_dashboard" {
   datadog_api_key = var.datadog_provider_api_key
   datadog_app_key = var.datadog_provider_app_key
 
-  dashboard_title = "Concourse Dashboard - CI"
+  dashboard_title = "Concourse - CI"
 
   deployment_tool = "helm"
 
@@ -25,7 +25,7 @@ module "hush_house_dashboard" {
   datadog_api_key = var.datadog_provider_api_key
   datadog_app_key = var.datadog_provider_app_key
 
-  dashboard_title = "Concourse Dashboard - Hush House"
+  dashboard_title = "Concourse - Hush House"
 
   deployment_tool = "helm"
 
