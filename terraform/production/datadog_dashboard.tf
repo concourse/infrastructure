@@ -1,7 +1,7 @@
 # Creates Datadog dashboards for CI and Hush House.
 #
 module "ci_dashboard" {
-  source = "./dashboard"
+  source = "../dashboard"
 
   datadog_api_key = var.datadog_provider_api_key
   datadog_app_key = var.datadog_provider_app_key
@@ -20,7 +20,7 @@ module "ci_dashboard" {
 }
 
 module "hush_house_dashboard" {
-  source = "./dashboard"
+  source = "../dashboard"
 
   datadog_api_key = var.datadog_provider_api_key
   datadog_app_key = var.datadog_provider_app_key
