@@ -67,7 +67,7 @@ resource "helm_release" "dispatcher_concourse" {
   name       = "concourse"
   repository = "https://concourse-charts.storage.googleapis.com"
   chart      = "concourse"
-  version    = "10.1.0"
+  version    = "11.1.0"
 
   values = [
     data.template_file.concourse_values.rendered,

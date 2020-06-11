@@ -83,7 +83,7 @@ resource "helm_release" "ci-concourse" {
   name       = "concourse"
   repository = "https://concourse-charts.storage.googleapis.com"
   chart      = "concourse"
-  version    = "9.1.1"
+  version    = "11.1.0"
 
   values = [
     data.template_file.ci_values.rendered,
