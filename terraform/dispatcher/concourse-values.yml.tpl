@@ -1,5 +1,5 @@
-image: concourse/concourse
-imageTag: 6.1.0
+image: concourse/concourse-rc
+imageTag: release-6.3
 
 postgresql:
   enabled: true
