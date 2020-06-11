@@ -1,5 +1,5 @@
 variable "credentials" {
-  type = string
+  type        = string
   description = "GCP key"
 }
 
