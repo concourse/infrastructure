@@ -26,8 +26,12 @@ web:
       memory: 1Gi
 
   service:
-    type: LoadBalancer
-    loadBalancerIP: ${lb_address}
+    api:
+      type: LoadBalancer
+      loadBalancerIP: ${lb_address}
+    workerGateway:
+      type: LoadBalancer
+      loadBalancerIP: ${lb_address}
 
 worker:
   replicas: 1
