@@ -3,7 +3,7 @@ resource_types:
   type: registry-image
   source:
     repository: ljfranklin/terraform-resource
-    tag: '0.12.24'
+    tag: '0.12.26'
 
 resources:
 - name: greenpeace
