@@ -16,3 +16,4 @@ params:
 
 run:
   path: greenpeace/tasks/scripts/initialize-vault.sh
+  user: root
