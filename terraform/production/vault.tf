@@ -10,8 +10,8 @@ resource "google_kms_key_ring" "vault" {
 }
 
 resource "google_kms_crypto_key" "vault" {
-  name            = "production-vault-unseal-key"
-  key_ring        = google_kms_key_ring.vault.self_link
+  name     = "production-vault-unseal-key"
+  key_ring = google_kms_key_ring.vault.self_link
 
   lifecycle {
     prevent_destroy = true
@@ -44,7 +44,7 @@ resource "tls_self_signed_cert" "vault_ca" {
 module "vault_server_cert" {
   source = "../cert"
 
-  common_name  = "vault.vault.svc.cluster.local"
+  common_name = "vault.vault.svc.cluster.local"
   allowed_uses = [
     "key_encipherment",
     "digital_signature",
@@ -66,7 +66,7 @@ module "vault_server_cert" {
 module "vault_client_cert" {
   source = "../cert"
 
-  common_name  = "concourse"
+  common_name = "concourse"
   allowed_uses = [
     "key_encipherment",
     "digital_signature",
@@ -85,7 +85,7 @@ resource "google_service_account" "production_vault" {
 }
 
 resource "google_storage_bucket" "production_vault" {
-  name = "concourse-production-vault"
+  name               = "concourse-production-vault"
   bucket_policy_only = true
 
   versioning {
@@ -105,11 +105,11 @@ resource "google_storage_bucket" "production_vault" {
 
 resource "google_project_iam_member" "production_vault_policy" {
   for_each = {
-    "kmsAdmin" = "roles/cloudkms.admin"
+    "kmsAdmin"   = "roles/cloudkms.admin"
     "kmsEncrypt" = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   }
 
-  role = each.value
+  role   = each.value
   member = "serviceAccount:${google_service_account.production_vault.email}"
 }
 
@@ -149,9 +149,9 @@ data "template_file" "vault_values" {
 }
 
 resource "helm_release" "vault" {
-  namespace  = kubernetes_namespace.vault.id
-  name       = "vault"
-  chart      = "../../helm/charts/vault-helm"
+  namespace = kubernetes_namespace.vault.id
+  name      = "vault"
+  chart     = "../../helm/charts/vault-helm"
 
   values = [
     data.template_file.vault_values.rendered,

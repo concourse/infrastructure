@@ -25,7 +25,7 @@
 # #     value = false
 # #   }
 
-  # depends_on = [
-  #   module.cluster.node_pools,
-  # ]
+# depends_on = [
+#   module.cluster.node_pools,
+# ]
 # }

@@ -5,13 +5,13 @@ resource "kubernetes_namespace" "ci" {
 }
 
 resource "random_password" "encryption_key" {
-    length = 32
-    special = true
+  length  = 32
+  special = true
 }
 
 resource "random_password" "admin_password" {
-    length = 32
-    special = true
+  length  = 32
+  special = true
 }
 
 resource "tls_private_key" "host_key" {
