@@ -10,6 +10,14 @@ output project {
   value = var.project
 }
 
+output ci_concourse_release_name {
+  value = helm_release.ci-concourse.name
+}
+
+output ci_namespace {
+  value = kubernetes_namespace.ci.id
+}
+
 output vault_namespace {
   value = kubernetes_namespace.vault.id
 }
