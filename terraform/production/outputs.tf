@@ -21,3 +21,7 @@ output vault_crypto_key_self_link {
 output vault_ca_cert {
   value = tls_self_signed_cert.vault_ca.cert_pem
 }
+
+output ci_database_instance_id {
+  value = module.ci_database.instance_id
+}

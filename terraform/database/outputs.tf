@@ -11,6 +11,10 @@ output "database" {
   value = google_sql_database.db.name
 }
 
+output "instance_id" {
+  value = google_sql_database_instance.main.name
+}
+
 output "ip" {
   value = google_sql_database_instance.main.ip_address.0.ip_address
 }
