@@ -19,6 +19,7 @@ resource "google_sql_database_instance" "main" {
     availability_type = "ZONAL"
     disk_autoresize   = true
     disk_type         = "PD_SSD"
+    disk_size         = var.disk_size_gb
     tier              = "db-custom-${var.cpus}-${var.memory_mb}"
 
     database_flags {
