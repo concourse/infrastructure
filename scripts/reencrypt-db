@@ -1,0 +1,62 @@
+#!/bin/bash
+
+set -e -u -x
+
+if [ "$#" != "1" ]; then
+  echo "usage: $0 old_encryption_key" >&2
+  exit 1
+fi
+
+cd $(dirname $0)/../terraform/production
+
+output="$(terraform output --json)"
+
+cluster_name="$(jq -r '.cluster_name.value' <<< $output)"
+cluster_zone="$(jq -r '.cluster_zone.value' <<< $output)"
+project="$(jq -r '.project.value' <<< $output)"
+
+gcloud container clusters get-credentials "$cluster_name" --zone "$cluster_zone" --project "$project"
+
+# scale down the ATCs to 0
+ci_namespace="$(jq -r '.ci_namespace.value' <<< $output)"
+ci_release_name="$(jq -r '.ci_concourse_release_name.value' <<< $output)"
+ci_deployment_name=${ci_release_name}-web
+
+kubectl scale deployment "$ci_deployment_name" --replicas 0 -n "$ci_namespace"
+
+# wait for the ATCs to stop
+
+# TODO: timeout
+while true; do
+  current_replicas="$(kubectl get deployment "$ci_deployment_name" -n "$ci_namespace" -o jsonpath={.status.replicas})"
+  if [ -z "$current_replicas" ] || [ "$current_replicas" -eq "0" ]; then
+    break
+  fi
+done
+
+image="$(kubectl get deploy "$ci_deployment_name" -n "$ci_namespace" -o jsonpath={.spec.template.spec.containers[0].image})"
+
+values="$(helm get values "$ci_release_name" -n "$ci_namespace" -o json)"
+
+# re-encrypt the database with the new key
+
+docker run $image migrate \
+  --encryption-key="$(jq -r '.secrets.encryptionKey' <<< $values)" \
+  # --old-encryption-key="$old_encryption_key" \
+  --current-db-version \
+  --postgres-host="$(jq -r '.concourse.web.postgres.host' <<< $values)" \
+  --postgres-database="$(jq -r '.concourse.web.postgres.database' <<< $values)" \
+  --postgres-sslmode="$(jq -r '.concourse.web.postgres.sslmode' <<< $values)" \
+  --postgres-user="$(jq -r '.secrets.postgresUser' <<< $values)" \
+  --postgres-password="$(jq -r '.secrets.postgresPassword' <<< $values)" \
+  --postgres-ca-cert="$(jq -r '.secrets.postgresCaCert' <<< $values)" \
+  --postgres-client-cert="$(jq -r '.secrets.postgresClientCert' <<< $values)" \
+  --postgres-client-key="$(jq -r '.secrets.postgresClientKey' <<< $values)"
+
+
+# scale the ATCs back up to n (could be from `helm get values`)
+
+# desired replicas:
+desired="$(jq -r '.web.replicas' <<< $values)"
+kubectl scale deployment "$ci_deployment_name" --replicas "$desired" -n "$ci_namespace"
+

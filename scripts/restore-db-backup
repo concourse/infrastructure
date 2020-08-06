@@ -44,30 +44,8 @@ while true; do
   fi
 done
 
-# migrate the DB to re-encrypt using the old_encryption_key
+# restore the old database
 
 gcloud sql backups restore "$backup_id" --restore-instance="$dst_instance_id" --backup-instance="$src_instance_id" --quiet
 
-image="$(kubectl get deploy "$ci_deployment_name" -n "$ci_namespace" -o jsonpath={.spec.template.spec.containers[0].image})"
-
-values="$(helm get values "$ci_release_name" -n "$ci_namespace" -o json)"
-
-docker run $image concourse migrate \
-  --encryption-key="$(jq -r '.secrets.encryptionKey' <<< $values)" \
-  # --old-encryption-key="$old_encryption_key" \
-  --current-db-version \
-  --postgres-host="$(jq -r '.concourse.web.postgres.host' <<< $values)" \
-  --postgres-database="$(jq -r '.concourse.web.postgres.database' <<< $values)" \
-  --postgres-sslmode="$(jq -r '.concourse.web.postgres.sslmode' <<< $values)" \
-  --postgres-user="$(jq -r '.secrets.postgresUser' <<< $values)" \
-  --postgres-password="$(jq -r '.secrets.postgresPassword' <<< $values)" \
-  --postgres-ca-cert="$(jq -r '.secrets.postgresCaCert' <<< $values)" \
-  --postgres-client-cert="$(jq -r '.secrets.postgresClientCert' <<< $values)" \
-  --postgres-client-key="$(jq -r '.secrets.postgresClientKey' <<< $values)"
-
-
-# scale the ATCs back up to n (could be from `helm get values`)
-
-# desired replicas:
-desired="$(jq -r '.web.replicas' <<< $values)"
-kubectl scale deployment "$ci_deployment_name" --replicas "$desired" -n "$ci_namespace"
+$(dirname $0)/reencrypt-db "$old_encryption_key"
