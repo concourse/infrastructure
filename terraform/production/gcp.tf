@@ -1,3 +1,14 @@
+terraform {
+  backend "gcs" {
+    bucket = "concourse-greenpeace"
+    prefix = "terraform"
+  }
+  required_providers {
+    google = "~> 2"
+    google-beta = "~> 2"
+  }
+}
+
 provider "google" {
   credentials = var.credentials
   project     = var.project
