@@ -9,6 +9,8 @@ fi
 
 cd $(dirname $0)/../terraform/production
 
+old_encryption_key="$1"
+
 output="$(terraform output --json)"
 
 cluster_name="$(jq -r '.cluster_name.value' <<< $output)"
@@ -38,25 +40,45 @@ image="$(kubectl get deploy "$ci_deployment_name" -n "$ci_namespace" -o jsonpath
 
 values="$(helm get values "$ci_release_name" -n "$ci_namespace" -o json)"
 
+
+temp_dir="$(pwd)/../../sensitive/certs"
+rm -rf "$temp_dir"
+mkdir "$temp_dir"
+
+function cleanup {
+	rm -rf "$temp_dir"
+}
+
+trap cleanup EXIT
+
+jq -r '.secrets.postgresCaCert' <<< $values > "$temp_dir/ca.crt"
+chmod 600 "$temp_dir/ca.crt"
+jq -r '.secrets.postgresClientCert' <<< $values > "$temp_dir/client.crt"
+chmod 600 "$temp_dir/client.crt"
+jq -r '.secrets.postgresClientKey' <<< $values > "$temp_dir/client.pem"
+chmod 600 "$temp_dir/client.pem"
+
 # re-encrypt the database with the new key
 
-docker run $image migrate \
-  --encryption-key="$(jq -r '.secrets.encryptionKey' <<< $values)" \
-  # --old-encryption-key="$old_encryption_key" \
-  --current-db-version \
-  --postgres-host="$(jq -r '.concourse.web.postgres.host' <<< $values)" \
-  --postgres-database="$(jq -r '.concourse.web.postgres.database' <<< $values)" \
-  --postgres-sslmode="$(jq -r '.concourse.web.postgres.sslmode' <<< $values)" \
-  --postgres-user="$(jq -r '.secrets.postgresUser' <<< $values)" \
-  --postgres-password="$(jq -r '.secrets.postgresPassword' <<< $values)" \
-  --postgres-ca-cert="$(jq -r '.secrets.postgresCaCert' <<< $values)" \
-  --postgres-client-cert="$(jq -r '.secrets.postgresClientCert' <<< $values)" \
-  --postgres-client-key="$(jq -r '.secrets.postgresClientKey' <<< $values)"
-
+docker run \
+	-v "$temp_dir:/certs" \
+	$image migrate \
+		--old-encryption-key="$old_encryption_key" \
+		--encryption-key="$(jq -r '.secrets.encryptionKey' <<< $values)" \
+		--postgres-host="$(jq -r '.concourse.web.postgres.host' <<< $values)" \
+		--postgres-database="$(jq -r '.concourse.web.postgres.database' <<< $values)" \
+		--postgres-sslmode="$(jq -r '.concourse.web.postgres.sslmode' <<< $values)" \
+		--postgres-user="$(jq -r '.secrets.postgresUser' <<< $values)" \
+		--postgres-password="$(jq -r '.secrets.postgresPassword' <<< $values)" \
+		--postgres-ca-cert="/certs/ca.crt" \
+		--postgres-client-cert="/certs/client.crt" \
+		--postgres-client-key="/certs/client.pem"
 
 # scale the ATCs back up to n (could be from `helm get values`)
 
 # desired replicas:
 desired="$(jq -r '.web.replicas' <<< $values)"
+
 kubectl scale deployment "$ci_deployment_name" --replicas "$desired" -n "$ci_namespace"
+
 

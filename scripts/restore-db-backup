@@ -32,6 +32,8 @@ ci_namespace="$(jq -r '.ci_namespace.value' <<< $output)"
 ci_release_name="$(jq -r '.ci_concourse_release_name.value' <<< $output)"
 ci_deployment_name=${ci_release_name}-web
 
+values="$(helm get values "$ci_release_name" -n "$ci_namespace" -o json)"
+
 kubectl scale deployment "$ci_deployment_name" --replicas 0 -n "$ci_namespace"
 
 # wait for the ATCs to stop
@@ -47,5 +49,16 @@ done
 # restore the old database
 
 gcloud sql backups restore "$backup_id" --restore-instance="$dst_instance_id" --backup-instance="$src_instance_id" --quiet
+
+# user and password are also restored from the backup
+
+user="$(jq -r '.secrets.postgresUser' <<< $output)"
+password="$(jq -r '.secrets.postgresPassword' <<< $output)"
+
+# the current version of gcloud upserts instead of insert on create
+
+gcloud sql users create "$user" --instance="$dst_instance_id" --password="$password"
+
+# number of ATCs will be scaled back in the reencrypt script
 
 $(dirname $0)/reencrypt-db "$old_encryption_key"
