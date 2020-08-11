@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e -u -x
+set -e -u
 
 if [ "$#" != "3" ]; then
   echo "usage: $0 src_instance_id backup_id old_encryption_key" >&2
@@ -8,57 +8,78 @@ if [ "$#" != "3" ]; then
 fi
 
 
-cd $(dirname $0)/../terraform/production
+pushd $(dirname $0)/../terraform/production
+  database=ci
+  src_instance_id="$1"
+  backup_id="$2"
+  old_encryption_key="$3"
 
-database=ci
-src_instance_id="$1"
-backup_id="$2"
-old_encryption_key="$3"
+  echo "Reading terraform output..."
 
-output="$(terraform output --json)"
+  output="$(terraform output --json)"
 
-dst_instance_id="$(jq -r '.["'$database'_database_instance_id"].value' <<< $output)"
+  dst_instance_id="$(jq -r '.["'$database'_database_instance_id"].value' <<< $output)"
 
-# connect to the cluster
+  cluster_name="$(jq -r '.cluster_name.value' <<< $output)"
+  cluster_zone="$(jq -r '.cluster_zone.value' <<< $output)"
+  project="$(jq -r '.project.value' <<< $output)"
 
-cluster_name="$(jq -r '.cluster_name.value' <<< $output)"
-cluster_zone="$(jq -r '.cluster_zone.value' <<< $output)"
-project="$(jq -r '.project.value' <<< $output)"
+  # connect to the cluster
+  echo "Grabbing cluster credentials from gcloud..."
 
-gcloud container clusters get-credentials "$cluster_name" --zone "$cluster_zone" --project "$project"
+  gcloud container clusters get-credentials "$cluster_name" --zone "$cluster_zone" --project "$project"
 
-# scale down the ATCs to 0
-ci_namespace="$(jq -r '.ci_namespace.value' <<< $output)"
-ci_release_name="$(jq -r '.ci_concourse_release_name.value' <<< $output)"
-ci_deployment_name=${ci_release_name}-web
+  # scale down the ATCs to 0
+  ci_namespace="$(jq -r '.ci_namespace.value' <<< $output)"
+  ci_release_name="$(jq -r '.ci_concourse_release_name.value' <<< $output)"
+  ci_deployment_name=${ci_release_name}-web
 
-values="$(helm get values "$ci_release_name" -n "$ci_namespace" -o json)"
+  echo "Reading values from Helm release..."
 
-kubectl scale deployment "$ci_deployment_name" --replicas 0 -n "$ci_namespace"
+  values="$(helm get values "$ci_release_name" -n "$ci_namespace" -o json)"
 
-# wait for the ATCs to stop
+  echo "Scaling web nodes to 0..."
 
-# TODO: timeout
-while true; do
-  current_replicas="$(kubectl get deployment "$ci_deployment_name" -n "$ci_namespace" -o jsonpath={.status.replicas})"
-  if [ -z "$current_replicas" ] || [ "$current_replicas" -eq "0" ]; then
-    break
-  fi
-done
+  kubectl scale deployment "$ci_deployment_name" --replicas 0 -n "$ci_namespace"
 
-# restore the old database
+  # wait for the ATCs to stop
+  echo "Waiting for web nodes to fully stop..."
 
-gcloud sql backups restore "$backup_id" --restore-instance="$dst_instance_id" --backup-instance="$src_instance_id" --quiet
+  # TODO: timeout
+  while true; do
+    current_replicas="$(kubectl get deployment "$ci_deployment_name" -n "$ci_namespace" -o jsonpath={.status.replicas})"
+    if [ -z "$current_replicas" ] || [ "$current_replicas" -eq "0" ]; then
+      break
+    fi
+    sleep 5
+  done
+  # number of ATCs will be scaled back in the reencrypt script
 
-# user and password are also restored from the backup
+  # restore the old database
+  echo "Restoring the DB from the backup..."
 
-user="$(jq -r '.secrets.postgresUser' <<< $output)"
-password="$(jq -r '.secrets.postgresPassword' <<< $output)"
+  gcloud sql backups restore "$backup_id" --restore-instance="$dst_instance_id" --backup-instance="$src_instance_id" --quiet
 
-# the current version of gcloud upserts instead of insert on create
+  # user and password are also restored from the backup
 
-gcloud sql users create "$user" --instance="$dst_instance_id" --password="$password"
+  user="$(jq -r '.secrets.postgresUser' <<< $output)"
+  password="$(jq -r '.secrets.postgresPassword' <<< $output)"
 
-# number of ATCs will be scaled back in the reencrypt script
+  # the current version of gcloud upserts instead of insert on create
+  echo "Recreating the postgres user..."
+
+  gcloud sql users create "$user" --instance="$dst_instance_id" --password="$password"
+
+
+popd
+
+echo "Running the re-encryption script"
+
+function on_err {
+  echo "Re-encryption script failed, please try running:"
+  echo "  $(dirname $0)/reencrypt-db \"$old_encryption_key\""
+}
+
+trap on_err ERR
 
 $(dirname $0)/reencrypt-db "$old_encryption_key"

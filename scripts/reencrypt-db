@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e -u -x
+set -e -u
 
 if [ "$#" != "1" ]; then
   echo "usage: $0 old_encryption_key" >&2
@@ -11,11 +11,15 @@ cd $(dirname $0)/../terraform/production
 
 old_encryption_key="$1"
 
+echo "Reading terraform output..."
+
 output="$(terraform output --json)"
 
 cluster_name="$(jq -r '.cluster_name.value' <<< $output)"
 cluster_zone="$(jq -r '.cluster_zone.value' <<< $output)"
 project="$(jq -r '.project.value' <<< $output)"
+
+echo "Grabbing cluster credentials from gcloud..."
 
 gcloud container clusters get-credentials "$cluster_name" --zone "$cluster_zone" --project "$project"
 
@@ -24,9 +28,12 @@ ci_namespace="$(jq -r '.ci_namespace.value' <<< $output)"
 ci_release_name="$(jq -r '.ci_concourse_release_name.value' <<< $output)"
 ci_deployment_name=${ci_release_name}-web
 
+echo "Scaling web nodes to 0..."
+
 kubectl scale deployment "$ci_deployment_name" --replicas 0 -n "$ci_namespace"
 
 # wait for the ATCs to stop
+echo "Waiting for web nodes to fully stop..."
 
 # TODO: timeout
 while true; do
@@ -34,9 +41,12 @@ while true; do
   if [ -z "$current_replicas" ] || [ "$current_replicas" -eq "0" ]; then
     break
   fi
+  sleep 5
 done
 
 image="$(kubectl get deploy "$ci_deployment_name" -n "$ci_namespace" -o jsonpath={.spec.template.spec.containers[0].image})"
+
+echo "Reading values from Helm release..."
 
 values="$(helm get values "$ci_release_name" -n "$ci_namespace" -o json)"
 
@@ -46,10 +56,13 @@ rm -rf "$temp_dir"
 mkdir "$temp_dir"
 
 function cleanup {
-	rm -rf "$temp_dir"
+  echo "Cleaning up DB certs..."
+  rm -rf "$temp_dir"
 }
 
 trap cleanup EXIT
+
+echo "Writing DB certs to temp files..."
 
 jq -r '.secrets.postgresCaCert' <<< $values > "$temp_dir/ca.crt"
 chmod 600 "$temp_dir/ca.crt"
@@ -58,27 +71,27 @@ chmod 600 "$temp_dir/client.crt"
 jq -r '.secrets.postgresClientKey' <<< $values > "$temp_dir/client.pem"
 chmod 600 "$temp_dir/client.pem"
 
-# re-encrypt the database with the new key
+echo "Re-encrypting..."
 
+# re-encrypt the database with the new key
 docker run \
-	-v "$temp_dir:/certs" \
-	$image migrate \
-		--old-encryption-key="$old_encryption_key" \
-		--encryption-key="$(jq -r '.secrets.encryptionKey' <<< $values)" \
-		--postgres-host="$(jq -r '.concourse.web.postgres.host' <<< $values)" \
-		--postgres-database="$(jq -r '.concourse.web.postgres.database' <<< $values)" \
-		--postgres-sslmode="$(jq -r '.concourse.web.postgres.sslmode' <<< $values)" \
-		--postgres-user="$(jq -r '.secrets.postgresUser' <<< $values)" \
-		--postgres-password="$(jq -r '.secrets.postgresPassword' <<< $values)" \
-		--postgres-ca-cert="/certs/ca.crt" \
-		--postgres-client-cert="/certs/client.crt" \
-		--postgres-client-key="/certs/client.pem"
+  -v "$temp_dir:/certs" \
+  $image migrate \
+    --old-encryption-key="$old_encryption_key" \
+    --encryption-key="$(jq -r '.secrets.encryptionKey' <<< $values)" \
+    --postgres-host="$(jq -r '.concourse.web.postgres.host' <<< $values)" \
+    --postgres-database="$(jq -r '.concourse.web.postgres.database' <<< $values)" \
+    --postgres-sslmode="$(jq -r '.concourse.web.postgres.sslmode' <<< $values)" \
+    --postgres-user="$(jq -r '.secrets.postgresUser' <<< $values)" \
+    --postgres-password="$(jq -r '.secrets.postgresPassword' <<< $values)" \
+    --postgres-ca-cert="/certs/ca.crt" \
+    --postgres-client-cert="/certs/client.crt" \
+    --postgres-client-key="/certs/client.pem"
 
 # scale the ATCs back up to n (could be from `helm get values`)
-
-# desired replicas:
 desired="$(jq -r '.web.replicas' <<< $values)"
 
-kubectl scale deployment "$ci_deployment_name" --replicas "$desired" -n "$ci_namespace"
+echo "Scaling web nodes back to ${desired}..."
 
+kubectl scale deployment "$ci_deployment_name" --replicas "$desired" -n "$ci_namespace"
 
