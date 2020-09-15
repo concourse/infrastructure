@@ -91,3 +91,29 @@ After the `production` cluster is up, the pipeline can be run from CI to update
 Concourse on the `dispatcher`.
 
 `dispatcher`'s Concourse can be accessed at `dispatcher.concourse-ci.org`.
+
+### restoring the CI db
+
+A script can be manually run to restore the old CI DB from a backup. The DB instance ID and backup
+ID can be found by running:
+
+Note that the disk capacity of the new DB must be as large as the disk capacity of the old DB.
+https://cloud.google.com/sql/docs/postgres/backup-recovery/restore#tips-restore-different-instance
+
+```sh
+$ gcloud sql instances list
+$ gcloud sql backups list -i [instance_id]
+```
+
+The old encryption key can be retrieved by getting the helm values, inspecting the pod and the env
+vars, or exec'ing onto the pod and grabbing it from there.
+
+```sh
+$ ./scripts/restore-db-backup [src_instance_id] [backup_id] [old_encryption_key]`
+```
+
+If DB was restored but the re-encryption part fails, it can be retried by running:
+
+```sh
+$ ./scripts/reencrypt-db [old_encryption_key]
+```
