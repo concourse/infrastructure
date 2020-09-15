@@ -81,7 +81,7 @@ deploy, you should run this pipeline on a local Concourse:
 
 ```sh
 fly -t dev set-pipeline \
-   -p dispatcher_greenpeace \
+   -p dispatcher-greenpeace \
    -c pipelines/greenpeace.yml \
    -l sensitive/vars.yml \
    -v cluster=dispatcher
