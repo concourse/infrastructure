@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "${release}-dashboard-${name}"
+  labels:
+    release: "${release}"
+    component: grafana
+    grafana/dashboard: "1"
+data: "${content}"
