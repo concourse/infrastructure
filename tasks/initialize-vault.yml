@@ -12,7 +12,7 @@ params:
   GCP_CREDENTIALS_JSON:
   GREENPEACE_PRIVATE_KEY:
   CLUSTER_NAME:
-  TERRAFORM_VERSION: 0.12.26
+  TERRAFORM_VERSION: 0.12.29
 
 run:
   path: greenpeace/tasks/scripts/initialize-vault.sh
