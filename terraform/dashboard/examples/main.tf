@@ -54,3 +54,41 @@ module "ci_bosh_dashboard" {
     concourse_worker   = "bosh_job:worker"
   }
 }
+
+module "containerd_drills_dashboard" {
+  source = "../dashboard"
+
+  datadog_api_key = ""
+  datadog_app_key = ""
+
+  dashboard_title = "Concourse - Containerd Drills"
+
+  deployment_tool = "helm"
+
+  concourse_datadog_prefix = "concourse.containerd_drills"
+
+  filter_by = {
+    concourse_instance = "environment:containerd_drills"
+    concourse_web      = "kube_deployment:containerd-drills-web"
+    concourse_worker   = "kube_stateful_set:containerd-drills-worker"
+  }
+} 
+
+module "guardian_drills_dashboard" {
+  source = "../dashboard"
+
+  datadog_api_key = ""
+  datadog_app_key = ""
+
+  dashboard_title = "Concourse - Guardian Drills"
+
+  deployment_tool = "helm"
+
+  concourse_datadog_prefix = "concourse.guardian_drills"
+
+  filter_by = {
+    concourse_instance = "environment:guardian_drills"
+    concourse_web      = "kube_deployment:guardian-drills-web"
+    concourse_worker   = "kube_stateful_set:guardian-drills-worker"
+  }
+} 
