@@ -1,4 +1,8 @@
 resource "kubernetes_namespace" "ci" {
+  depends_on = [
+    module.cluster   
+  ]
+
   metadata {
     name = "ci"
   }

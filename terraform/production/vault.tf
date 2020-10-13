@@ -1,4 +1,8 @@
 resource "kubernetes_namespace" "vault" {
+  depends_on = [
+    module.cluster
+  ]
+
   metadata {
     name = "vault"
   }
