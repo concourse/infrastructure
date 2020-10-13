@@ -17,6 +17,9 @@ resource "google_kms_crypto_key" "vault" {
   name     = "production-vault-unseal-key"
   key_ring = google_kms_key_ring.vault.self_link
 
+  # rotate every 30 days
+  rotation_period = "2592000s"
+
   lifecycle {
     prevent_destroy = true
   }
