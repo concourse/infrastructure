@@ -28,3 +28,15 @@ module "cluster" {
     },
   }
 }
+
+resource "kubernetes_storage_class" "ssd" {
+  metadata {
+    name = "ssd"
+  }
+  storage_provisioner = "kubernetes.io/gce-pd"
+  reclaim_policy      = "Delete"
+  parameters = {
+    type = "pd-ssd"
+  }
+  volume_binding_mode = "Immediate"
+}
