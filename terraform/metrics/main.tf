@@ -68,6 +68,6 @@ resource "kubernetes_config_map" "dashboard" {
   }
 
   data = {
-    each.value = file("${path.module}/dashboards/concourse/${each.value}")
+    (each.value) = file("${path.module}/dashboards/concourse/${each.value}")
   }
 }
