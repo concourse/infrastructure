@@ -67,5 +67,7 @@ resource "kubernetes_config_map" "dashboard" {
     }
   }
 
-  data = jsondecode(file("${path.module}/dashboards/concourse/${each.value}"))
+  data = {
+    each.value = file("${path.module}/dashboards/concourse/${each.value}")
+  }
 }
