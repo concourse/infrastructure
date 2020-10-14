@@ -11,5 +11,5 @@ spec:
       name: {{ .Values.name }}-account-key
     solvers:
     - dns01:
-        clouddns:
+        cloudDNS:
           project: {{ .Values.gcpProject }}
