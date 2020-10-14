@@ -58,7 +58,7 @@ resource "kubernetes_config_map" "dashboard" {
   for_each = fileset("${path.module}/dashboards/concourse", "*")
 
   metadata {
-    name = "${var.release}-dashboard-${trimsuffix(each.value.source_path, ".json")}"
+    name = "${var.release}-dashboard-${trimsuffix(each.value, ".json")}"
     namespace = var.namespace
     labels = {
       "release" = var.release
@@ -67,5 +67,5 @@ resource "kubernetes_config_map" "dashboard" {
     }
   }
 
-  data = jsondecode(file(each.value.source_path))
+  data = jsondecode(file("${path.module}/dashboards/concourse/${each.value}"))
 }
