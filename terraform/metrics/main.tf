@@ -1,6 +1,6 @@
 resource "helm_release" "cert" {
   namespace = var.namespace
-  name   = "${release}-cert"
+  name   = "${var.release}-cert"
   chart  = "${path.module}/charts/cert-manager"
   values = [
     jsonencode({
@@ -13,7 +13,7 @@ resource "helm_release" "cert" {
 
 resource "helm_release" "prometheus" {
   namespace = var.namespace
-  name   = "${release}-prometheus"
+  name   = "${var.release}-prometheus"
 
   repository = "https://kubernetes-charts.storage.googleapis.com"
   chart      = "prometheus"
@@ -38,7 +38,7 @@ module "grafana_address" {
 
 resource "helm_release" "grafana" {
   namespace = var.namespace
-  name   = "${release}-grafana"
+  name   = "${var.release}-grafana"
 
   repository = "https://kubernetes-charts.storage.googleapis.com"
   chart      = "grafana"
