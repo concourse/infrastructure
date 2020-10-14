@@ -1,7 +1,7 @@
 resource "helm_release" "cert" {
   namespace = var.namespace
   name   = "${release}-cert"
-  chart  = "./charts/cert-manager"
+  chart  = "${path.module}/charts/cert-manager"
   values = [
     jsonencode({
       "name"       = var.cert_name

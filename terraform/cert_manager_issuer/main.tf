@@ -48,7 +48,7 @@ resource "helm_release" "cert_manager" {
 
 resource "helm_release" "issuer" {
   name  = "${var.cluster_name}-cert-manager"
-  chart = "./charts/issuer"
+  chart = "${path.module}/charts/issuer"
   values = [
     jsonencode({
       "name"       = var.cluster_name
