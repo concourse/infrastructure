@@ -1,6 +1,6 @@
-# module "cert_manager_issuer" {
-#   source = "../cert_manager_issuer"
+module "cert_manager_issuer" {
+  source = "../cert_manager_issuer"
 
-#   name    = "production-cert-manager"
-#   project = var.project
-# }
+  cluster_name = "production"
+  project      = var.project
+}

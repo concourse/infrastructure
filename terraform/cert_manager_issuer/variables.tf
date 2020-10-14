@@ -1,5 +1,5 @@
-variable "name" {
-  description = "The name of the issuer. Must be unique to the project."
+variable "cluster_name" {
+  description = "The name of the cluster. Must be unique to the project."
 }
 
 variable "email" {
