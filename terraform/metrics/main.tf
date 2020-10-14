@@ -6,6 +6,7 @@ resource "helm_release" "cert" {
     jsonencode({
       "name"       = var.cert_name
       "secretName" = var.cert_secret_name
+      "issuerName" = var.issuer_name
       "dnsName"    = "${var.subdomain}.${var.domain}"
     })
   ]

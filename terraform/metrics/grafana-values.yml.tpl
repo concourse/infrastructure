@@ -37,7 +37,6 @@ datasources:
     - name: prometheus
       type: prometheus
       access: proxy
-      # TODO: where's this coming from
       url: http://metrics-prometheus-server
       isDefault: true
     - name: stackdriver

@@ -33,6 +33,10 @@ variable "cert_secret_name" {
   description = "Name of the secret to create containing the TLS cert"
 }
 
+variable "issuer_name" {
+  description = "Name of the CertManager ClusterIssuer."
+}
+
 variable "namespace" {
   description = "K8s namespace to deploy to"
 }

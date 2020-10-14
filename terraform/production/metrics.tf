@@ -23,6 +23,7 @@ module "metrics" {
   node_pool        = "generic-1"
   cert_name        = "production-metrics"
   cert_secret_name = "production-metrics-tls"
+  issuer_name      = module.cert_manager_issuer.name
 
   namespace_regex = "ci|vault"
 }
