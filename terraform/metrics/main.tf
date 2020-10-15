@@ -77,7 +77,7 @@ resource "helm_release" "grafana" {
 
 resource "kubernetes_config_map" "cloudsql_dashboard" {
   metadata {
-    name = "${var.release}-dashboard-cloudsql}"
+    name = "${var.release}-dashboard-cloudsql"
     namespace = var.namespace
     labels = {
       "release" = var.release
