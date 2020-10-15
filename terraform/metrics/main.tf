@@ -22,8 +22,9 @@ resource "helm_release" "prometheus" {
 
   values = [
     templatefile("${path.module}/prometheus-values.yml.tpl", {
-      node_pool = var.node_pool
-      namespace_regex = var.namespace_regex
+      node_pool            = var.node_pool
+      namespace_regex      = var.namespace_regex
+      concourse_prometheus = var.concourse_prometheus
     })
   ]
 }

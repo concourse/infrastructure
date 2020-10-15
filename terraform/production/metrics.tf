@@ -29,4 +29,5 @@ module "metrics" {
 
   namespace_regex      = "ci|vault"
   cloudsql_instance_id = module.ci_database.instance_id
+  concourse_prometheus = "http://concourse-web.${kubernetes_namespace.ci.id}.svc.cluster.local:${var.prometheus_port}"
 }

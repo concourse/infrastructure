@@ -32,6 +32,11 @@ serverFiles:
           - targets:
             - localhost:9090
 
+      - job_name: concourse
+        static_configs:
+          - targets:
+            - ${concourse_prometheus}
+
       - job_name: kubernetes-service-endpoints
         kubernetes_sd_configs: [{role: endpoints}]
         relabel_configs:

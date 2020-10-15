@@ -79,6 +79,8 @@ data "template_file" "ci_values" {
     vault_ca_cert            = jsonencode(tls_self_signed_cert.vault_ca.cert_pem)
     vault_client_cert        = jsonencode(module.vault_client_cert.cert_pem)
     vault_client_private_key = jsonencode(module.vault_client_cert.private_key_pem)
+
+    prometheus_port = var.prometheus_port
   }
 }
 

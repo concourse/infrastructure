@@ -85,7 +85,9 @@ concourse:
       useCaCert: true
     letsEncrypt: { enabled: true, acmeURL: "https://acme-v02.api.letsencrypt.org/directory" }
     tls: { enabled: true, bindPort: 443 }
-
+    prometheus:
+      enabled: true
+      bindPort: ${prometheus_port}
     postgres:
       host: ${db_ip}
       database: ${db_database}

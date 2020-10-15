@@ -32,3 +32,8 @@ variable "subdomain" {
   description = "The subdomain to prepend to the provided domain."
   default     = "ci-test"
 }
+
+variable "prometheus_port" {
+  description = "The port on which to listen to expose Prometheus metrics."
+  default     = 9391
+}

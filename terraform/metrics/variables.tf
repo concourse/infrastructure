@@ -53,3 +53,7 @@ variable "project" {
 variable "cloudsql_instance_id" {
   description = "The instance ID of the CloudSQL instance to monitor."
 }
+
+variable "concourse_prometheus" {
+  description = "The endpoint on which concourse exposes Prometheus metrics."
+}
