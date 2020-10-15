@@ -3041,9 +3041,9 @@
       {
         "allValue": null,
         "current": {
-          "text": "cf-concourse-production:hush-house-2d048f06",
+          "text": "${project_name}:${instance_id}",
           "value": [
-            "cf-concourse-production:hush-house-2d048f06"
+            "${project_name}:${instance_id}"
           ]
         },
         "datasource": "stackdriver",
@@ -3061,7 +3061,7 @@
           "selectedService": "cloudsql.googleapis.com"
         },
         "refresh": 1,
-        "regex": "",
+        "regex": "${project_name}:${instance_id}",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",

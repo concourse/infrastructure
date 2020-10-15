@@ -27,5 +27,6 @@ module "metrics" {
   cert_secret_name = "production-metrics-tls"
   issuer_name      = module.cert_manager_issuer.name
 
-  namespace_regex = "ci|vault"
+  namespace_regex      = "ci|vault"
+  cloudsql_instance_id = module.ci_database.instance_id
 }

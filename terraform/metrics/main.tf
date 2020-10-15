@@ -75,11 +75,9 @@ resource "helm_release" "grafana" {
   ]
 }
 
-resource "kubernetes_config_map" "dashboard" {
-  for_each = fileset("${path.module}/dashboards/concourse", "*")
-
+resource "kubernetes_config_map" "cloudsql-dashboard" {
   metadata {
-    name = "${var.release}-dashboard-${trimsuffix(each.value, ".json")}"
+    name = "${var.release}-dashboard-cloudsql}"
     namespace = var.namespace
     labels = {
       "release" = var.release
@@ -89,6 +87,9 @@ resource "kubernetes_config_map" "dashboard" {
   }
 
   data = {
-    (each.value) = file("${path.module}/dashboards/concourse/${each.value}")
+    "cloudsql.json" = templatefile("${path.module}/dashboards/concourse/cloudsql.json", {
+      "project_name" = var.project
+      "instance_id"  = var.cloudsql_instance_id
+    })
   }
 }

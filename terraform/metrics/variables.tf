@@ -49,3 +49,7 @@ variable "project" {
   description = "The Google GCP project on which the cluster exists."
   default     = "cf-concourse-production"
 }
+
+variable "cloudsql_instance_id" {
+  description = "The instance ID of the CloudSQL instance to monitor."
+}
