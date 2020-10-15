@@ -37,6 +37,25 @@ module "grafana_address" {
   subdomain = var.subdomain
 }
 
+resource "google_service_account" "grafana" {
+  account_id   = "${var.cluster_name}-grafana"
+  display_name = "${var.cluster_name}-grafana"
+}
+
+resource "google_project_iam_member" "grafana_monitoring" {
+  role   = "roles/monitoring.viewer"
+  member = "serviceAccount:${google_service_account.grafana.email}"
+}
+
+resource "google_service_account_iam_binding" "grafana_workload_identity" {
+  service_account_id = google_service_account.grafana.name
+  role               = "roles/iam.workloadIdentityUser"
+
+  members = [
+    "serviceAccount:${var.project}.svc.id.goog[${var.namespace}/${var.release}-grafana]",
+  ]
+}
+
 resource "helm_release" "grafana" {
   namespace = var.namespace
   name   = "${var.release}-grafana"
@@ -51,6 +70,7 @@ resource "helm_release" "grafana" {
       cert_secret_name = var.cert_secret_name
       dns_name = "${var.subdomain}.${var.domain}"
       lb_address = module.grafana_address.address
+      gcp_service_account_email = google_service_account.grafana.email
     })
   ]
 }

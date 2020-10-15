@@ -26,6 +26,9 @@ service:
   loadBalancerIP: "${lb_address}"
   port: 443
   type: LoadBalancer
+serviceAccount:
+  annotations:
+    iam.gke.io/gcp-service-account: "${gcp_service_account_email}"
 sidecar:
   dashboards:
     enabled: true
