@@ -219,8 +219,6 @@
             "$instance"
           ],
           "groupBys": [],
-          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_NONE&aggregation.perSeriesAligner=ALIGN_INTERPOLATE&filter=metric.type=\"cloudsql.googleapis.com/database/cpu/reserved_cores\"+resource.label.database_id=monitoring.regex.full_match(\"(cf-concourse-production:hush-house-2d048f06|cf-concourse-production:wings)\")&interval.endTime=2019-03-23T00:30:04Z&interval.startTime=2019-03-22T21:30:04Z&view=FULL",
-          "lastQueryError": "",
           "metricKind": "GAUGE",
           "metricType": "cloudsql.googleapis.com/database/cpu/reserved_cores",
           "perSeriesAligner": "ALIGN_INTERPOLATE",
@@ -461,8 +459,6 @@
             "$instance"
           ],
           "groupBys": [],
-          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_NONE&aggregation.perSeriesAligner=ALIGN_INTERPOLATE&filter=metric.type=\"cloudsql.googleapis.com/database/cpu/reserved_cores\"+resource.label.database_id=monitoring.regex.full_match(\"(cf-concourse-production:hush-house-2d048f06|cf-concourse-production:wings)\")&interval.endTime=2019-03-23T00:30:04Z&interval.startTime=2019-03-22T21:30:04Z&view=FULL",
-          "lastQueryError": "",
           "metricKind": "GAUGE",
           "metricType": "cloudsql.googleapis.com/database/memory/quota",
           "perSeriesAligner": "ALIGN_INTERPOLATE",
@@ -703,8 +699,6 @@
             "$instance"
           ],
           "groupBys": [],
-          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_NONE&aggregation.perSeriesAligner=ALIGN_INTERPOLATE&filter=metric.type=\"cloudsql.googleapis.com/database/cpu/reserved_cores\"+resource.label.database_id=monitoring.regex.full_match(\"(cf-concourse-production:hush-house-2d048f06|cf-concourse-production:wings)\")&interval.endTime=2019-03-23T00:30:04Z&interval.startTime=2019-03-22T21:30:04Z&view=FULL",
-          "lastQueryError": "",
           "metricKind": "GAUGE",
           "metricType": "cloudsql.googleapis.com/database/disk/quota",
           "perSeriesAligner": "ALIGN_INTERPOLATE",
@@ -966,8 +960,6 @@
           "groupBys": [
             "resource.label.database_id"
           ],
-          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_SUM&aggregation.groupByFields=resource.label.database_id&aggregation.perSeriesAligner=ALIGN_INTERPOLATE&filter=metric.type=\"cloudsql.googleapis.com/database/postgresql/num_backends\"+resource.label.database_id=\"cf-concourse-production:wings\"&interval.endTime=2019-03-22T17:47:45Z&interval.startTime=2019-03-22T14:47:45Z&view=FULL",
-          "lastQueryError": "",
           "metricKind": "GAUGE",
           "metricType": "cloudsql.googleapis.com/database/postgresql/num_backends",
           "perSeriesAligner": "ALIGN_INTERPOLATE",
@@ -1250,8 +1242,6 @@
           "groupBys": [
             "resource.label.database_id"
           ],
-          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_NONE&aggregation.groupByFields=resource.label.database_id&aggregation.perSeriesAligner=ALIGN_INTERPOLATE&filter=metric.type=\"cloudsql.googleapis.com/database/disk/utilization\"+resource.label.database_id=monitoring.regex.full_match(\"cf-concourse-production:hush-house-.*\")&interval.endTime=2019-04-30T03:06:42Z&interval.startTime=2019-04-30T00:06:42Z&view=FULL",
-          "lastQueryError": "",
           "metricKind": "GAUGE",
           "metricType": "cloudsql.googleapis.com/database/disk/utilization",
           "perSeriesAligner": "ALIGN_INTERPOLATE",
@@ -1413,8 +1403,6 @@
             "resource.label.database_id"
           ],
           "hide": true,
-          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_NONE&aggregation.groupByFields=resource.label.database_id&aggregation.perSeriesAligner=ALIGN_INTERPOLATE&filter=metric.type=\"cloudsql.googleapis.com/database/disk/utilization\"+resource.label.database_id=monitoring.regex.full_match(\"cf-concourse-production:hush-house-.*\")&interval.endTime=2019-04-30T03:06:42Z&interval.startTime=2019-04-30T00:06:42Z&view=FULL",
-          "lastQueryError": "",
           "metricKind": "GAUGE",
           "metricType": "cloudsql.googleapis.com/database/disk/utilization",
           "perSeriesAligner": "ALIGN_INTERPOLATE",
@@ -1705,8 +1693,6 @@
           "groupBys": [
             "resource.label.database_id"
           ],
-          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_NONE&aggregation.groupByFields=resource.label.database_id&aggregation.perSeriesAligner=ALIGN_DELTA&filter=metric.type=\"cloudsql.googleapis.com/database/cpu/usage_time\"+resource.label.database_id=monitoring.regex.full_match(\"(cf-concourse-production:hush-house-2d048f06|cf-concourse-production:wings)\")&interval.endTime=2019-03-22T23:54:53Z&interval.startTime=2019-03-22T17:54:53Z&view=FULL",
-          "lastQueryError": "",
           "metricKind": "GAUGE",
           "metricType": "cloudsql.googleapis.com/database/cpu/utilization",
           "perSeriesAligner": "ALIGN_INTERPOLATE",
@@ -1868,8 +1854,6 @@
             "resource.label.database_id"
           ],
           "hide": true,
-          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_NONE&aggregation.groupByFields=resource.label.database_id&aggregation.perSeriesAligner=ALIGN_DELTA&filter=metric.type=\"cloudsql.googleapis.com/database/cpu/usage_time\"+resource.label.database_id=monitoring.regex.full_match(\"(cf-concourse-production:hush-house-2d048f06|cf-concourse-production:wings)\")&interval.endTime=2019-03-22T23:54:53Z&interval.startTime=2019-03-22T17:54:53Z&view=FULL",
-          "lastQueryError": "",
           "metricKind": "GAUGE",
           "metricType": "cloudsql.googleapis.com/database/cpu/utilization",
           "perSeriesAligner": "ALIGN_INTERPOLATE",
@@ -2161,8 +2145,6 @@
             "resource.label.database_id"
           ],
           "hide": false,
-          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_SUM&aggregation.groupByFields=resource.label.database_id&aggregation.perSeriesAligner=ALIGN_INTERPOLATE&filter=metric.type=\"cloudsql.googleapis.com/database/disk/utilization\"+resource.label.database_id=monitoring.regex.full_match(\"(cf-concourse-production:hush-house-2d048f06|cf-concourse-production:wings)\")&interval.endTime=2019-03-22T23:51:35Z&interval.startTime=2019-03-22T17:51:35Z&view=FULL",
-          "lastQueryError": "",
           "metricKind": "GAUGE",
           "metricType": "cloudsql.googleapis.com/database/memory/utilization",
           "perSeriesAligner": "ALIGN_INTERPOLATE",
@@ -2322,8 +2304,6 @@
           ],
           "groupBys": [],
           "hide": true,
-          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_NONE&aggregation.groupByFields=resource.label.database_id&aggregation.perSeriesAligner=ALIGN_INTERPOLATE&filter=metric.type=\"cloudsql.googleapis.com/database/memory/utilization\"+resource.label.database_id=\"cf-concourse-production:hush-house-2d048f06\"&interval.endTime=2019-04-30T03:01:41Z&interval.startTime=2019-04-30T00:01:41Z&view=FULL",
-          "lastQueryError": "",
           "metricKind": "GAUGE",
           "metricType": "cloudsql.googleapis.com/database/memory/utilization",
           "perSeriesAligner": "ALIGN_INTERPOLATE",
@@ -2580,8 +2560,6 @@
             "resource.label.database_id"
           ],
           "hide": false,
-          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_NONE&aggregation.groupByFields=resource.label.database_id&aggregation.perSeriesAligner=ALIGN_DELTA&filter=metric.type=\"cloudsql.googleapis.com/database/postgresql/transaction_count\"+resource.label.database_id=monitoring.regex.full_match(\"(cf-concourse-production:hush-house-2d048f06|cf-concourse-production:wings)\")&interval.endTime=2019-03-23T00:01:37Z&interval.startTime=2019-03-22T18:01:37Z&view=FULL",
-          "lastQueryError": "",
           "metricKind": "DELTA",
           "metricType": "cloudsql.googleapis.com/database/postgresql/transaction_count",
           "perSeriesAligner": "ALIGN_DELTA",
@@ -2840,8 +2818,6 @@
             "resource.label.database_id"
           ],
           "hide": false,
-          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_SUM&aggregation.groupByFields=resource.label.database_id&aggregation.perSeriesAligner=ALIGN_DELTA&filter=metric.type=\"cloudsql.googleapis.com/database/network/sent_bytes_count\"+resource.label.database_id=monitoring.regex.full_match(\"(cf-concourse-production:hush-house-2d048f06|cf-concourse-production:wings)\")&interval.endTime=2019-03-23T00:02:40Z&interval.startTime=2019-03-22T18:02:40Z&view=FULL",
-          "lastQueryError": "",
           "metricKind": "DELTA",
           "metricType": "cloudsql.googleapis.com/database/network/sent_bytes_count",
           "perSeriesAligner": "ALIGN_DELTA",
@@ -3002,8 +2978,6 @@
             "resource.label.database_id"
           ],
           "hide": false,
-          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_SUM&aggregation.groupByFields=resource.label.database_id&aggregation.perSeriesAligner=ALIGN_DELTA&filter=metric.type=\"cloudsql.googleapis.com/database/network/received_bytes_count\"+resource.label.database_id=monitoring.regex.full_match(\"(cf-concourse-production:hush-house-2d048f06|cf-concourse-production:wings)\")&interval.endTime=2019-03-23T00:03:17Z&interval.startTime=2019-03-22T18:03:17Z&view=FULL",
-          "lastQueryError": "",
           "metricKind": "DELTA",
           "metricType": "cloudsql.googleapis.com/database/network/received_bytes_count",
           "perSeriesAligner": "ALIGN_DELTA",
