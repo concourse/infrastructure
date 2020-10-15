@@ -1,5 +1,5 @@
 variable "cluster_name" {
-  description = "The name of the cluster. Must be unique to the project."
+  description = "The name of the cluster (e.g. production). Must be unique to the project."
 }
 
 variable "email" {

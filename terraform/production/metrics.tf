@@ -18,6 +18,7 @@ module "cert_manager_issuer" {
 module "metrics" {
   source = "../metrics"
 
+  cluster_name     = "production"
   namespace        = kubernetes_namespace.metrics.id
   subdomain        = "metrics-ci-test"
   node_pool        = "generic-1"
