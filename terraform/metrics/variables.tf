@@ -44,3 +44,8 @@ variable "namespace" {
 variable "cluster_name" {
   description = "The name of the cluster (e.g. production). Must be unique to the project."
 }
+
+variable "project" {
+  description = "The Google GCP project on which the cluster exists."
+  default     = "cf-concourse-production"
+}
