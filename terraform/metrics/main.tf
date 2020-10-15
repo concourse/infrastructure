@@ -12,22 +12,22 @@ resource "helm_release" "cert" {
   ]
 }
 
-resource "helm_release" "prometheus" {
-  namespace = var.namespace
-  name   = "${var.release}-prometheus"
+# resource "helm_release" "prometheus" {
+#   namespace = var.namespace
+#   name   = "${var.release}-prometheus"
 
-  repository = "https://prometheus-community.github.io/helm-charts"
-  chart      = "prometheus"
-  version    = "11.16.2"
+#   repository = "https://prometheus-community.github.io/helm-charts"
+#   chart      = "prometheus"
+#   version    = "11.16.2"
 
-  values = [
-    templatefile("${path.module}/prometheus-values.yml.tpl", {
-      node_pool            = var.node_pool
-      namespace_regex      = var.namespace_regex
-      concourse_prometheus = var.concourse_prometheus
-    })
-  ]
-}
+#   values = [
+#     templatefile("${path.module}/prometheus-values.yml.tpl", {
+#       node_pool            = var.node_pool
+#       namespace_regex      = var.namespace_regex
+#       concourse_prometheus = var.concourse_prometheus
+#     })
+#   ]
+# }
 
 # Reserves an address tied to the provided domain.
 #
@@ -57,24 +57,24 @@ resource "google_service_account_iam_binding" "grafana_workload_identity" {
   ]
 }
 
-resource "helm_release" "grafana" {
-  namespace = var.namespace
-  name   = "${var.release}-grafana"
+# resource "helm_release" "grafana" {
+#   namespace = var.namespace
+#   name   = "${var.release}-grafana"
 
-  repository = "https://grafana.github.io/helm-charts"
-  chart      = "grafana"
-  version    = "5.7.9"
+#   repository = "https://grafana.github.io/helm-charts"
+#   chart      = "grafana"
+#   version    = "5.7.9"
 
-  values = [
-    templatefile("${path.module}/grafana-values.yml.tpl", {
-      node_pool = var.node_pool
-      cert_secret_name = var.cert_secret_name
-      dns_name = "${var.subdomain}.${var.domain}"
-      lb_address = module.grafana_address.address
-      gcp_service_account_email = google_service_account.grafana.email
-    })
-  ]
-}
+#   values = [
+#     templatefile("${path.module}/grafana-values.yml.tpl", {
+#       node_pool = var.node_pool
+#       cert_secret_name = var.cert_secret_name
+#       dns_name = "${var.subdomain}.${var.domain}"
+#       lb_address = module.grafana_address.address
+#       gcp_service_account_email = google_service_account.grafana.email
+#     })
+#   ]
+# }
 
 resource "kubernetes_config_map" "cloudsql_dashboard" {
   metadata {
