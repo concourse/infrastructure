@@ -16,9 +16,9 @@ resource "helm_release" "prometheus" {
   namespace = var.namespace
   name   = "${var.release}-prometheus"
 
-  repository = "https://kubernetes-charts.storage.googleapis.com"
+  repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "prometheus"
-  version    = "9.7.2"
+  version    = "11.16.2"
 
   values = [
     templatefile("${path.module}/prometheus-values.yml.tpl", {
@@ -61,9 +61,9 @@ resource "helm_release" "grafana" {
   namespace = var.namespace
   name   = "${var.release}-grafana"
 
-  repository = "https://kubernetes-charts.storage.googleapis.com"
+  repository = "https://grafana.github.io/helm-charts"
   chart      = "grafana"
-  version    = "4.3.0"
+  version    = "5.7.9"
 
   values = [
     templatefile("${path.module}/grafana-values.yml.tpl", {
