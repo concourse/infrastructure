@@ -75,21 +75,21 @@ resource "helm_release" "grafana" {
   ]
 }
 
-resource "kubernetes_config_map" "cloudsql_dashboard" {
-  metadata {
-    name = "${var.release}-dashboard-cloudsql}"
-    namespace = var.namespace
-    labels = {
-      "release" = var.release
-      "component" = "grafana"
-      "grafana/dashboard" = "1"
-    }
-  }
+# resource "kubernetes_config_map" "cloudsql_dashboard" {
+#   metadata {
+#     name = "${var.release}-dashboard-cloudsql}"
+#     namespace = var.namespace
+#     labels = {
+#       "release" = var.release
+#       "component" = "grafana"
+#       "grafana/dashboard" = "1"
+#     }
+#   }
 
-  data = {
-    "cloudsql.json" = templatefile("${path.module}/dashboards/concourse/cloudsql.json", {
-      "project_name" = var.project
-      "instance_id"  = var.cloudsql_instance_id
-    })
-  }
-}
+#   data = {
+#     "cloudsql.json" = templatefile("${path.module}/dashboards/concourse/cloudsql.json", {
+#       "project_name" = var.project
+#       "instance_id"  = var.cloudsql_instance_id
+#     })
+#   }
+# }
