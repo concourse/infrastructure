@@ -1,5 +1,5 @@
-image: concourse/concourse-rc
-imageTag: release-6.4
+image: concourse/dev
+imageTag: branch-watch-endpoints
 
 postgresql:
   enabled: false
