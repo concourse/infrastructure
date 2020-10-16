@@ -91,6 +91,8 @@ resource "helm_release" "ci-concourse" {
   chart      = "concourse"
   version    = "11.1.0"
 
+  timeout = 900
+
   values = [
     data.template_file.ci_values.rendered,
   ]
