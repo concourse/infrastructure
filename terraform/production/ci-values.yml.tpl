@@ -13,6 +13,8 @@ web:
   env:
   - name: CONCOURSE_X_FRAME_OPTIONS
     value: ""
+  - name: CONCOURSE_ENABLE_WATCH_ENDPOINTS
+    value: "true"
 
   resources:
     requests:
