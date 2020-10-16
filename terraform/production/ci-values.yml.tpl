@@ -7,7 +7,7 @@ postgresql:
 web:
   annotations:
     rollingUpdate: "4"
-  replicas: 3
+  replicas: 2
   nodeSelector:
     cloud.google.com/gke-nodepool: generic-1
   env:
