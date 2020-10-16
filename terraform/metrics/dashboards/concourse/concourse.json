@@ -1170,17 +1170,17 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum by (pod_name) (irate(container_network_receive_bytes_total{pod_name=~\"$atc\",namespace=~\"$namespace\",image!=\"\"}[2m])) * 8",
+              "expr": "sum by (pod) (irate(container_network_receive_bytes_total{pod=~\"$atc\",namespace=~\"$namespace\",image!=\"\"}[2m])) * 8",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "RX: {{ pod_name }}",
+              "legendFormat": "RX: {{ pod }}",
               "refId": "A"
             },
             {
-              "expr": "sum by (pod_name) (irate(container_network_transmit_bytes_total{pod_name=~\"$atc\",namespace=~\"$namespace\",image!=\"\"}[2m])) * 8",
+              "expr": "sum by (pod) (irate(container_network_transmit_bytes_total{pod=~\"$atc\",namespace=~\"$namespace\",image!=\"\"}[2m])) * 8",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "TX: {{ pod_name }}",
+              "legendFormat": "TX: {{ pod }}",
               "refId": "B"
             }
           ],
@@ -1302,16 +1302,16 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum by (pod_name) (irate(container_cpu_usage_seconds_total{pod_name=~\"$atc\",container_name!=\"POD\",image!=\"\"}[2m])) \n  / \n(sum by (pod_name) (container_spec_cpu_quota{pod_name=~\"$atc\",container_name!=\"POD\",image!=\"\"})/100000)",
+              "expr": "sum by (pod) (irate(container_cpu_usage_seconds_total{pod=~\"$atc\",container_name!=\"POD\",image!=\"\"}[2m])) \n  / \n(sum by (pod) (container_spec_cpu_quota{pod=~\"$atc\",container_name!=\"POD\",image!=\"\"})/100000)",
               "format": "time_series",
               "hide": false,
               "instant": false,
               "intervalFactor": 2,
-              "legendFormat": "{{ pod_name }}",
+              "legendFormat": "{{ pod }}",
               "refId": "A"
             },
             {
-              "expr": "sum by (pod_name) (irate(container_cpu_usage_seconds_total{namespace=\"hush-house\",pod_name=~\"hush-house-web-.*\",container_name!=\"POD\",image!=\"\"}[2m])) \n  / \n(sum by (pod_name) (container_spec_cpu_quota{container_name!=\"POD\",image!=\"\"})/100000)",
+              "expr": "sum by (pod) (irate(container_cpu_usage_seconds_total{namespace=\"hush-house\",pod=~\"hush-house-web-.*\",container_name!=\"POD\",image!=\"\"}[2m])) \n  / \n(sum by (pod) (container_spec_cpu_quota{container_name!=\"POD\",image!=\"\"})/100000)",
               "format": "time_series",
               "hide": true,
               "intervalFactor": 2,
@@ -1447,19 +1447,19 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "container_memory_working_set_bytes{pod_name=~\"$atc\",container_name!=\"POD\",container_name!=\"\",namespace=~\"$namespace\"} \n  / \ncontainer_spec_memory_limit_bytes",
+              "expr": "container_memory_working_set_bytes{pod=~\"$atc\",container_name!=\"POD\",namespace=~\"$namespace\"} \n  / \ncontainer_spec_memory_limit_bytes{pod=~\"$atc\",container_name!=\"POD\",namespace=~\"$namespace\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
-              "legendFormat": "{{ pod_name }}",
+              "legendFormat": "{{ pod }}",
               "refId": "A"
             },
             {
-              "expr": "container_memory_working_set_bytes{pod_name=~\"hush-house-web-.*\",container_name!=\"POD\",container_name!=\"\",namespace=\"hush-house\"} \n  / \ncontainer_spec_memory_limit_bytes",
+              "expr": "container_memory_working_set_bytes{pod=~\"hush-house-web-.*\",container_name!=\"POD\",namespace=\"hush-house\"} \n  / \ncontainer_spec_memory_limit_bytes{pod=~\"hush-house-web-.*\",container_name!=\"POD\",namespace=\"hush-house\"}",
               "format": "time_series",
               "hide": true,
               "intervalFactor": 2,
-              "legendFormat": "{{ pod_name }}",
+              "legendFormat": "{{ pod }}",
               "refId": "B"
             }
           ],
@@ -1650,7 +1650,7 @@
               "format": "time_series",
               "instant": false,
               "intervalFactor": 2,
-              "legendFormat": "{{ pod_name }}",
+              "legendFormat": "{{ kubernetes_pod_name }}",
               "refId": "A"
             }
           ],
@@ -2172,19 +2172,19 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "container_memory_working_set_bytes{pod_name=~\"$worker\",container_name!=\"POD\",container_name!=\"\"} \n  / \ncontainer_spec_memory_limit_bytes",
+              "expr": "container_memory_working_set_bytes{pod=~\"$worker\",container_name!=\"POD\"} \n  / \ncontainer_spec_memory_limit_bytes{pod=~\"$worker\",container_name!=\"POD\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
-              "legendFormat": "{{ pod_name }}",
+              "legendFormat": "{{ pod }}",
               "refId": "A"
             },
             {
-              "expr": "container_memory_working_set_bytes{pod_name=~\"worker-worker-.*\",container_name!=\"POD\",container_name!=\"\"} \n  / \ncontainer_spec_memory_limit_bytes",
+              "expr": "container_memory_working_set_bytes{pod=~\"worker-worker-.*\",container_name!=\"POD\"} \n  / \ncontainer_spec_memory_limit_bytes{pod=~\"worker-worker-.*\",container_name!=\"POD\"}",
               "format": "time_series",
               "hide": true,
               "intervalFactor": 2,
-              "legendFormat": "{{ pod_name }}",
+              "legendFormat": "{{ pod }}",
               "refId": "B"
             }
           ],
@@ -2530,17 +2530,17 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk($top,\n\tsum by (pod_name) (irate(container_network_receive_bytes_total{\n\t\tpod_name=~\"$worker\",\n\t\timage!=\"\"\n\t}[2m])) * 8\n)",
+              "expr": "topk($top,\n\tsum by (pod) (irate(container_network_receive_bytes_total{\n\t\tpod_name=~\"$worker\",\n\t\timage!=\"\"\n\t}[2m])) * 8\n)",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "RX: {{ pod_name }}",
+              "legendFormat": "RX: {{ pod }}",
               "refId": "A"
             },
             {
-              "expr": "topk($top,\n\tsum by (pod_name) (irate(container_network_transmit_bytes_total{\n\t\tpod_name=~\"$worker\",\n\t\timage!=\"\"\n\t}[2m])) * 8\n)",
+              "expr": "topk($top,\n\tsum by (pod) (irate(container_network_transmit_bytes_total{\n\t\tpod_name=~\"$worker\",\n\t\timage!=\"\"\n\t}[2m])) * 8\n)",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "TX: {{ pod_name }}",
+              "legendFormat": "TX: {{ pod }}",
               "refId": "B"
             }
           ],
@@ -2778,11 +2778,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk($top,\n\tsum by (pod_name) (rate(container_cpu_usage_seconds_total{pod_name=~\"$worker\",container_name!=\"POD\",image!=\"\"}[5m])) \n\t\t/ \n\t(sum by (pod_name) (container_spec_cpu_quota{pod_name=~\"$worker\",container_name!=\"POD\",image!=\"\"})/100000)\n)",
+              "expr": "topk($top,\n\tsum by (pod) (rate(container_cpu_usage_seconds_total{pod=~\"$worker\",container_name!=\"POD\",image!=\"\"}[5m])) \n\t\t/ \n\t(sum by (pod) (container_spec_cpu_quota{pod=~\"$worker\",container_name!=\"POD\",image!=\"\"})/100000)\n)",
               "format": "time_series",
               "instant": false,
               "intervalFactor": 2,
-              "legendFormat": "{{ pod_name }}",
+              "legendFormat": "{{ pod }}",
               "refId": "A"
             }
           ],
