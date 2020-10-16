@@ -36,7 +36,7 @@ persistence:
     size: 750Gi
 
 worker:
-  replicas: 2
+  replicas: 10
   annotations:
     manual-update-revision: "1"
   terminationGracePeriodSeconds: 3600

@@ -18,7 +18,7 @@ module "cluster" {
       image           = "COS"
       local_ssds      = 0
       machine_type    = "n1-standard-8"
-      max             = 5
+      max             = 11
       min             = 1
       preemptible     = false
       service_account = null
