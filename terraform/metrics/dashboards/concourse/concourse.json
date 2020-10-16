@@ -2530,14 +2530,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk($top,\n\tsum by (pod) (irate(container_network_receive_bytes_total{\n\t\tpod_name=~\"$worker\",\n\t\timage!=\"\"\n\t}[2m])) * 8\n)",
+              "expr": "topk($top,\n\tsum by (pod) (irate(container_network_receive_bytes_total{\n\t\tpod=~\"$worker\",\n\t\timage!=\"\"\n\t}[2m])) * 8\n)",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "RX: {{ pod }}",
               "refId": "A"
             },
             {
-              "expr": "topk($top,\n\tsum by (pod) (irate(container_network_transmit_bytes_total{\n\t\tpod_name=~\"$worker\",\n\t\timage!=\"\"\n\t}[2m])) * 8\n)",
+              "expr": "topk($top,\n\tsum by (pod) (irate(container_network_transmit_bytes_total{\n\t\tpod=~\"$worker\",\n\t\timage!=\"\"\n\t}[2m])) * 8\n)",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "TX: {{ pod }}",
