@@ -45,7 +45,7 @@ module "ci_database" {
   memory_mb       = "5120"
   region          = "${var.region}"
   zone            = "${var.zone}"
-  max_connections = "100"
+  max_connections = "200"
 }
 
 data "template_file" "ci_values" {
