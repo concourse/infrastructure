@@ -92,5 +92,7 @@ resource "kubernetes_config_map" "cloudsql_dashboard" {
       "project_name" = var.project
       "instance_id"  = var.cloudsql_instance_id
     })
+
+    "concourse.json" = file("${path.module}/dashboards/concourse/concourse.json")
   }
 }
