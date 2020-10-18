@@ -1,6 +1,6 @@
 image: concourse/dev
 # watch-endpoints branch image
-imageDigest: sha256:6641a904dd5a41cd62ac3faa50b05252d60e09c2afb6702188ef0fecde07c4da
+imageDigest: sha256:5e5dc5ed1040b50a59484f41b0a911c16cbe478b02f9158fb2e1a33bf86c4cac
 
 postgresql:
   enabled: false
