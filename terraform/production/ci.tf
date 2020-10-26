@@ -112,11 +112,11 @@ resource "helm_release" "datadog" {
   timeout = 900
 
   values = [
-    "
+<<EOF
       datadog:
         useDogStatsDSocketVolume: true
         apiKey: ${var.datadog_api_key}
-    "
+EOF
   ]
 
   depends_on = [
