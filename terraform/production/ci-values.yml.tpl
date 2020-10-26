@@ -59,7 +59,7 @@ web:
           [inputs.prometheus.tags]
             environment = "ci"
         [[outputs.datadog]]
-          url = unix:///var/run/datadog/dsd.socket
+          url = "unix:///var/run/datadog/dsd.socket"
         ' > /etc/telegraf/telegraf.conf
 
         exec telegraf
