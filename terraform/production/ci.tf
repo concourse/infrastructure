@@ -81,7 +81,7 @@ data "template_file" "ci_values" {
     vault_client_private_key = jsonencode(module.vault_client_cert.private_key_pem)
 
     prometheus_port = var.prometheus_port
-    datadog_apikey = ${var.datadog_api_key}
+    datadog_apikey = "${var.datadog_api_key}"
   }
 }
 
