@@ -95,6 +95,37 @@ concourse:
       host: ${db_ip}
       database: ${db_database}
       sslmode: verify-ca
+    additionalVolumes:
+      - name: dsdsocket
+        hostPath:
+          path: /var/run/datadog
+    additionalVolumeMounts:
+      - name: dsdsocket
+        mountPath: /var/run/datadog
+    sidecarContainers:
+      - name: telegraf
+        image: telegraf
+        volumeMounts:
+        - name: dsdsocket
+          mountPath: /var/run/datadog
+        command:
+        - /bin/bash
+        - -c
+        - |
+          echo '
+          [[inputs.prometheus]]
+            urls = ["http://127.0.0.1:${prometheus_port}"]
+            metric_version = 2
+            ## TODO: what do the next lines do?
+            name_override = "concourse.ci"
+            [inputs.prometheus.tags]
+              environment = "ci"
+          [[outputs.datadog]]
+            url = unix:///var/run/datadog/dsd.socket
+          ' > /etc/telegraf/telegraf.conf
+
+          exec telegraf
+
   worker:
     rebalanceInterval: 2h
     baggageclaim: { driver: overlay }

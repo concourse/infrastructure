@@ -3,6 +3,11 @@ variable "credentials" {
   description = "GCP key"
 }
 
+variable "datadog_api_key" {
+  type        = string
+  description = "datadog API key to push metrics to datadog"
+}
+
 variable "region" {
   description = "The cloud provider region where the resources created at."
   default     = "us-central1"

@@ -23,6 +23,7 @@ resources:
       credentials: ((gcp_credentials_json))
     vars:
       credentials: ((gcp_credentials_json))
+      datadog_api_key: ((datadog_api_key))
 
 jobs:
 - name: terraform

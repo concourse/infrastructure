@@ -101,3 +101,26 @@ resource "helm_release" "ci-concourse" {
     module.cluster.node_pools,
   ]
 }
+
+resource "helm_release" "datadog" {
+  namespace  = kubernetes_namespace.ci.id
+  name       = "datadog"
+  repository = "https://kubernetes-charts.storage.googleapis.com"
+  chart      = "datadog"
+  version    = "1.39.5"
+
+  timeout = 900
+
+  values = [
+    "
+      datadog:
+        useDogStatsDSocketVolume: true
+        apiKey: ${var.datadog_api_key}
+    "
+  ]
+
+  depends_on = [
+    module.cluster.node_pools,
+  ]
+
+}
