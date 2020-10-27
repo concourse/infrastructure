@@ -185,8 +185,7 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "bars"
-            # TODO use difference
-            q            = "avg:${local.metrics_prefix}concourse_db_queries_total{$environment} by {host}"
+            q            = "per_minute(avg:${local.metrics_prefix}concourse_db_queries_total{$environment} by {host})"
 
             style {
               line_type  = "solid"
@@ -217,7 +216,7 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "line"
-            # TODO use a difference
+            # TODO use a better formula to show "average response time for an endpoint"
             q            = "avg:${local.metrics_prefix}concourse_http_responses_duration_seconds_sum{$environment} by {route}"
 
             style {
