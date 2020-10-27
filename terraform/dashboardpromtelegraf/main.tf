@@ -142,7 +142,7 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "line"
-            q            = "max:${local.metrics_prefix}concourse_db_connections{$environment,connectionname:backend} by {host}, robust_trend(avg:${local.metrics_prefix}concourse_db_connections{$environment,connectionname:backend})"
+            q            = "max:${local.metrics_prefix}concourse_db_connections{$environment,dbname:backend} by {host}, robust_trend(avg:${local.metrics_prefix}concourse_db_connections{$environment,dbname:backend})"
 
             style {
               line_type  = "solid"
@@ -152,7 +152,7 @@ resource "datadog_dashboard" "concourse" {
           }
           request {
             display_type = "line"
-            q            = "max:${local.metrics_prefix}concourse_db_connections{$environment,connectionname:api} by {host}"
+            q            = "max:${local.metrics_prefix}concourse_db_connections{$environment,dbname:api} by {host}"
 
             style {
               line_type  = "solid"
@@ -162,7 +162,7 @@ resource "datadog_dashboard" "concourse" {
           }
           request {
             display_type = "line"
-            q            = "max:${local.metrics_prefix}concourse_db_connections{$environment,connectionname:gc} by {host}"
+            q            = "max:${local.metrics_prefix}concourse_db_connections{$environment,dbname:gc} by {host}"
 
             style {
               line_type  = "solid"
