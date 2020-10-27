@@ -5,7 +5,7 @@ variable "credentials" {
 
 variable "datadog_api_key" {
   type        = string
-  description = "datadog API key to push metrics to datadog"
+  description = "datadog API key to push metrics to datadog" # and also to create/destroy dashboards?
 }
 
 variable "region" {

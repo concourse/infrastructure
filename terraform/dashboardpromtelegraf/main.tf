@@ -45,6 +45,7 @@ resource "datadog_dashboard" "concourse" {
       layout_type = "ordered"
       title       = "Web Nodes"
 
+      # looks like there is no prometheus metric for this, probably due to cardinality
       widget {
 
         heatmap_definition {
@@ -63,15 +64,15 @@ resource "datadog_dashboard" "concourse" {
           }
         }
       }
+      # TODO prometheus doesn't expose a scheduling duration histogram for some reason
       widget {
-
         timeseries_definition {
           show_legend = false
           title       = "Total Time Scheduling Jobs"
 
           request {
             display_type = "line"
-            q            = "sum:${local.metrics_prefix}scheduling_job_duration_ms{$environment}"
+            q            = "sum:${local.metrics_prefix}concourse_scheduling_job_duration_ms{$environment}"
 
             style {
               line_type  = "solid"
@@ -85,6 +86,7 @@ resource "datadog_dashboard" "concourse" {
           }
         }
       }
+      # TODO prometheus doesn't expose this
       widget {
 
         timeseries_definition {
@@ -102,11 +104,11 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "line"
-            q            = "max:${local.metrics_prefix}gc_build_collector_duration_ms{$environment}"
+            q            = "max:${local.metrics_prefix}concourse_gc_build_collector_duration_ms{$environment}"
 
             metadata {
               alias_name = "builds"
-              expression = "max:${local.metrics_prefix}gc_build_collector_duration_ms{$environment}"
+              expression = "max:${local.metrics_prefix}concourse_gc_build_collector_duration_ms{$environment}"
             }
 
             style {
@@ -117,11 +119,11 @@ resource "datadog_dashboard" "concourse" {
           }
           request {
             display_type = "line"
-            q            = "max:${local.metrics_prefix}gc_volume_collector_duration_ms{$environment}"
+            q            = "max:${local.metrics_prefix}concourse_gc_volume_collector_duration_ms{$environment}"
 
             metadata {
               alias_name = "volumes"
-              expression = "max:${local.metrics_prefix}gc_volume_collector_duration_ms{$environment}"
+              expression = "max:${local.metrics_prefix}concourse_gc_volume_collector_duration_ms{$environment}"
             }
 
             style {
@@ -132,11 +134,11 @@ resource "datadog_dashboard" "concourse" {
           }
           request {
             display_type = "line"
-            q            = "max:${local.metrics_prefix}gc_worker_collector_duration_ms{$environment}"
+            q            = "max:${local.metrics_prefix}concourse_gc_worker_collector_duration_ms{$environment}"
 
             metadata {
               alias_name = "workers"
-              expression = "max:${local.metrics_prefix}gc_worker_collector_duration_ms{$environment}"
+              expression = "max:${local.metrics_prefix}concourse_gc_worker_collector_duration_ms{$environment}"
             }
 
             style {
@@ -147,11 +149,11 @@ resource "datadog_dashboard" "concourse" {
           }
           request {
             display_type = "line"
-            q            = "max:${local.metrics_prefix}gc_artifact_collector_duration_ms{$environment}"
+            q            = "max:${local.metrics_prefix}concourse_gc_artifact_collector_duration_ms{$environment}"
 
             metadata {
               alias_name = "artifacts"
-              expression = "max:${local.metrics_prefix}gc_artifact_collector_duration_ms{$environment}"
+              expression = "max:${local.metrics_prefix}concourse_gc_artifact_collector_duration_ms{$environment}"
             }
 
             style {
@@ -162,11 +164,11 @@ resource "datadog_dashboard" "concourse" {
           }
           request {
             display_type = "line"
-            q            = "max:${local.metrics_prefix}gc_container_collector_duration_ms{$environment}"
+            q            = "max:${local.metrics_prefix}concourse_gc_container_collector_duration_ms{$environment}"
 
             metadata {
               alias_name = "containers"
-              expression = "max:${local.metrics_prefix}gc_container_collector_duration_ms{$environment}"
+              expression = "max:${local.metrics_prefix}concourse_gc_container_collector_duration_ms{$environment}"
             }
 
             style {
@@ -177,11 +179,11 @@ resource "datadog_dashboard" "concourse" {
           }
           request {
             display_type = "line"
-            q            = "max:${local.metrics_prefix}gc_resource_cache_collector_duration_ms{$environment}"
+            q            = "max:${local.metrics_prefix}concourse_gc_resource_cache_collector_duration_ms{$environment}"
 
             metadata {
               alias_name = "resource caches"
-              expression = "max:${local.metrics_prefix}gc_resource_cache_collector_duration_ms{$environment}"
+              expression = "max:${local.metrics_prefix}concourse_gc_resource_cache_collector_duration_ms{$environment}"
             }
 
             style {
@@ -192,11 +194,11 @@ resource "datadog_dashboard" "concourse" {
           }
           request {
             display_type = "line"
-            q            = "max:${local.metrics_prefix}gc_resource_config_collector_duration_ms{$environment}"
+            q            = "max:${local.metrics_prefix}concourse_gc_resource_config_collector_duration_ms{$environment}"
 
             metadata {
               alias_name = "resource configs"
-              expression = "max:${local.metrics_prefix}gc_resource_config_collector_duration_ms{$environment}"
+              expression = "max:${local.metrics_prefix}concourse_gc_resource_config_collector_duration_ms{$environment}"
             }
 
             style {
@@ -207,11 +209,11 @@ resource "datadog_dashboard" "concourse" {
           }
           request {
             display_type = "line"
-            q            = "max:${local.metrics_prefix}gc_resource_cache_use_collector_duration_ms{$environment}"
+            q            = "max:${local.metrics_prefix}concourse_gc_resource_cache_use_collector_duration_ms{$environment}"
 
             metadata {
               alias_name = "resource cache uses"
-              expression = "max:${local.metrics_prefix}gc_resource_cache_use_collector_duration_ms{$environment}"
+              expression = "max:${local.metrics_prefix}concourse_gc_resource_cache_use_collector_duration_ms{$environment}"
             }
 
             style {
@@ -222,11 +224,11 @@ resource "datadog_dashboard" "concourse" {
           }
           request {
             display_type = "line"
-            q            = "max:${local.metrics_prefix}gc_resource_config_check_session_collector_duration_ms{$environment}"
+            q            = "max:${local.metrics_prefix}concourse_gc_resource_config_check_session_collector_duration_ms{$environment}"
 
             metadata {
               alias_name = "rccs"
-              expression = "max:${local.metrics_prefix}gc_resource_config_check_session_collector_duration_ms{$environment}"
+              expression = "max:${local.metrics_prefix}concourse_gc_resource_config_check_session_collector_duration_ms{$environment}"
             }
 
             style {
@@ -255,7 +257,7 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "line"
-            q            = "avg:${local.metrics_prefix}build_finished{$environment} by {job}"
+            q            = "avg:${local.metrics_prefix}concourse_builds_duration_seconds{$environment} by {job}"
 
             style {
               line_type  = "solid"
@@ -283,7 +285,7 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "line"
-            q            = "derivative(max:${local.metrics_prefix}build_started{$environment}), robust_trend(derivative(max:${local.metrics_prefix}build_started{$environment}))"
+            q            = "derivative(max:${local.metrics_prefix}concourse_builds_started_total{$environment}), robust_trend(derivative(max:${local.metrics_prefix}concourse_builds_started_total{$environment}))"
 
             style {
               line_type  = "solid"
@@ -311,7 +313,7 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "line"
-            q            = "sum:${local.metrics_prefix}build_finished{$environment} by {build_status}"
+            q            = "sum:${local.metrics_prefix}concourse_builds_finished_total{$environment} by {build_status}"
 
             style {
               line_type  = "solid"
@@ -339,7 +341,7 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "line"
-            q            = "max:${local.metrics_prefix}database_connections{$environment,connectionname:backend} by {host}, robust_trend(avg:${local.metrics_prefix}database_connections{$environment,connectionname:backend})"
+            q            = "max:${local.metrics_prefix}concourse_db_connections{$environment,connectionname:backend} by {host}, robust_trend(avg:${local.metrics_prefix}concourse_db_connections{$environment,connectionname:backend})"
 
             style {
               line_type  = "solid"
@@ -349,7 +351,7 @@ resource "datadog_dashboard" "concourse" {
           }
           request {
             display_type = "line"
-            q            = "max:${local.metrics_prefix}database_connections{$environment,connectionname:api} by {host}"
+            q            = "max:${local.metrics_prefix}concourse_db_connections{$environment,connectionname:api} by {host}"
 
             style {
               line_type  = "solid"
@@ -359,7 +361,7 @@ resource "datadog_dashboard" "concourse" {
           }
           request {
             display_type = "line"
-            q            = "max:${local.metrics_prefix}database_connections{$environment,connectionname:gc} by {host}"
+            q            = "max:${local.metrics_prefix}concourse_db_connections{$environment,connectionname:gc} by {host}"
 
             style {
               line_type  = "solid"
@@ -382,7 +384,8 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "bars"
-            q            = "avg:${local.metrics_prefix}database_queries{$environment} by {host}"
+            # TODO use difference
+            q            = "avg:${local.metrics_prefix}concourse_db_queries_total{$environment} by {host}"
 
             style {
               line_type  = "solid"
@@ -413,7 +416,8 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "line"
-            q            = "avg:${local.metrics_prefix}http_response_time{$environment} by {route}"
+            # TODO use a difference
+            q            = "avg:${local.metrics_prefix}concourse_http_responses_duration_seconds_sum{$environment} by {route}"
 
             style {
               line_type  = "solid"
@@ -436,7 +440,7 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "bars"
-            q            = "avg:${local.metrics_prefix}lock_held{$environment} by {type}"
+            q            = "avg:${local.metrics_prefix}concourse_locks_held{$environment} by {type}"
 
             style {
               line_type  = "solid"
@@ -459,7 +463,7 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "line"
-            q            = "avg:${local.metrics_prefix}goroutines{$environment} by {host}"
+            q            = "avg:${local.metrics_prefix}go_goroutines{$environment} by {host}"
 
             style {
               line_type  = "solid"
@@ -484,7 +488,8 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "line"
-            q            = "avg:${local.metrics_prefix}checks_started{$environment} by {host}"
+            # TODO use a difference
+            q            = "avg:${local.metrics_prefix}concourse_lidar_checks_started_total{$environment} by {host}"
 
             style {
               line_type  = "solid"
@@ -523,7 +528,7 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "line"
-            q            = "avg:${local.metrics_prefix}worker_containers{$environment} by {worker}"
+            q            = "avg:${local.metrics_prefix}concourse_workers_containers{$environment} by {worker}"
 
             style {
               line_type  = "solid"
@@ -544,7 +549,7 @@ resource "datadog_dashboard" "concourse" {
           title = "Worker Volumes"
 
           request {
-            q = "avg:${local.metrics_prefix}worker_volumes{$environment} by {worker}"
+            q = "avg:${local.metrics_prefix}concourse_workers_volumes{$environment} by {worker}"
 
             style {
               palette = "grey"
@@ -560,7 +565,7 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "area"
-            q            = "avg:${local.metrics_prefix}worker_state{$environment} by {state}"
+            q            = "avg:${local.metrics_prefix}concourse_workers_registered{$environment} by {state}"
 
             style {
               line_type  = "solid"
@@ -580,6 +585,7 @@ resource "datadog_dashboard" "concourse" {
 
       widget {
 
+        # TODO prometheus doesn't expose these gc metrics?
         timeseries_definition {
           show_legend = false
           title       = "Containers to be GC'd"
@@ -648,6 +654,7 @@ resource "datadog_dashboard" "concourse" {
       }
       widget {
 
+        # TODO prometheus doesn't expose these gc metrics?
         timeseries_definition {
           show_legend = false
           title       = "Volumes to be GC'd"
