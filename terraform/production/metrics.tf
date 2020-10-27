@@ -19,5 +19,5 @@ module "metrics" {
   source = "../metrics"
 
   datadog_provider_api_key = var.datadog_api_key
-  datadog_provider_app_key = var.datadog_api_key
+  datadog_provider_app_key = var.datadog_app_key
 }
