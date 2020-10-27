@@ -57,7 +57,7 @@ web:
           ## TODO: what do the next lines do?
           name_override = "concourse.ci"
           [inputs.prometheus.tags]
-            environment = "ci"
+            environment = "ci-test"
         [[outputs.datadog]]
           apikey = "${datadog_apikey}"
         ' > /etc/telegraf/telegraf.conf
