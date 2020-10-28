@@ -54,7 +54,6 @@ web:
         [[inputs.prometheus]]
           urls = ["http://127.0.0.1:${prometheus_port}"]
           metric_version = 2
-          ## TODO: what do the next lines do?
           name_override = "concourse.ci"
           [inputs.prometheus.tags]
             environment = "ci-test"
