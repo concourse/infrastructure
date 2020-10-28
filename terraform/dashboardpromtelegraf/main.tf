@@ -199,7 +199,7 @@ resource "datadog_dashboard" "concourse" {
 
         timeseries_definition {
           show_legend = false
-          title       = "HTTP Response Time"
+          title       = "HTTP Response Time (ms)"
 
           marker {
             display_type = "ok dashed"
@@ -216,8 +216,7 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "line"
-            # TODO use a better formula to show "average response time for an endpoint"
-            q            = "avg:${local.metrics_prefix}concourse_http_responses_duration_seconds_sum{$environment} by {route}"
+            q            = "monotonic_diff(sum:${local.metrics_prefix}concourse_http_responses_duration_seconds_sum{$environment} by {route})/monotonic_diff(sum:${local.metrics_prefix}concourse_http_responses_duration_seconds_count{$environment} by {route})*1000"
 
             style {
               line_type  = "solid"
@@ -288,8 +287,7 @@ resource "datadog_dashboard" "concourse" {
 
           request {
             display_type = "line"
-            # TODO use a difference
-            q            = "avg:${local.metrics_prefix}concourse_lidar_checks_started_total{$environment} by {host}"
+            q            = "per_minute(avg:${local.metrics_prefix}concourse_lidar_checks_started_total{$environment} by {host})"
 
             style {
               line_type  = "solid"
