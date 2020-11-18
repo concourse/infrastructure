@@ -51,7 +51,7 @@ resource "datadog_dashboard" "concourse" {
           title = "Scheduling By Job"
 
           request {
-            q = "avg:${local.metrics_prefix}concourse_scheduling_job_duration_ms{$environment} by {job,job_id}"
+            q = "avg:${local.metrics_prefix}scheduling_job_duration_ms{$environment} by {job,job_id}"
 
             style {
               palette = "dog_classic"
