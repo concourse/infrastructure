@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+source greenpeace/tasks/scripts/vault-secrets.sh
+
 echo "$GCP_CREDENTIALS_JSON" > /tmp/service-account.json
 gcloud auth activate-service-account --key-file /tmp/service-account.json
 
@@ -23,6 +25,8 @@ pushd terraform/ > /dev/null
   kubectl port-forward service/vault -n "$(terraform output vault_namespace)" 8200:8200 >/dev/null &
   port_forward_pid=$!
 
+  vault_crypto_key=$(terraform output vault_crypto_key_self_link)
+
   function finish {
     kill $port_forward_pid
   }
@@ -41,7 +45,7 @@ pushd terraform/ > /dev/null
     token="$(gsutil cat "gs://${gcs_bucket_name}/vault/${CLUSTER_NAME}/root-token.enc" | \
       base64 --decode | \
         gcloud kms decrypt \
-          --key $(terraform output vault_crypto_key_self_link) \
+          --key ${vault_crypto_key} \
           --ciphertext-file - \
           --plaintext-file -)"
     ;;
@@ -60,7 +64,7 @@ pushd terraform/ > /dev/null
     token="$(echo "$response" | jq -r '.root_token')"
     encrypted_token="$(echo -n "$token" | \
       gcloud kms encrypt \
-        --key "$(terraform output vault_crypto_key_self_link)" \
+        --key "${vault_crypto_key}" \
         --plaintext-file - \
         --ciphertext-file - | \
           base64)"
@@ -69,7 +73,7 @@ pushd terraform/ > /dev/null
       printf "\nstoring full init response to gs://${gcs_bucket_name}/vault/${CLUSTER_NAME}/init-response.json.enc (contains recovery keys)...\n"
       encrypted_init_response="$(echo -n "$response" | \
         gcloud kms encrypt \
-        --key "$(terraform output vault_crypto_key_self_link)" \
+        --key "${vault_crypto_key}" \
         --plaintext-file - \
         --ciphertext-file - | \
           base64)"
@@ -86,11 +90,11 @@ pushd terraform/ > /dev/null
   vault_ca_cert="$(terraform output vault_ca_cert)"
 popd > /dev/null
 
-pushd greenpeace/terraform/configure_vault > /dev/null
-  export VAULT_TOKEN="${token}"
-  export VAULT_ADDR="https://127.0.0.1:8200"
-  export VAULT_SKIP_VERIFY="true"
+export VAULT_TOKEN="${token}"
+export VAULT_ADDR="https://127.0.0.1:8200"
+export VAULT_SKIP_VERIFY="true"
 
+pushd greenpeace/terraform/configure_vault > /dev/null
   terraform init \
     -backend-config "credentials=${GCP_CREDENTIALS_JSON}" \
     -backend-config "bucket=concourse-greenpeace" \
@@ -103,3 +107,9 @@ pushd greenpeace/terraform/configure_vault > /dev/null
     -var "credentials=${GCP_CREDENTIALS_JSON}" \
     -var "greenpeace_private_key=${GREENPEACE_PRIVATE_KEY}"
 popd > /dev/null
+
+pushd secrets > /dev/null
+  decrypt
+popd
+
+vault-backend-migrator/vault-backend-migrator -import concourse/ -file secrets/secrets.json

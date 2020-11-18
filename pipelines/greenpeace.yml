@@ -5,6 +5,11 @@ resource_types:
     repository: ljfranklin/terraform-resource
     tag: '0.12.29'
 
+- name: gcs
+  type: registry-image
+  source:
+    repository: frodenas/gcs-resource
+
 resources:
 - name: greenpeace
   type: git
@@ -26,11 +31,30 @@ resources:
       datadog_api_key: ((datadog_api_key))
       datadog_app_key: ((datadog_app_key))
 
+- name: secrets
+  type: gcs
+  source:
+    bucket: concourse-greenpeace
+    json_key: ((gcp_credentials_json))
+    versioned_file: vault/production/data.tar
+
+- name: vault-backend-migrator
+  type: gcs
+  source:
+    bucket: concourse-greenpeace
+    json_key: ((gcp_credentials_json))
+    versioned_file: vault/bin/vault-backend-migrator
+
 jobs:
 - name: terraform
   max_in_flight: 1
   plan:
-  - get: greenpeace
+  - in_parallel:
+    - get: greenpeace
+    - get: secrets
+      params:
+        unpack: true
+    - get: vault-backend-migrator
   - put: terraform
     params:
       terraform_source: greenpeace/terraform/((cluster))

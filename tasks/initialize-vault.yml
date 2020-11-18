@@ -7,6 +7,8 @@ image_resource:
 inputs:
   - name: greenpeace
   - name: terraform
+  - name: secrets
+  - name: vault-backend-migrator
 
 params:
   GCP_CREDENTIALS_JSON:
