@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source greenpeace/tasks/scripts/vault-secrets.sh
+source greenpeace/scripts/vault-secrets.sh
 
 echo "$GCP_CREDENTIALS_JSON" > /tmp/service-account.json
 gcloud auth activate-service-account --key-file /tmp/service-account.json

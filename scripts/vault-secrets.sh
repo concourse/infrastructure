@@ -5,20 +5,20 @@ function generate_keys {
   head -c 16 /dev/urandom | xxd -p | tr -d '\n' > iv
 
   gcloud kms encrypt \
-    --key projects/cf-concourse-production/locations/global/keyRings/production-vault-unseal-kr/cryptoKeys/production-vault-unseal-key \
+    --key $1 \
     --plaintext-file key \
     --ciphertext-file key.enc
 }
 
 function rotate_keys {
-  decrypt
-  generate_keys
-  encrypt
+  decrypt $1
+  generate_keys $1
+  encrypt $1
 }
 
 function decrypt {
   gcloud kms decrypt \
-    --key projects/cf-concourse-production/locations/global/keyRings/production-vault-unseal-kr/cryptoKeys/production-vault-unseal-key \
+    --key $1 \
     --plaintext-file key \
     --ciphertext-file key.enc
 
@@ -30,17 +30,18 @@ function decrypt {
 
 function encrypt {
   gcloud kms decrypt \
-    --key projects/cf-concourse-production/locations/global/keyRings/production-vault-unseal-kr/cryptoKeys/production-vault-unseal-key \
+    --key $1 \
     --plaintext-file key \
     --ciphertext-file key.enc
 
   openssl enc -e -aes-256-cbc \
     -K $(cat key) -iv $(cat iv) \
-    -in secrets.json.enc \
-    -out secrets.json
+    -in secrets.json \
+    -out secrets.json.enc
 }
 
 function pack {
-  encrypt
+  encrypt $1
   tar -cf data.tar key.enc iv secrets.json.enc
 }
+
