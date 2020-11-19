@@ -47,9 +47,10 @@ jq -n '{ "gcp_credentials_json": $credentials[] | tojson,
          "greenpeace_private_key": $private_key }' \
   --slurpfile credentials ../sensitive/greenpeace-terraform.json \
   --arg private_key "$(cat ../sensitive/concourse_bot_private_key)" \
-  # --arg datadog_api_key "$(cat ../sensitive/datadog_api_key)" \
-  # --arg datadog_app_key "$(cat ../sensitive/datadog_app_key)" \
   > ../sensitive/vars.yml
+
+# --arg datadog_api_key "$(cat ../sensitive/datadog_api_key)" \
+# --arg datadog_app_key "$(cat ../sensitive/datadog_app_key)" \
 
 # TODO: actually validate that these secrets are present with gcloud cli
 echo
