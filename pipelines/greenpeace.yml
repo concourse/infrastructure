@@ -66,3 +66,13 @@ jobs:
       GCP_CREDENTIALS_JSON: ((gcp_credentials_json))
       GREENPEACE_PRIVATE_KEY: ((greenpeace_private_key))
       CLUSTER_NAME: ((cluster))
+- name: terraform-destroy
+  max_in_flight: 1
+  plan:
+  - get: greenpeace
+  - put: terraform
+    params:
+      terraform_source: greenpeace/terraform/((cluster))
+      action: destroy
+    get_params:
+      action: destroy
