@@ -1,10 +1,10 @@
 provider "google" {
-  project = "cf-concourse-production"
-  region  = "us-central1"
+  project = var.project
+  region  = var.region
 }
 
 resource "google_storage_bucket" "concourse_greenpeace" {
-  name = "concourse-greenpeace"
+  name               = "concourse-greenpeace"
   bucket_policy_only = true
 
   versioning {
@@ -59,42 +59,14 @@ resource "google_project_iam_member" "greenpeace_terraform_policy" {
   member = "serviceAccount:${google_service_account.greenpeace_terraform.email}"
 }
 
-resource "google_storage_bucket" "vault" {
-  name = "concourse-greenpeace-vault"
-  bucket_policy_only = true
-
-  versioning {
-    enabled = true
-  }
-
-  lifecycle_rule {
-    action {
-      type = "Delete"
-    }
-
-    condition {
-      num_newer_versions = 3
-    }
-  }
-}
-
-resource "google_storage_bucket_iam_member" "vault" {
-  bucket = google_storage_bucket.vault.name
-  role = "roles/storage.objectAdmin"
-  member = "serviceAccount:${google_service_account.greenpeace_terraform.email}"
-}
-
-resource "google_kms_key_ring" "vault" {
-  name     = "greenpeace-vault-unseal-kr"
+resource "google_kms_key_ring" "greenpeace" {
+  name     = "greenpeace-kr"
   location = "global"
 }
 
-resource "google_kms_crypto_key" "vault" {
-  name     = "greenpeace-vault-unseal-key"
-  key_ring = google_kms_key_ring.vault.self_link
-
-  # rotate every 30 days
-  rotation_period = "2592000s"
+resource "google_kms_crypto_key" "greenpeace" {
+  name     = "greenpeace-key"
+  key_ring = google_kms_key_ring.greenpeace.self_link
 
   lifecycle {
     prevent_destroy = true
