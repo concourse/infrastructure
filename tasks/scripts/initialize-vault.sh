@@ -16,6 +16,7 @@ chmod +x /usr/local/bin/terraform
 
 pushd greenpeace/bootstrap/ > /dev/null
   gcs_bucket_name="$(terraform output greenpeace_bucket_name)"
+  greenpeace_crypto_key_self_link="$(terraform output greenpeace_crypto_key_self_link)"
 popd > /dev/null
 
 pushd terraform/ > /dev/null
@@ -24,8 +25,6 @@ pushd terraform/ > /dev/null
   printf "\nport-forwarding the vault service to port 8200...\n"
   kubectl port-forward service/vault -n "$(terraform output vault_namespace)" 8200:8200 >/dev/null &
   port_forward_pid=$!
-
-  vault_crypto_key=$(terraform output vault_crypto_key_self_link)
 
   function finish {
     kill $port_forward_pid
@@ -45,7 +44,7 @@ pushd terraform/ > /dev/null
     token="$(gsutil cat "gs://${gcs_bucket_name}/vault/${CLUSTER_NAME}/root-token.enc" | \
       base64 --decode | \
         gcloud kms decrypt \
-          --key ${vault_crypto_key} \
+          --key ${greenpeace_crypto_key_self_link} \
           --ciphertext-file - \
           --plaintext-file -)"
     ;;
@@ -64,7 +63,7 @@ pushd terraform/ > /dev/null
     token="$(echo "$response" | jq -r '.root_token')"
     encrypted_token="$(echo -n "$token" | \
       gcloud kms encrypt \
-        --key "${vault_crypto_key}" \
+        --key "${greenpeace_crypto_key_self_link}" \
         --plaintext-file - \
         --ciphertext-file - | \
           base64)"
@@ -73,7 +72,7 @@ pushd terraform/ > /dev/null
       printf "\nstoring full init response to gs://${gcs_bucket_name}/vault/${CLUSTER_NAME}/init-response.json.enc (contains recovery keys)...\n"
       encrypted_init_response="$(echo -n "$response" | \
         gcloud kms encrypt \
-        --key "${vault_crypto_key}" \
+        --key "${greenpeace_crypto_key_self_link}" \
         --plaintext-file - \
         --ciphertext-file - | \
           base64)"
@@ -109,7 +108,8 @@ pushd greenpeace/terraform/configure_vault > /dev/null
 popd > /dev/null
 
 pushd secrets > /dev/null
-  decrypt
+  decrypt ${global_vault_crypto_key}
 popd
 
+# TODO: move this binary to the greenpeace repo
 vault-backend-migrator/vault-backend-migrator -import concourse/ -file secrets/secrets.json

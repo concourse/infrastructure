@@ -47,3 +47,25 @@ variable "prometheus_port" {
   description = "The port on which to listen to expose Prometheus metrics."
   default     = 9391
 }
+
+variable "greenpeace_kms_region" {
+  description = "The cloud provider region where the greenpeace shared key ring is created at."
+  default     = "global"
+}
+
+variable "greenpeace_kms_kr_name" {
+  description = "The name of the greenpeace shared key ring"
+  default     = "greenpeace-kr"
+}
+
+variable "greenpeace_kms_key_name" {
+  description = "The name of the greenpeace shared crypto key"
+  default     = "greenpeace-key"
+}
+
+variable "greenpeace_kms_key_link" {
+  description = "The self link of the greenpeace shared crypto key"
+  default     = "projects/cf-concourse-production/locations/global/keyRings/greenpeace-vault-unseal-kr/cryptoKeys/greenpeace-vault-unseal-key"
+}
+
+

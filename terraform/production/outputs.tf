@@ -22,8 +22,8 @@ output vault_namespace {
   value = kubernetes_namespace.vault.id
 }
 
-output vault_crypto_key_self_link {
-  value = google_kms_crypto_key.vault.self_link
+output greenpeace_crypto_key_self_link {
+  value = var.greenpeace_kms_key_link
 }
 
 output vault_ca_cert {
