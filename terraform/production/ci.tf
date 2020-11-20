@@ -1,6 +1,6 @@
 resource "kubernetes_namespace" "ci" {
   depends_on = [
-    module.cluster   
+    module.cluster
   ]
 
   metadata {
