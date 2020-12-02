@@ -16,7 +16,7 @@ chmod +x /usr/local/bin/terraform
 
 pushd greenpeace/bootstrap/ > /dev/null
   gcs_bucket_name="$(terraform output greenpeace_bucket_name)"
-  greenpeace_crypto_key_self_link="$(terraform output greenpeace_crypto_key_self_link)"
+  greenpeace_crypto_key_self_link="$(terraform output greenpeace_crypto_key_link)"
 popd > /dev/null
 
 pushd terraform/ > /dev/null
