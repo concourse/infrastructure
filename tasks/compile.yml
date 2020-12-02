@@ -5,6 +5,7 @@ image_resource:
   source: { repository: golang }
 
 inputs:
+  - name: greenpeace
   - name: repo
 
 outputs:
