@@ -1,5 +1,5 @@
-image: concourse/concourse-rc
-imageTag: release-6.3
+image: concourse/concourse-dev
+imageDigest: sha256:5a6f3c2fccaff7cc91274c16251fe916acd9b6e0b3fd6825dc7ed914860fe5ba
 
 postgresql:
   enabled: true

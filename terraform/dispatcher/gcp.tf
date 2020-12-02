@@ -1,3 +1,10 @@
+terraform {
+  backend "gcs" {
+    bucket = "concourse-greenpeace"
+    prefix = "terraform"
+  }
+}
+
 provider "google" {
   credentials = var.credentials
   project     = var.project
