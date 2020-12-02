@@ -43,8 +43,8 @@ module "ci_database" {
   cpus            = "4"
   disk_size_gb    = "40"
   memory_mb       = "5120"
-  region          = "${var.region}"
-  zone            = "${var.zone}"
+  region          = var.region
+  zone            = var.zone
   max_connections = "200"
 }
 
