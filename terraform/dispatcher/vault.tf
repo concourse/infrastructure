@@ -4,20 +4,6 @@ resource "kubernetes_namespace" "vault" {
   }
 }
 
-resource "google_kms_key_ring" "vault" {
-  name     = "dispatcher-vault-unseal-kr"
-  location = "global"
-}
-
-resource "google_kms_crypto_key" "vault" {
-  name     = "dispatcher-vault-unseal-key"
-  key_ring = google_kms_key_ring.vault.self_link
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
 resource "tls_private_key" "vault_ca" {
   algorithm = "RSA"
   rsa_bits  = 4096
@@ -132,19 +118,18 @@ resource "google_storage_bucket_iam_member" "dispatcher_vault_policy" {
 data "template_file" "vault_values" {
   template = file("${path.module}/vault-values.yml.tpl")
   vars = {
-    key_ring_name   = google_kms_key_ring.vault.name
-    crypto_key_name = google_kms_crypto_key.vault.name
-    crypto_key_id   = google_kms_crypto_key.vault.id
+    gcp_project     = var.project
+    gcp_region      = var.greenpeace_kms_region
+    key_ring_name   = var.greenpeace_kms_kr_name
+    crypto_key_name = var.greenpeace_kms_key_name
 
     vault_ca_cert            = jsonencode(tls_self_signed_cert.vault_ca.cert_pem)
     vault_server_cert        = jsonencode(module.vault_server_cert.cert_pem)
     vault_server_private_key = jsonencode(module.vault_server_cert.private_key_pem)
 
-    gcp_project = google_kms_key_ring.vault.project
-    gcp_region  = google_kms_key_ring.vault.location
-    gcs_bucket  = google_storage_bucket.dispatcher_vault.name
+    gcs_bucket = google_storage_bucket.production_vault.name
 
-    gcp_serviceaccount = google_service_account.dispatcher_vault.email
+    gcp_serviceaccount = google_service_account.production_vault.email
   }
 }
 

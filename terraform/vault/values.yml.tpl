@@ -36,6 +36,6 @@ server:
     annotations:
       iam.gke.io/gcp-service-account: "${gcp_serviceaccount}"
 
-ca: ${vault_ca_cert}
-crt: ${vault_server_cert}
-key: ${vault_server_private_key}
+ca: ${ca_cert}
+crt: ${server_cert}
+key: ${server_private_key}

@@ -76,9 +76,9 @@ data "template_file" "ci_values" {
 
     session_signing_key = jsonencode(tls_private_key.session_signing_key.private_key_pem)
 
-    vault_ca_cert            = jsonencode(tls_self_signed_cert.vault_ca.cert_pem)
-    vault_client_cert        = jsonencode(module.vault_client_cert.cert_pem)
-    vault_client_private_key = jsonencode(module.vault_client_cert.private_key_pem)
+    vault_ca_cert            = jsonencode(module.vault.ca_pem)
+    vault_client_cert        = jsonencode(module.vault.client_cert_pem)
+    vault_client_private_key = jsonencode(module.vault.client_private_key_pem)
   }
 }
 

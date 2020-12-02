@@ -19,15 +19,15 @@ output ci_namespace {
 }
 
 output vault_namespace {
-  value = kubernetes_namespace.vault.id
+  value = module.vault.namespace
+}
+
+output vault_ca_cert {
+  value = module.vault.ca_pem
 }
 
 output greenpeace_crypto_key_self_link {
   value = var.greenpeace_kms_key_link
-}
-
-output vault_ca_cert {
-  value = tls_self_signed_cert.vault_ca.cert_pem
 }
 
 output ci_database_instance_id {
