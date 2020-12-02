@@ -3,7 +3,7 @@ resource_types:
   type: registry-image
   source:
     repository: ljfranklin/terraform-resource
-    tag: '0.12.29'
+    tag: '0.13.5'
 
 - name: gcs
   type: registry-image
@@ -64,6 +64,7 @@ jobs:
       GCP_CREDENTIALS_JSON: ((gcp_credentials_json))
       GREENPEACE_PRIVATE_KEY: ((greenpeace_private_key))
       CLUSTER_NAME: ((cluster))
+      TERRAFORM_VERSION: '0.13.5'
 - name: terraform-destroy
   max_in_flight: 1
   plan:
