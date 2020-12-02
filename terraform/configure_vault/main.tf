@@ -1,5 +1,7 @@
 terraform {
   backend "gcs" {
+    bucket = "concourse-greenpeace"
+    prefix = "terraform"
   }
 }
 
@@ -14,8 +16,8 @@ resource "vault_auth_backend" "cert" {
 }
 
 resource "vault_mount" "concourse" {
-  path        = "concourse"
-  type        = "kv"
+  path = "concourse"
+  type = "kv"
 }
 
 resource "vault_policy" "concourse" {

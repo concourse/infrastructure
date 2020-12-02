@@ -95,9 +95,7 @@ export VAULT_SKIP_VERIFY="true"
 
 pushd greenpeace/terraform/configure_vault > /dev/null
   terraform init \
-    -backend-config "credentials=${GCP_CREDENTIALS_JSON}" \
-    -backend-config "bucket=concourse-greenpeace" \
-    -backend-config "prefix=terraform"
+    -backend-config "credentials=${GCP_CREDENTIALS_JSON}"
   terraform workspace select "$CLUSTER_NAME-vault" || terraform workspace new "$CLUSTER_NAME-vault"
   terraform apply \
     -auto-approve \
