@@ -33,37 +33,6 @@ web:
       type: LoadBalancer
       loadBalancerIP: ${lb_address}
 
-  additionalVolumes:
-    - name: dsdsocket
-      hostPath:
-        path: /var/run/datadog
-  additionalVolumeMounts:
-    - name: dsdsocket
-      mountPath: /var/run/datadog
-  sidecarContainers:
-    - name: telegraf
-      image: telegraf
-      volumeMounts:
-      - name: dsdsocket
-        mountPath: /var/run/datadog
-      command:
-      - /bin/bash
-      - -c
-      - |
-        echo '
-        [[inputs.prometheus]]
-          urls = ["http://127.0.0.1:${prometheus_port}"]
-          metric_version = 2
-          name_override = "concourse.ci"
-          [inputs.prometheus.tags]
-            environment = "ci-test"
-        [[outputs.datadog]]
-          apikey = "${datadog_apikey}"
-        ' > /etc/telegraf/telegraf.conf
-
-        exec telegraf
-
-
 persistence:
   worker:
     storageClass: ssd
@@ -119,9 +88,6 @@ concourse:
       useCaCert: true
     letsEncrypt: { enabled: true, acmeURL: "https://acme-v02.api.letsencrypt.org/directory" }
     tls: { enabled: true, bindPort: 443 }
-    prometheus:
-      enabled: true
-      bindPort: ${prometheus_port}
     postgres:
       host: ${db_ip}
       database: ${db_database}

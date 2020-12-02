@@ -79,9 +79,6 @@ data "template_file" "ci_values" {
     vault_ca_cert            = jsonencode(tls_self_signed_cert.vault_ca.cert_pem)
     vault_client_cert        = jsonencode(module.vault_client_cert.cert_pem)
     vault_client_private_key = jsonencode(module.vault_client_cert.private_key_pem)
-
-    prometheus_port = var.prometheus_port
-    datadog_apikey = "${var.datadog_api_key}"
   }
 }
 
@@ -101,27 +98,4 @@ resource "helm_release" "ci-concourse" {
   depends_on = [
     module.cluster.node_pools,
   ]
-}
-
-resource "helm_release" "datadog" {
-  namespace  = kubernetes_namespace.ci.id
-  name       = "datadog"
-  repository = "https://kubernetes-charts.storage.googleapis.com"
-  chart      = "datadog"
-  version    = "1.39.5"
-
-  timeout = 900
-
-  values = [
-<<EOF
-      datadog:
-        useDogStatsDSocketVolume: true
-        apiKey: ${var.datadog_api_key}
-EOF
-  ]
-
-  depends_on = [
-    module.cluster.node_pools,
-  ]
-
 }
