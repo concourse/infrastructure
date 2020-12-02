@@ -40,3 +40,10 @@ resource "kubernetes_storage_class" "ssd" {
   }
   volume_binding_mode = "Immediate"
 }
+
+#module "cert_manager_issuer" {
+#  source = "../cert_manager_issuer"
+#
+#  cluster_name = "production"
+#  project      = var.project
+#}
