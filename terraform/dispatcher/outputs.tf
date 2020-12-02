@@ -11,13 +11,9 @@ output project {
 }
 
 output vault_namespace {
-  value = kubernetes_namespace.vault.id
-}
-
-output vault_crypto_key_self_link {
-  value = google_kms_crypto_key.vault.self_link
+  value = module.vault.namespace
 }
 
 output vault_ca_cert {
-  value = tls_self_signed_cert.vault_ca.cert_pem
+  value = module.vault.ca_pem
 }
