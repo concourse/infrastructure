@@ -45,7 +45,6 @@ jobs:
     - get: secrets
       params:
         unpack: true
-    - get: vault-backend-migrator
   - put: terraform
     params:
       terraform_source: greenpeace/terraform/((cluster))
