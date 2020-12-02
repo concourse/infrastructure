@@ -150,7 +150,7 @@ resource "kubernetes_secret" "server_tls" {
 resource "helm_release" "vault" {
   namespace = kubernetes_namespace.vault.id
   name      = "vault"
-  chart     = "../../helm/charts/vault-helm"
+  chart     = "${path.module}/charts/vault-helm"
 
   values = [
     data.template_file.values.rendered,
