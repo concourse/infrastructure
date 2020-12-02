@@ -12,7 +12,7 @@ outputs:
   - name: compiled
 
 params:
-  PATH:
+  PACKAGE_PATH:
 
 run:
   path: greenpeace/tasks/scripts/compile.sh
