@@ -50,7 +50,7 @@ variable "greenpeace_kms_key_name" {
 
 variable "greenpeace_kms_key_link" {
   description = "The self link of the greenpeace shared crypto key"
-  default     = "projects/cf-concourse-production/locations/global/keyRings/greenpeace-vault-unseal-kr/cryptoKeys/greenpeace-vault-unseal-key"
+  default     = "projects/cf-concourse-production/locations/global/keyRings/greenpeace-kr/cryptoKeys/greenpeace-key"
 }
 
 
