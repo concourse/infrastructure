@@ -7,7 +7,7 @@ image_resource:
 inputs:
   - name: repo
 
-ouputs:
+outputs:
   - name: compiled
 
 params:

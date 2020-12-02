@@ -51,7 +51,7 @@ jobs:
     get_params:
       output_statefile: true
   - task: compile-vault-backend-migrator
-    file: greenpeace/tasks/compile
+    file: greenpeace/tasks/compile.yml
     params:
       PATH: ./vendor/vault-backend-migrator
     input_mapping:
