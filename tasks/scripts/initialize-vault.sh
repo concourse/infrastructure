@@ -106,7 +106,7 @@ pushd greenpeace/terraform/configure_vault > /dev/null
 popd > /dev/null
 
 pushd secrets > /dev/null
-  decrypt ${global_vault_crypto_key}
+  decrypt "${greenpeace_crypto_key_self_link}"
 popd
 
 # TODO: move this binary to the greenpeace repo
