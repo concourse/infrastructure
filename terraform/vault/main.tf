@@ -71,8 +71,10 @@ resource "google_service_account" "vault" {
 }
 
 resource "google_storage_bucket" "vault" {
-  name                        = var.bucket_name
+  name = var.bucket_name
+
   uniform_bucket_level_access = true
+  force_destroy               = true
 
   versioning {
     enabled = true
