@@ -1,0 +1,18 @@
+platform: linux
+
+image_resource:
+  type: registry-image
+  source: { repository: golang }
+
+inputs:
+  - name: repo
+
+ouputs:
+  - name: compiled
+
+params:
+  PATH:
+
+run:
+  path: greenpeace/tasks/scripts/compile.sh
+

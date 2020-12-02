@@ -109,6 +109,4 @@ pushd secrets > /dev/null
   decrypt "${greenpeace_crypto_key_self_link}"
 popd
 
-# TODO: move this binary to the greenpeace repo
-chmod +x vault-backend-migrator/vault-backend-migrator
 vault-backend-migrator/vault-backend-migrator -import concourse/ -file secrets/secrets.json

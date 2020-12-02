@@ -1,3 +1,6 @@
 [submodule "helm/charts/vault-helm"]
 	path = helm/charts/vault-helm
 	url = https://github.com/hashicorp/vault-helm
+[submodule "vendor/vault-backend-migrator"]
+	path = vendor/vault-backend-migrator
+	url = https://github.com/adamdecaf/vault-backend-migrator
