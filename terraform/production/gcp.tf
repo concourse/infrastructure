@@ -3,31 +3,6 @@ terraform {
     bucket = "concourse-greenpeace"
     prefix = "terraform"
   }
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 2"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = "~> 2"
-    }
-    helm = {
-      source = "hashicorp/helm"
-    }
-    kubernetes = {
-      source = "hashicorp/kubernetes"
-    }
-    random = {
-      source = "hashicorp/random"
-    }
-    template = {
-      source = "hashicorp/template"
-    }
-    tls = {
-      source = "hashicorp/tls"
-    }
-  }
 }
 
 provider "google" {
