@@ -5,4 +5,5 @@ set -euo pipefail
 output="$(pwd)/compiled/"
 
 cd repo
-go build "$PACKAGE_PATH" -o "$output"
+[ ! -z "$CONTEXT" ] && cd "$CONTEXT"
+go build -o "$output" "$PACKAGE_PATH"

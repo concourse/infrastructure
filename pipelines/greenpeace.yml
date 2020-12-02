@@ -53,7 +53,7 @@ jobs:
   - task: compile-vault-backend-migrator
     file: greenpeace/tasks/compile.yml
     params:
-      PACKAGE_PATH: ./vendor/vault-backend-migrator
+      CONTEXT: vendor/vault-backend-migrator
     input_mapping:
       repo: greenpeace
     output_mapping:
