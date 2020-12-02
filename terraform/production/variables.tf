@@ -33,6 +33,7 @@ variable "subdomain" {
   default     = "ci-test"
 }
 
+# This KMS keyring+crypto key are created in bootstrap
 variable "greenpeace_kms_region" {
   description = "The cloud provider region where the greenpeace shared key ring is created at."
   default     = "global"

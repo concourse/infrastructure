@@ -125,7 +125,7 @@ data "template_file" "vault_values" {
     gcp_project     = var.project
     gcp_region      = var.greenpeace_kms_region
     key_ring_name   = var.greenpeace_kms_kr_name
-    crypto_key_name = var.greenpeace_kms_key_link
+    crypto_key_name = var.greenpeace_kms_key_name
 
     vault_ca_cert            = jsonencode(tls_self_signed_cert.vault_ca.cert_pem)
     vault_server_cert        = jsonencode(module.vault_server_cert.cert_pem)
