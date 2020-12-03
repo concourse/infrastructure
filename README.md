@@ -154,10 +154,12 @@ There are some helper scripts for managing secrets:
 our vaults)
   * The command will generate a `gsutil` command to upload the encrypted bundle
     to `gs://concourse-greenpeace/vault/production/data.tar`
-* `scripts/edit-secrets` allows editing the existing bundle in
-  `gs://concourse-greenpeace/vault/production/data.tar`
-  * It uses `$EDITOR` (using `vi` as a fallback)
-  * It re-encrypts the bundle and re-uploads it
+* `scripts/edit-secrets` allows editing an existing secrets data bundle for an
+  environment
+  * e.g. `./scripts/edit-secrets production`, will open `$EDITOR` (defaulting
+    to `vi`)
+  * Secret values must be base64 encoded
+  * The encryption key is rotated before re-uploading
 
 
 #### encryption
