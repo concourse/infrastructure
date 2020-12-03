@@ -54,16 +54,24 @@ jobs:
 - name: terraform
   max_in_flight: 1
   plan:
-  - in_parallel:
-    - get: greenpeace
-    - get: secrets
-      params:
-        unpack: true
+  - get: greenpeace
   - put: terraform
     params:
       terraform_source: greenpeace/terraform/((cluster))
-    get_params:
-      output_statefile: true
+
+- name: initialize-vault
+  max_in_flight: 1
+  plan:
+  - in_parallel:
+    - get: greenpeace
+    - get: secrets
+      trigger: true
+      params:
+        unpack: true
+    - get: terraform
+      passed: [terraform]
+      params:
+        output_statefile: true
   - task: compile-vault-backend-migrator
     file: greenpeace/tasks/compile.yml
     params:
