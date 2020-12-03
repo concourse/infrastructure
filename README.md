@@ -117,3 +117,28 @@ If DB was restored but the re-encryption part fails, it can be retried by runnin
 ```sh
 $ ./scripts/reencrypt-db [old_encryption_key]
 ```
+
+### managing secrets
+
+The source-of-truth of secrets for new clusters is stored in
+`gs://concourse-greenpeace/vault/production/data.tar`. When an environment is
+deployed, this data (containing all of the secrets in vault) is imported into
+the new vault.
+
+There are some helper scripts for managing secrets:
+
+* `scripts/export-secrets` exports secrets under `concourse/` from the vault
+  instance at `$VAULT_ADDR` and generates an encrypted bundle that can be
+  uploaded to GCS
+  * This can be used to generate the bundle initially
+  * You need to set `VAULT_ADDR` and `VAULT_TOKEN`, but will also probably need
+    to set `VAULT_SKIP_VERIFY=1`
+  * You'll also need to port-forward the vault instance via `kubectl
+    port-forward -n vault svc/vault 8200:8200` (if you're exporting from one of
+our vaults)
+  * The command will generate a `gsutil` command to upload the encrypted bundle
+    to `gs://concourse-greenpeace/vault/production/data.tar`
+* `scripts/edit-secrets` allows editing the existing bundle in
+  `gs://concourse-greenpeace/vault/production/data.tar`
+  * It uses `$EDITOR` (using `vi` as a fallback)
+  * It re-encrypts the bundle and re-uploads it
