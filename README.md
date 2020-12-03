@@ -71,6 +71,22 @@ to GCP Secret Manager. The following secrets must be created:
 Note: after all this is done, the `bootstrap/terraform.tfstate` file needs to
 be checked in. (Be careful not to have any credentials as outputs.)
 
+#### bootstrap credentials
+
+In order for the deployments to operate, they require their vault instance to
+be populated with credentials. Each environment has its own set of credentials
+that can diverge, but `production`'s is the source of truth for new clusters.
+
+Each environment stores its vault data in the [greenpeace bucket] -
+specifically, at the path `vault/ENVIRONMENT/data.tar`.
+
+For the production cluster, this can be first created by exporting from an
+existing vault instance by running `./scripts/export-secrets` (see [managing
+secrets]).
+
+For other environments, this can be created by syncing with the production
+cluster by triggering the job `sync-secrets-with-production` in the pipeline.
+
 ### deploy the dispatcher
 
 The next step is to deploy the `dispatcher` cluster. This cluster is solely
@@ -152,3 +168,10 @@ There are two encryption keys used to encrypt the vault data:
 2. A Google KMS crypto key for encrypting aforementioned key
 
 This is because KMS crypto keys can only encode small payloads.
+
+
+
+
+
+[greenpeace bucket]: https://console.cloud.google.com/storage/browser/concourse-greenpeace
+[managing secrets]: #managing-secrets
