@@ -25,15 +25,15 @@ resources:
     backend_config:
       bucket: concourse-greenpeace
       prefix: terraform
-      credentials: ((gcp_credentials_json))
+      credentials: ((greenpeace_gcp_credentials_json))
     vars:
-      credentials: ((gcp_credentials_json))
+      credentials: ((greenpeace_gcp_credentials_json))
 
 - name: secrets
   type: gcs
   source:
     bucket: concourse-greenpeace
-    json_key: ((gcp_credentials_json))
+    json_key: ((greenpeace_gcp_credentials_json))
     versioned_file: vault/production/data.tar
 
 jobs:
@@ -61,7 +61,7 @@ jobs:
   - task: initialize-vault
     file: greenpeace/tasks/initialize-vault.yml
     params:
-      GCP_CREDENTIALS_JSON: ((gcp_credentials_json))
+      GCP_CREDENTIALS_JSON: ((greenpeace_gcp_credentials_json))
       GREENPEACE_PRIVATE_KEY: ((greenpeace_private_key))
       CLUSTER_NAME: ((cluster))
       TERRAFORM_VERSION: '0.13.5'

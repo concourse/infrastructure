@@ -44,8 +44,8 @@ EOT
   ]
 }
 
-resource "vault_generic_secret" "gcp_credentials_json" {
-  path = "concourse/main/gcp_credentials_json"
+resource "vault_generic_secret" "greenpeace_gcp_credentials_json" {
+  path = "concourse/main/greenpeace_gcp_credentials_json"
 
   data_json = <<EOT
 {
