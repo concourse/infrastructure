@@ -69,6 +69,7 @@ jobs:
       params:
         unpack: true
     - get: terraform
+      trigger: true
       passed: [terraform]
       params:
         output_statefile: true
