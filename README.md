@@ -142,3 +142,13 @@ our vaults)
   `gs://concourse-greenpeace/vault/production/data.tar`
   * It uses `$EDITOR` (using `vi` as a fallback)
   * It re-encrypts the bundle and re-uploads it
+
+
+#### encryption
+
+There are two encryption keys used to encrypt the vault data:
+
+1. A randomly generated 32 byte sequence for encrypting the data, and
+2. A Google KMS crypto key for encrypting aforementioned key
+
+This is because KMS crypto keys can only encode small payloads.
