@@ -7,7 +7,8 @@ if [ "$#" != "1" ]; then
   exit 1
 fi
 
-cd $(dirname $0)/..
+# TODO: not hard-coded to production
+cd $(dirname $0)/../terraform/production
 
 database="$1"
 output="$(terraform output --json)"
@@ -21,13 +22,13 @@ ip="$(read_attr ip)"
 password="$(read_attr password)"
 
 ca_cert=/tmp/${database}-ca.crt
-jq -r '.["'$database'_database_ca_cert"].value' <<< $output > $ca_cert
+read_attr ca_cert > $ca_cert
 
 client_cert=/tmp/${database}-client.crt
-jq -r '.["'$database'_database_cert"].value' <<< $output > $client_cert
+read_attr cert > $client_cert
 
 client_key=/tmp/${database}-client.key
-jq -r '.["'$database'_database_private_key"].value' <<< $output > $client_key
+read_attr private_key > $client_key
 chmod 0600 $client_key
 
 echo "ip:       ${ip}"
