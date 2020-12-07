@@ -6,7 +6,7 @@ echo "$GCP_CREDENTIALS_JSON" > /tmp/service-account.json
 gcloud auth activate-service-account --key-file /tmp/service-account.json
 
 apt-get update
-apt-get install -y unzip jq
+apt-get install -y unzip jq xxd
 
 curl -O "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 unzip "terraform_${TERRAFORM_VERSION}_linux_amd64.zip" -d /usr/local/bin
