@@ -56,6 +56,17 @@ resources:
     json_key: ((greenpeace_gcp_credentials_json))
     versioned_file: vault/((cluster))/root-token.enc
 
+groups:
+- name: terraform
+  jobs:
+  - terraform
+  - terraform-destroy
+- name: vault
+  jobs:
+  - sync-secrets-with-production
+  - backup-secrets
+  - initialize-vault
+
 jobs:
 - name: sync-secrets-with-production
   plan:
