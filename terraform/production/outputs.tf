@@ -34,6 +34,15 @@ output ci_database_instance_id {
   value = module.ci_database.instance_id
 }
 
+output ci_database_ip {
+  value = module.ci_database.ip
+}
+
+output ci_database_password {
+  value     = module.ci_database.password
+  sensitive = true
+}
+
 output ci_database_ca_cert {
   value     = module.ci_database.ca_cert
   sensitive = true
