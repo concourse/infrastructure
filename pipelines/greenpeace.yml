@@ -121,6 +121,8 @@ jobs:
       compiled: vault-backend-migrator
   - task: export-secrets
     file: greenpeace/tasks/export-secrets.yml
+    params:
+      GCP_CREDENTIALS_JSON: ((greenpeace_gcp_credentials_json))
   - put: secrets
     params:
       file: secrets/data.tar

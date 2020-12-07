@@ -5,16 +5,24 @@ set -euo pipefail
 echo "$GCP_CREDENTIALS_JSON" > /tmp/service-account.json
 gcloud auth activate-service-account --key-file /tmp/service-account.json
 
+apt-get update
+apt-get install -y jq
+
+ROOT_DIR="$(pwd)"
+terraform_output () {
+  cat "$ROOT_DIR/terraform/metadata" | jq ".$1"
+}
+
 pushd greenpeace/bootstrap/ > /dev/null
-  gcs_bucket_name="$(terraform output greenpeace_bucket_name)"
-  greenpeace_crypto_key_self_link="$(terraform output greenpeace_crypto_key_link)"
+  gcs_bucket_name="$(terraform_output greenpeace_bucket_name)"
+  greenpeace_crypto_key_self_link="$(terraform_output greenpeace_crypto_key_link)"
 popd > /dev/null
 
 pushd terraform/ > /dev/null
-  gcloud container clusters get-credentials "$(terraform output cluster_name)" --zone "$(terraform output cluster_zone)" --project "$(terraform output project)"
+  gcloud container clusters get-credentials "$(terraform_output cluster_name)" --zone "$(terraform_output cluster_zone)" --project "$(terraform_output project)"
 
   printf "\nport-forwarding the vault service to port 8200...\n"
-  kubectl port-forward service/vault -n "$(terraform output vault_namespace)" 8200:8200 >/dev/null &
+  kubectl port-forward service/vault -n "$(terraform_output vault_namespace)" 8200:8200 >/dev/null &
   port_forward_pid=$!
 
   function finish {
