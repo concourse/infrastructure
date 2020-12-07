@@ -1,6 +1,5 @@
-image: concourse/dev
-# watch-endpoints branch image
-imageDigest: sha256:7a704b87c973908f1cf6a2f9eb151d85849bcfe34e5e8a28b4ec44ec63bf5d98
+image: concourse/concourse-dev
+imageDigest: sha256:5cfe2d006c85c157a657a64e86099c44ed959d8a50621c6719ca94a3fc4f4b8d
 
 postgresql:
   enabled: false
@@ -14,8 +13,6 @@ web:
   env:
   - name: CONCOURSE_X_FRAME_OPTIONS
     value: ""
-  - name: CONCOURSE_ENABLE_WATCH_ENDPOINTS
-    value: "true"
 
   resources:
     requests:
