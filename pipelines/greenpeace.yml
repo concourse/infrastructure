@@ -17,6 +17,12 @@ resources:
     uri: git@github.com:concourse/greenpeace.git
     private_key: ((greenpeace_private_key))
 
+- name: daily
+  type: time
+  source:
+    start: 2:00 AM
+    stop: 3:00 AM
+
 - name: terraform
   type: terraform
   source:
@@ -42,6 +48,13 @@ resources:
     bucket: concourse-greenpeace
     json_key: ((greenpeace_gcp_credentials_json))
     versioned_file: vault/production/data.tar
+
+- name: root-token-enc
+  type: gcs
+  source:
+    bucket: concourse-greenpeace
+    json_key: ((greenpeace_gcp_credentials_json))
+    versioned_file: vault/((cluster))/root-token.enc
 
 jobs:
 - name: sync-secrets-with-production
@@ -88,6 +101,29 @@ jobs:
       GREENPEACE_PRIVATE_KEY: ((greenpeace_private_key))
       CLUSTER_NAME: ((cluster))
       TERRAFORM_VERSION: '0.13.5'
+
+- name: backup-secrets
+  max_in_flight: 1
+  plan:
+  - in_parallel:
+    - get: greenpeace
+    - get: terraform
+    - get: root-token-enc
+    - get: daily
+      trigger: true
+  - task: compile-vault-backend-migrator
+    file: greenpeace/tasks/compile.yml
+    params:
+      CONTEXT: vendor/vault-backend-migrator
+    input_mapping:
+      repo: greenpeace
+    output_mapping:
+      compiled: vault-backend-migrator
+  - task: export-secrets
+    file: greenpeace/tasks/export-secrets.yml
+  - put: secrets
+    params:
+      file: secrets/data.tar
 
 - name: terraform-destroy
   max_in_flight: 1
