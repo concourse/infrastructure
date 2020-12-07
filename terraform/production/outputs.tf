@@ -33,3 +33,18 @@ output greenpeace_crypto_key_self_link {
 output ci_database_instance_id {
   value = module.ci_database.instance_id
 }
+
+output ci_database_ca_cert {
+  value     = module.ci_database.ca_cert
+  sensitive = true
+}
+
+output ci_database_cert {
+  value     = module.ci_database.cert
+  sensitive = true
+}
+
+output ci_database_private_key {
+  value     = module.ci_database.private_key
+  sensitive = true
+}
