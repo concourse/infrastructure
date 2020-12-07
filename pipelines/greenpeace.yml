@@ -108,6 +108,8 @@ jobs:
   - in_parallel:
     - get: greenpeace
     - get: terraform
+      params:
+        output_statefile: true
     - get: root-token-enc
     - get: daily
       trigger: true
@@ -123,6 +125,7 @@ jobs:
     file: greenpeace/tasks/export-secrets.yml
     params:
       GCP_CREDENTIALS_JSON: ((greenpeace_gcp_credentials_json))
+      TERRAFORM_VERSION: '0.13.5'
   - put: secrets
     params:
       file: secrets/data.tar
