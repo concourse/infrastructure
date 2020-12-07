@@ -13,18 +13,21 @@ resource_types:
 resources:
 - name: greenpeace
   type: git
+  icon: github
   source:
     uri: git@github.com:concourse/greenpeace.git
     private_key: ((greenpeace_private_key))
 
 - name: daily
   type: time
+  icon: clock-outline
   source:
     start: 2:00 AM
     stop: 3:00 AM
 
 - name: terraform
   type: terraform
+  icon: terraform
   source:
     env_name: ((cluster))
     backend_type: gcs
@@ -37,6 +40,7 @@ resources:
 
 - name: secrets
   type: gcs
+  icon: database-lock
   source:
     bucket: concourse-greenpeace
     json_key: ((greenpeace_gcp_credentials_json))
@@ -44,6 +48,7 @@ resources:
 
 - name: production-secrets
   type: gcs
+  icon: database-lock
   source:
     bucket: concourse-greenpeace
     json_key: ((greenpeace_gcp_credentials_json))
@@ -51,6 +56,7 @@ resources:
 
 - name: root-token-enc
   type: gcs
+  icon: lastpass
   source:
     bucket: concourse-greenpeace
     json_key: ((greenpeace_gcp_credentials_json))
