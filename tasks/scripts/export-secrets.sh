@@ -44,6 +44,8 @@ export VAULT_TOKEN="${token}"
 export VAULT_ADDR="https://127.0.0.1:8200"
 export VAULT_SKIP_VERIFY="true"
 
+export VAULT_BACKEND_MIGRATOR_COMMAND=vault-backend-migrator/vault-backend-migrator
+
 greenpeace/scripts/export-secrets
 
 mv greenpeace/sensitive/data.tar secrets/
