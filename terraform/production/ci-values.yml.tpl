@@ -69,10 +69,10 @@ web:
             secretKeyRef:
               name: ${wavefront_secret_name}
               key: token
-   additionalVolumes:
-     - name: otelcol-config
-       configMap:
-         name: ${otelcol_config_map_name}
+    additionalVolumes:
+      - name: otelcol-config
+        configMap:
+          name: ${otelcol_config_map_name}
 
 
 persistence:
