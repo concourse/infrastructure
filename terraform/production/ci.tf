@@ -80,8 +80,8 @@ data "template_file" "ci_values" {
     vault_client_cert        = jsonencode(module.vault.client_cert_pem)
     vault_client_private_key = jsonencode(module.vault.client_private_key_pem)
 
-    wavefront_secret_name   = jsonencode(kubernetes_secret.wavefront.id)
-    otelcol_config_map_name = jsonencode(kubernetes_config_map.otel_collector.id)
+    wavefront_secret_name   = jsonencode(kubernetes_secret.wavefront.metadata[0].name)
+    otelcol_config_map_name = jsonencode(kubernetes_config_map.otel_collector.metadata[0].name)
   }
 }
 
