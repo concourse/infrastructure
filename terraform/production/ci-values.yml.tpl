@@ -38,41 +38,41 @@ web:
       type: LoadBalancer
       loadBalancerIP: ${lb_address}
 
-    sidecarContainers:
-      - name: otel-collector
-        image: otel/opentelemetry-collector-contrib:0.15.0
-        args: ['--config=/etc/config/otelcol.yml']
-        volumeMounts:
-          - name: otelcol-config
-            mountPath: /etc/config
-      - name: prom-storage-adapter
-        image: wavefronthq/prometheus-storage-adapter
-        args:
-          - -proxy=127.0.0.1
-          - -proxy-port=2878
-          - -listen=9000
-          - -convert-paths=true
-      - name: wavefront-proxy
-        image: wavefronthq/proxy:9.2
-        env:
-        - name: WAVEFRONT_URL
-          value: "https://vmware.wavefront.com/api/"
-        - name: WAVEFRONT_PROXY_ARGS
-          # https://github.com/wavefrontHQ/wavefront-proxy/blob/master/pkg/etc/wavefront/wavefront-proxy/wavefront.conf.default
-          value: |
-            --prefix concourse
-            --hostname ci-test.concourse-ci.org
-            --traceJaegerGrpcListenerPorts 14250
-            --traceJaegerApplicationName Concourse
-        - name: WAVEFRONT_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: ${wavefront_secret_name}
-              key: token
-    additionalVolumes:
-      - name: otelcol-config
-        configMap:
-          name: ${otelcol_config_map_name}
+  sidecarContainers:
+    - name: otel-collector
+      image: otel/opentelemetry-collector-contrib:0.15.0
+      args: ['--config=/etc/config/otelcol.yml']
+      volumeMounts:
+        - name: otelcol-config
+          mountPath: /etc/config
+    - name: prom-storage-adapter
+      image: wavefronthq/prometheus-storage-adapter
+      args:
+        - -proxy=127.0.0.1
+        - -proxy-port=2878
+        - -listen=9000
+        - -convert-paths=true
+    - name: wavefront-proxy
+      image: wavefronthq/proxy:9.2
+      env:
+      - name: WAVEFRONT_URL
+        value: "https://vmware.wavefront.com/api/"
+      - name: WAVEFRONT_PROXY_ARGS
+        # https://github.com/wavefrontHQ/wavefront-proxy/blob/master/pkg/etc/wavefront/wavefront-proxy/wavefront.conf.default
+        value: |
+          --prefix concourse
+          --hostname ci-test.concourse-ci.org
+          --traceJaegerGrpcListenerPorts 14250
+          --traceJaegerApplicationName Concourse
+      - name: WAVEFRONT_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: ${wavefront_secret_name}
+            key: token
+  additionalVolumes:
+    - name: otelcol-config
+      configMap:
+        name: ${otelcol_config_map_name}
 
 
 persistence:
