@@ -13,6 +13,14 @@ web:
   env:
   - name: CONCOURSE_X_FRAME_OPTIONS
     value: ""
+  # The OTLP tracing stuff aren't on the latest chart yet so we're stting them as env vars
+  - name: CONCOURSE_TRACING_SERVICE_NAME
+    value: web
+  - name: CONCOURSE_TRACING_OTLP_ADDRESS
+    value: 127.0.0.1:55680
+  - name: CONCOURSE_TRACING_OTLP_USE_TLS
+      value: "false"
+
 
   resources:
     requests:
@@ -29,6 +37,43 @@ web:
     workerGateway:
       type: LoadBalancer
       loadBalancerIP: ${lb_address}
+
+    sidecarContainers:
+      - name: otel-collector
+        image: otel/opentelemetry-collector-contrib:0.15.0
+        args: ['--config=/etc/config/otelcol.yml']
+        volumeMounts:
+          - name: otelcol-config
+            mountPath: /etc/config
+      - name: prom-storage-adapter
+        image: wavefronthq/prometheus-storage-adapter
+        args:
+          - -proxy=127.0.0.1
+          - -proxy-port=2878
+          - -listen=9000
+          - -convert-paths=true
+      - name: wavefront-proxy
+        image: wavefronthq/proxy:9.2
+        env:
+        - name: WAVEFRONT_URL
+          value: "https://vmware.wavefront.com/api/"
+        - name: WAVEFRONT_PROXY_ARGS
+          # https://github.com/wavefrontHQ/wavefront-proxy/blob/master/pkg/etc/wavefront/wavefront-proxy/wavefront.conf.default
+          value: |
+            --prefix concourse
+            --hostname ci-test.concourse-ci.org
+            --traceJaegerGrpcListenerPorts 14250
+            --traceJaegerApplicationName Concourse
+        - name: WAVEFRONT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: ${wavefront_secret_name}
+              key: token
+   additionalVolumes:
+     - name: otelcol-config
+       configMap:
+         name: ${otelcol_config_map_name}
+
 
 persistence:
   worker:
@@ -70,13 +115,17 @@ concourse:
     clusterName: ci
     containerPlacementStrategy: limit-active-tasks
     maxActiveTasksPerWorker: 5
+    streamingArtifactsCompression: zstd
     enableGlobalResources: true
-    encryption: { enabled: true }
-    enableArchivePipeline: true
+    enableAcrossStep: true
+    encryption:
+      enabled: true
     kubernetes:
       keepNamespaces: false
       enabled: false
       createTeamNamespaces: false
+    prometheus:
+      enabled: true
     vault:
       enabled: true
       url: https://vault.vault.svc.cluster.local:8200
