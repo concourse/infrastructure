@@ -8,8 +8,6 @@ def fail(s):
     exit(1)
 
 
-print(sys.argv)
-
 if len(sys.argv) < 4:
     fail("usage: {} secret_name secret_value (or k1=v1 k2=v2 ...) file.json".format(sys.argv[0]))
 
