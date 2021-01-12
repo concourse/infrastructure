@@ -1,7 +1,5 @@
 provider "helm" {
   kubernetes {
-    load_config_file = false
-
     host = "https://${module.cluster.endpoint}"
 
     username = module.cluster.username
