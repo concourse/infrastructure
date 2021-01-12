@@ -1,3 +1,8 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:assert", "assert")
+
+#@ cluster = data.values.cluster or assert.fail("cluster must be specified")
+
 resource_types:
 - name: terraform
   type: registry-image
@@ -18,6 +23,15 @@ resources:
     uri: git@github.com:concourse/greenpeace.git
     private_key: ((greenpeace_private_key))
 
+#@ if cluster == "production":
+- name: boarding-pass
+  type: git
+  icon: github
+  source:
+    uri: git@github.com:concourse/boarding-pass.git
+    private_key: ((greenpeace_private_key))
+#@ end
+
 - name: daily
   type: time
   icon: clock-outline
@@ -29,7 +43,7 @@ resources:
   type: terraform
   icon: terraform
   source:
-    env_name: ((cluster))
+    env_name: #@ cluster
     backend_type: gcs
     backend_config:
       bucket: concourse-greenpeace
@@ -44,7 +58,7 @@ resources:
   source:
     bucket: concourse-greenpeace
     json_key: ((greenpeace_gcp_credentials_json))
-    versioned_file: vault/((cluster))/data.tar
+    versioned_file: #@ "vault/" + cluster + "/data.tar"
 
 - name: production-secrets
   type: gcs
@@ -60,7 +74,7 @@ resources:
   source:
     bucket: concourse-greenpeace
     json_key: ((greenpeace_gcp_credentials_json))
-    versioned_file: vault/((cluster))/root-token.enc
+    versioned_file: #@ "vault/" + cluster + "/root-token.enc"
 
 groups:
 - name: terraform
@@ -85,9 +99,15 @@ jobs:
   max_in_flight: 1
   plan:
   - get: greenpeace
+  #@ if cluster == "production":
+  - get: boarding-pass
+    trigger: true
+  - task: build-boarding-pass
+    file: boarding-pass/ci/build.yml
+  #@ end
   - put: terraform
     params:
-      terraform_source: greenpeace/terraform/((cluster))
+      terraform_source: #@ "greenpeace/terraform/" + cluster
 
 - name: initialize-vault
   max_in_flight: 1
@@ -116,7 +136,7 @@ jobs:
     params:
       GCP_CREDENTIALS_JSON: ((greenpeace_gcp_credentials_json))
       GREENPEACE_PRIVATE_KEY: ((greenpeace_private_key))
-      CLUSTER_NAME: ((cluster))
+      CLUSTER_NAME: #@ cluster
       TERRAFORM_VERSION: '0.13.5'
 
 - name: backup-secrets
@@ -153,7 +173,7 @@ jobs:
   - get: greenpeace
   - put: terraform
     params:
-      terraform_source: greenpeace/terraform/((cluster))
+      terraform_source: #@ "greenpeace/terraform/" + cluster
       action: destroy
     get_params:
       action: destroy

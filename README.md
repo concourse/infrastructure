@@ -19,6 +19,9 @@ Terraform v0.13.5
 $ jq --version
 jq-1.6
 ```
+$ ytt --version
+ytt version 0.31.0
+```
 
 ...but you can probably get away with slightly different versions
 
@@ -97,11 +100,11 @@ responsible for continuously deploying the `production` cluster.
 deploy, you should run this pipeline on a local Concourse:
 
 ```sh
-fly -t dev set-pipeline \
-   -p dispatcher-greenpeace \
-   -c pipelines/greenpeace.yml \
-   -l sensitive/vars.yml \
-   -v cluster=dispatcher
+ytt -v cluster=dispatcher -f pipeline/ | \
+  fly -t dev set-pipeline \
+    -l sensitive/vars.yml \
+    -p dispatcher-greenpeace \
+    -c -
 ```
 
 After the `production` cluster is up, the pipeline can be run from CI to update

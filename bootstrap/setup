@@ -46,8 +46,8 @@ echo "- dispatcher_concourse-github_client_secret"
 
 echo
 echo "set the initial bootstrapping pipeline to a running concourse:"
-echo 'fly -t dev set-pipeline \'
-echo '  -p dispatcher-greenpeace \'
-echo '  -c pipelines/greenpeace.yml \'
-echo '  -l sensitive/vars.yml \'
-echo '  -v cluster=dispatcher'
+echo 'ytt -v cluster=dispatcher -f pipeline/ | \'
+echo '  fly -t dev set-pipeline \'
+echo '    -l sensitive/vars.yml \'
+echo '    -p dispatcher-greenpeace \'
+echo '    -c -'
