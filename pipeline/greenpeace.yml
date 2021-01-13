@@ -158,7 +158,7 @@ jobs:
     trigger: true
   - load_var: boarding_pass_image_digest
     file: boarding-pass-image/digest
-    #@ vars = { "boarding_pass_image_digest": "((.boarding_pass_image_digest))" }
+    #@ vars = { "boarding_pass_image_digest": "((.:boarding_pass_image_digest))" }
   #@ else:
     #@ vars = {}
   #@ end
