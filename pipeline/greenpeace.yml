@@ -44,7 +44,7 @@ resources:
   type: registry-image
   icon: docker
   source:
-    repository: concourse/dev
+    repository: gcr.io/cf-concourse-production/boarding-pass
     tag: latest
     username: _json_key
     password: ((greenpeace_gcp_credentials_json))
