@@ -153,13 +153,19 @@ jobs:
   - get: greenpeace-tf-module
     trigger: true
   #@ if cluster == "production":
-  - get: boarding-pass
-    trigger: true
+  - get: boarding-pass-image
     passed: [build-boarding-pass]
+    trigger: true
+  - load_var: boarding_pass_image_digest
+    file: boarding-pass-image/digest
+    #@ vars = { "boarding_pass_image_digest": "((.boarding_pass_image_digest))" }
+  #@ else:
+    #@ vars = {}
   #@ end
   - put: terraform
     params:
       terraform_source: #@ "greenpeace-tf-module/terraform/" + cluster
+      vars: #@ vars
 
 - name: initialize-vault
   max_in_flight: 1

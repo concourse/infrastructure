@@ -54,4 +54,6 @@ variable "greenpeace_kms_key_link" {
   default     = "projects/cf-concourse-production/locations/global/keyRings/greenpeace-kr/cryptoKeys/greenpeace-key"
 }
 
-
+variable "boarding_pass_image_digest" {
+  description = "Digest of the boarding pass image"
+}

@@ -32,7 +32,7 @@ resource "kubernetes_deployment" "boarding_pass" {
 
       spec {
         container {
-          image = "gcr.io/cf-concourse-production/boarding-pass"
+          image = "gcr.io/cf-concourse-production/boarding-pass@${var.boarding_pass_image_digest}"
           name  = "boarding-pass"
         }
       }
