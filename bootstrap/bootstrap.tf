@@ -53,6 +53,8 @@ resource "google_project_iam_member" "greenpeace_terraform_policy" {
     "serviceAccountUser" = "roles/iam.serviceAccountUser"
 
     "secretManager" = "roles/secretmanager.admin"
+
+    "gcrAdmin" = "roles/artifactregistry.admin"
   }
 
   role   = each.value
@@ -71,4 +73,8 @@ resource "google_kms_crypto_key" "greenpeace" {
   lifecycle {
     prevent_destroy = true
   }
+}
+
+# enables GCR on the project (noop if it's already enabled)
+resource "google_container_registry" "registry" {
 }
