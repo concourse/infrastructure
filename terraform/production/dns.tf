@@ -20,3 +20,10 @@ module "concourse_ci_address" {
   dns_zone  = var.dns_zone
   subdomain = var.subdomain
 }
+
+module "boarding_pass_address" {
+  source = "../address"
+
+  dns_zone  = var.dns_zone
+  subdomain = "boarding-pass"
+}
