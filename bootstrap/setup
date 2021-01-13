@@ -5,7 +5,6 @@ set -e -u
 cd $(dirname $0)
 
 terraform init
-
 terraform apply
 
 greenpeace_terraform_email=$(terraform output greenpeace_terraform_email)
