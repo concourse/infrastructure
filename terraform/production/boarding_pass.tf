@@ -8,28 +8,50 @@ resource "kubernetes_namespace" "boarding_pass" {
   }
 }
 
-resource "kubernetes_secret" "boarding_pass" {
+resource "kubernetes_deployment" "boarding_pass" {
   metadata {
-    name      = "htpasswd"
+    name      = "boarding-pass"
     namespace = kubernetes_namespace.boarding_pass.id
   }
 
-  type = "Opaque"
+  spec {
+    replicas = 1
 
-  data = {
-    # Regular workstation password for basic auth
-    ".htpasswd" = "concourse:SNIPPED"
+    selector {
+      match_labels = {
+        app = "boarding-pass"
+      }
+    }
+
+    template {
+      match_labels = {
+        app = "boarding-pass"
+      }
+
+      spec {
+        container {
+          image = "gcr.io/cf-concourse-production/boarding-pass"
+          name  = "boarding-pass"
+        }
+      }
+    }
   }
 }
 
-resource "kubernetes_config_map" "boarding_pass" {
+resource "kubernetes_service" "boarding_pass" {
   metadata {
-    name      = "content"
+    name      = "boarding-pass"
     namespace = kubernetes_namespace.boarding_pass.id
   }
 
-  binary_data = {
-    for file in fileset(path.module, "/../../../static-content/**/*") :
-    trimprefix(file, "../../../static-content/") => filebase64(file)
+  spec {
+    selector {
+      match_labels = {
+        app = "boarding-pass"
+      }
+    }
+
+    type           = "LoadBalancer"
+    loadBalancerIP = module.boarding_pass_address.address
   }
 }
