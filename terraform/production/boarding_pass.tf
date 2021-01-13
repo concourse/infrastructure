@@ -24,8 +24,10 @@ resource "kubernetes_deployment" "boarding_pass" {
     }
 
     template {
-      match_labels = {
-        app = "boarding-pass"
+      metadata {
+        labels = {
+          app = "boarding-pass"
+        }
       }
 
       spec {
@@ -45,13 +47,16 @@ resource "kubernetes_service" "boarding_pass" {
   }
 
   spec {
-    selector {
-      match_labels = {
-        app = "boarding-pass"
-      }
+    selector = {
+      app = "boarding-pass"
     }
 
-    type           = "LoadBalancer"
-    loadBalancerIP = module.boarding_pass_address.address
+    port {
+      port        = 80
+      target_port = 80
+    }
+
+    type             = "LoadBalancer"
+    load_balancer_ip = module.boarding_pass_address.address
   }
 }
