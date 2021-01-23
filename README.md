@@ -110,7 +110,7 @@ ytt -v cluster=dispatcher -f pipeline/ | \
 After the `production` cluster is up, the pipeline can be run from CI to update
 Concourse on the `dispatcher`.
 
-`dispatcher`'s Concourse can be accessed at `dispatcher.concourse-ci.org`.
+`dispatcher`'s Concourse can be accessed at [`dispatcher.concourse-ci.org`](https://dispatcher.concourse-ci.org/).
 
 ### restoring the CI db
 
