@@ -18,7 +18,7 @@ Terraform v0.13.5
 
 $ jq --version
 jq-1.6
-```
+
 $ ytt --version
 ytt version 0.31.0
 ```
