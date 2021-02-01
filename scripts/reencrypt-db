@@ -13,7 +13,7 @@ old_encryption_key="$1"
 
 echo "Reading terraform output..."
 
-output="$(terraform output --json)"
+output="$(terraform output -json)"
 
 cluster_name="$(jq -r '.cluster_name.value' <<< $output)"
 cluster_zone="$(jq -r '.cluster_zone.value' <<< $output)"

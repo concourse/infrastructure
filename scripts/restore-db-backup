@@ -16,7 +16,7 @@ pushd $(dirname $0)/../terraform/production
 
   echo "Reading terraform output..."
 
-  output="$(terraform output --json)"
+  output="$(terraform output -json)"
 
   dst_instance_id="$(jq -r '.["'$database'_database_instance_id"].value' <<< $output)"
 
