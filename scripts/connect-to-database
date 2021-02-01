@@ -11,7 +11,7 @@ fi
 cd $(dirname $0)/../terraform/production
 
 database="$1"
-output="$(terraform output --json)"
+output="$(terraform output -json)"
 
 function read_attr() {
   local attr="$1"

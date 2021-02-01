@@ -4,10 +4,12 @@ set -e -u
 
 cd $(dirname $0)
 
+source "../scripts/tfhelpers.sh"
+
 terraform init
 terraform apply
 
-greenpeace_terraform_email=$(terraform output greenpeace_terraform_email)
+greenpeace_terraform_email=$(tfoutput greenpeace_terraform_email)
 
 gcloud iam service-accounts keys list \
   --iam-account $greenpeace_terraform_email \
