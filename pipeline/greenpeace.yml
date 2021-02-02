@@ -144,9 +144,9 @@ jobs:
   - get: greenpeace
     trigger: true
   #@ vars = {
-  #@   "macstadium_ip": "((macstadium_ip))",
-  #@   "macstadium_username": "((macstadium_username))",
-  #@   "macstadium_password": "((macstadium_password))"
+  #@   "macstadium_ip": "((macstadium.ip))",
+  #@   "macstadium_username": "((macstadium.username))",
+  #@   "macstadium_password": "((macstadium.password))"
   #@ }
   #@ if cluster == "production":
   - get: boarding-pass-image
