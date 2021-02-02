@@ -72,3 +72,20 @@ variable "concourse_windows_bundle_url" {
   description = "URL to the Concourse windows .zip file containing the concourse binary. Can be from the concourse-artifacts bucket or from a GitHub release"
   default     = "https://storage.googleapis.com/concourse-artifacts/dev/concourse-6.7.0+dev.409.cc6d4a1a0.windows.amd64.zip"
 }
+
+variable "concourse_darwin_bundle_url" {
+  description = "URL to the Concourse darwin .tgz file containing the concourse binary. Can be from the concourse-artifacts bucket or from a GitHub release"
+  default     = "https://storage.googleapis.com/concourse-artifacts/dev/concourse-6.7.0+dev.461.5e9e2ec33.darwin.amd64.tgz"
+}
+
+variable "macstadium_ip" {
+  type = string
+}
+
+variable "macstadium_username" {
+  type = string
+}
+
+variable "macstadium_password" {
+  type = string
+}
