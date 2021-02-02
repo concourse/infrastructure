@@ -62,6 +62,7 @@ data "template_file" "startup_script" {
 
   vars = {
     concourse_bundle_url = var.concourse_bundle_url
+    tsa_host             = var.tsa_host
     tsa_host_public_key  = var.tsa_host_public_key
     worker_key           = var.worker_key
   }

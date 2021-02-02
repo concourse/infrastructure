@@ -8,6 +8,11 @@ variable "resource_name" {
   description = "Name of the windows worker and other associated GCP resources (address/firewall rules)"
 }
 
+variable "tsa_host" {
+  type        = string
+  description = "Address to the TSA host (e.g. ci.concourse-ci.org:2222)"
+}
+
 variable "tsa_host_public_key" {
   type        = string
   description = "Public key of the TSA"

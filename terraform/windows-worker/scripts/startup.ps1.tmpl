@@ -48,7 +48,7 @@ ${worker_key}
 
 & .\concourse\bin\concourse.exe worker `
   /work-dir .\work `
-  /tsa-host ci.concourse-ci.org:2222 `
+  /tsa-host ${tsa_host} `
   /tsa-public-key .\tsa-host-public-key `
   /tsa-worker-private-key .\worker-key `
   /team main
