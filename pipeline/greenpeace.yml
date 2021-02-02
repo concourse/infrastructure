@@ -143,15 +143,18 @@ jobs:
   plan:
   - get: greenpeace
     trigger: true
+  #@ vars = {
+  #@   "macstadium_ip": "((macstadium_ip))",
+  #@   "macstadium_username": "((macstadium_username))",
+  #@   "macstadium_password": "((macstadium_password))"
+  #@ }
   #@ if cluster == "production":
   - get: boarding-pass-image
     passed: [build-boarding-pass]
     trigger: true
   - load_var: boarding_pass_image_digest
     file: boarding-pass-image/digest
-    #@ vars = { "boarding_pass_image_digest": "((.:boarding_pass_image_digest))" }
-  #@ else:
-    #@ vars = {}
+    #@ vars["boarding_pass_image_digest"] = "((.:boarding_pass_image_digest))"
   #@ end
   - put: terraform
     params:
