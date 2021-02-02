@@ -2,11 +2,11 @@ data "google_compute_zones" "available" {
 }
 
 resource "google_compute_address" "windows_worker" {
-  name = "windows-worker"
+  name = var.resource_name
 }
 
 resource "google_compute_firewall" "windows_worker" {
-  name    = "windows-worker-allow-ssh"
+  name    = "${var.resource_name}-allow-ssh"
   network = "default"
 
   allow {
@@ -18,7 +18,7 @@ resource "google_compute_firewall" "windows_worker" {
 }
 
 resource "google_compute_instance" "windows_worker" {
-  name         = "windows-worker"
+  name         = var.resource_name
   machine_type = "custom-8-16384"
   zone         = data.google_compute_zones.available.names[0]
   tags         = ["windows-worker"]
