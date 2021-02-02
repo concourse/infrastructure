@@ -106,7 +106,8 @@ resource "helm_release" "ci-concourse" {
 module "windows_worker" {
   source = "../windows-worker"
 
+  resource_name        = "windows-worker-ci"
   concourse_bundle_url = "https://storage.googleapis.com/concourse-artifacts/dev/concourse-6.7.0+dev.409.cc6d4a1a0.windows.amd64.zip"
-  tsa_host_public_key = tls_private_key.host_key.public_key_openssh
-  worker_key = tls_private_key.worker_key.private_key_pem
+  tsa_host_public_key  = tls_private_key.host_key.public_key_openssh
+  worker_key           = tls_private_key.worker_key.private_key_pem
 }
