@@ -58,7 +58,7 @@ resource "google_compute_instance" "windows_worker" {
 }
 
 data "template_file" "startup_script" {
-  template = file("scripts/startup.ps1.tmpl")
+  template = file("${path.module}/scripts/startup.ps1.tmpl")
 
   vars = {
     concourse_bundle_url = var.concourse_bundle_url
