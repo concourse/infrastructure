@@ -57,3 +57,18 @@ variable "greenpeace_kms_key_link" {
 variable "boarding_pass_image_digest" {
   description = "Digest of the boarding pass image"
 }
+
+variable "concourse_image_repo" {
+  description = "Concourse image repo to use for the ATC and the linux workers"
+  default     = "concourse/concourse-dev"
+}
+
+variable "concourse_image_digest" {
+  description = "digest for the concourse_image_repo image to use for the ATC and the linux workers"
+  default     = "sha256:5cfe2d006c85c157a657a64e86099c44ed959d8a50621c6719ca94a3fc4f4b8d"
+}
+
+variable "concourse_windows_bundle_url" {
+  description = "URL to the Concourse windows .zip file containing the concourse binary. Can be from the concourse-artifacts bucket or from a GitHub release"
+  default     = "https://storage.googleapis.com/concourse-artifacts/dev/concourse-6.7.0+dev.409.cc6d4a1a0.windows.amd64.zip"
+}

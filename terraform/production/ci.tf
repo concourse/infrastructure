@@ -51,6 +51,9 @@ module "ci_database" {
 data "template_file" "ci_values" {
   template = file("${path.module}/ci-values.yml.tpl")
   vars = {
+    image_repo   = var.concourse_image_repo
+    image_digest = var.concourse_image_digest
+
     lb_address   = module.concourse_ci_address.address
     external_url = "https://${var.subdomain}.${var.domain}"
 
@@ -107,7 +110,7 @@ module "windows_worker" {
   source = "../windows-worker"
 
   resource_name        = "windows-worker-ci"
-  concourse_bundle_url = "https://storage.googleapis.com/concourse-artifacts/dev/concourse-6.7.0+dev.409.cc6d4a1a0.windows.amd64.zip"
+  concourse_bundle_url = var.concourse_windows_bundle_url
   tsa_host             = "${module.concourse_ci_address.address}:2222"
   tsa_host_public_key  = tls_private_key.host_key.public_key_openssh
   worker_key           = tls_private_key.worker_key.private_key_pem
