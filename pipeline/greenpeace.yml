@@ -23,15 +23,6 @@ resources:
     uri: git@github.com:concourse/greenpeace.git
     private_key: ((greenpeace_private_key))
 
-- name: greenpeace-tf-module
-  type: git
-  icon: github
-  source:
-    uri: git@github.com:concourse/greenpeace.git
-    private_key: ((greenpeace_private_key))
-    paths:
-    - #@ "terraform/" + cluster
-
 #@ if cluster == "production":
 - name: boarding-pass
   type: git
@@ -150,7 +141,7 @@ jobs:
 - name: terraform
   max_in_flight: 1
   plan:
-  - get: greenpeace-tf-module
+  - get: greenpeace
     trigger: true
   #@ if cluster == "production":
   - get: boarding-pass-image
@@ -164,7 +155,7 @@ jobs:
   #@ end
   - put: terraform
     params:
-      terraform_source: #@ "greenpeace-tf-module/terraform/" + cluster
+      terraform_source: #@ "greenpeace/terraform/" + cluster
       vars: #@ vars
 
 - name: initialize-vault
