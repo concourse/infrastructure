@@ -15,6 +15,13 @@ run_sudo mv /tmp/administrator_sudo /etc/sudoers.d/administrator
 
 set -x
 
+# Disable screensaver (which consumes CPU)
+sudo defaults write /Library/Preferences/com.apple.screensaver loginWindowIdleTime 0
+
+# Disable RDP (can be re-enabled - see https://www.jeffgeerling.com/blog/2020/setting-mac-mini-macstadium-headless-ci)
+sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart \
+  -deactivate -configure -access -off
+
 # Install brew
 CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
