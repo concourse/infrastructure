@@ -1,10 +1,4 @@
 # This service account is to be used in CI to deploy dutyfree
-resource "kubernetes_namespace" "dutyfree" {
-  metadata {
-    name = "dutyfree"
-  }
-}
-
 resource "kubernetes_service_account" "df-deployer" {
   metadata {
     name = "df-deployer"
