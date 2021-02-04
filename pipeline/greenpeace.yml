@@ -23,6 +23,14 @@ resources:
     uri: git@github.com:concourse/greenpeace.git
     private_key: ((greenpeace_private_key))
 
+resources:
+- name: ci
+  type: git
+  icon: github
+  source:
+    uri: git@github.com:concourse/ci.git
+    private_key: ((greenpeace_private_key))
+
 #@ if cluster == "production":
 - name: boarding-pass
   type: git
@@ -218,6 +226,18 @@ jobs:
   - put: secrets
     params:
       file: secrets/data.tar
+
+- name: backup-teams
+  max_in_flight: 1
+  plan:
+  - in_parallel:
+    - get: greenpeace
+    - get: ci
+    - get: daily
+      trigger: true
+  - task: export-teams
+    file: greenpeace/tasks/export-teams.yml
+  - put: ci
 
 - name: terraform-destroy
   max_in_flight: 1

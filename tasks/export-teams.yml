@@ -1,0 +1,15 @@
+platform: linux
+
+image_resource:
+  type: registry-image
+  source: { repository: concourse/dev }
+
+inputs:
+  - name: greenpeace
+  - name: ci
+
+outputs:
+  - name: ci
+
+run:
+  path: greenpeace/tasks/scripts/export-teams.sh
