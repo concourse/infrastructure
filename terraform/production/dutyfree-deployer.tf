@@ -46,7 +46,7 @@ resource "kubernetes_role_binding" "deployer" {
   role_ref {
     kind      = "Role"
     name      = "df-deployer"
-    apiGroup  = "rbac.authorization.k8s.io"
+    api_group  = "rbac.authorization.k8s.io"
   }
   subject {
     kind      = "ServiceAccount"
