@@ -35,6 +35,7 @@ resource "kubernetes_role" "df-deployer" {
 resource "kubernetes_role_binding" "deployer" {
   metadata {
     name = "df-deployer"
+    namespace = "dutyfree"
   }
   role_ref {
     kind      = "Role"
