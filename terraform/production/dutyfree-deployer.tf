@@ -28,7 +28,6 @@ resource "kubernetes_role" "df-deployer" {
   rule {
     api_groups     = ["*"]
     resources      = ["*"]
-    resource_names = ["*"]
     verbs          = ["*"]
   }
 }
