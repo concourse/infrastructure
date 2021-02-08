@@ -23,6 +23,10 @@ popd > /dev/null
 pushd terraform/ > /dev/null
   gcloud container clusters get-credentials "$(tfoutput cluster_name)" --zone "$(tfoutput cluster_zone)" --project "$(tfoutput project)"
 
+  concourse_url="$(tfoutput concourse_url)"
+  concourse_username="$(tfoutput concourse_admin_username)"
+  concourse_password="$(tfoutput concourse_admin_password)"
+
   printf "\nport-forwarding the vault service to port 8200...\n"
   kubectl port-forward service/vault -n "$(tfoutput vault_namespace)" 8200:8200 >/dev/null &
   port_forward_pid=$!
@@ -103,7 +107,10 @@ pushd greenpeace/terraform/configure_vault > /dev/null
     -input=false \
     -var "concourse_cert=${vault_ca_cert}" \
     -var "credentials=${GCP_CREDENTIALS_JSON}" \
-    -var "greenpeace_private_key=${GREENPEACE_PRIVATE_KEY}"
+    -var "greenpeace_private_key=${GREENPEACE_PRIVATE_KEY}" \
+    -var "concourse_url=${concourse_url}" \
+    -var "concourse_username=${concourse_username}" \
+    -var "concourse_password=${concourse_password}" \
 popd > /dev/null
 
 pushd secrets > /dev/null

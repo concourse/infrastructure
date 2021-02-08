@@ -89,3 +89,8 @@ variable "macstadium_username" {
 variable "macstadium_password" {
   type = string
 }
+
+variable "concourse_admin_username" {
+  type    = string
+  default = "admin"
+}
