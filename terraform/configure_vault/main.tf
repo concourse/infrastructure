@@ -44,6 +44,22 @@ EOT
   ]
 }
 
+resource "vault_generic_secret" "concourse" {
+  path = "concourse/main/concourse"
+
+  data_json = <<EOT
+{
+  "url": ${jsonencode(var.concourse_url)},
+  "username": ${jsonencode(var.concourse_username)},
+  "password": ${jsonencode(var.concourse_password)}
+}
+EOT
+
+  depends_on = [
+    vault_mount.concourse,
+  ]
+}
+
 resource "vault_generic_secret" "greenpeace_gcp_credentials_json" {
   path = "concourse/main/greenpeace_gcp_credentials_json"
 

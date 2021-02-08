@@ -103,7 +103,10 @@ pushd greenpeace/terraform/configure_vault > /dev/null
     -input=false \
     -var "concourse_cert=${vault_ca_cert}" \
     -var "credentials=${GCP_CREDENTIALS_JSON}" \
-    -var "greenpeace_private_key=${GREENPEACE_PRIVATE_KEY}"
+    -var "greenpeace_private_key=${GREENPEACE_PRIVATE_KEY}" \
+    -var "concourse_url=${CONCOURSE_URL}" \
+    -var "concourse_username=${CONCOURSE_USERNAME}" \
+    -var "concourse_password=${CONCOURSE_PASSWORD}" \
 popd > /dev/null
 
 pushd secrets > /dev/null

@@ -57,3 +57,15 @@ output ci_database_private_key {
   value     = module.ci_database.private_key
   sensitive = true
 }
+
+output ci_url {
+  value = module.concourse_ci_address.address
+}
+
+output ci_admin_username {
+  value = var.concourse_admin_username
+}
+
+output ci_admin_password {
+  value = random_password.admin_password.result
+}
