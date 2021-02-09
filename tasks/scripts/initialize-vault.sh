@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source greenpeace/scripts/vault-secrets.sh
+source greenpeace/scripts/vaulthelpers.sh
 source greenpeace/scripts/tfhelpers.sh
 
 echo "$GCP_CREDENTIALS_JSON" > /tmp/service-account.json

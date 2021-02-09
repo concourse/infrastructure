@@ -164,6 +164,11 @@ the new vault.
 
 There are some helper scripts for managing secrets:
 
+* `scripts/connect-to-vault` gives you a shell on the vault pod for an
+  environment
+  * Once you have a shell, you can run `vault read ...` and `vault write ...`
+  * You must provide the environment name you want to connect to, e.g.
+    `./scripts/connect-to-vault production`
 * `scripts/export-secrets` exports secrets under `concourse/` from the vault
   instance at `$VAULT_ADDR` and generates an encrypted bundle that can be
   uploaded to GCS
@@ -175,21 +180,6 @@ There are some helper scripts for managing secrets:
 our vaults)
   * The command will generate a `gsutil` command to upload the encrypted bundle
     to `gs://concourse-greenpeace/vault/production/data.tar`
-* `scripts/write-secret` allows creating/modifying a secret in an environment's
-  vault
-  * `./scripts/write-secret production concourse/main/my_secret 123456`
-  * `./scripts/write-secret production concourse/main/my_secret foo=123 bar=456`
-  * The script is a specialization of `scripts/edit-secrets`, meaning it
-    updates the data bundle for an environment. You probably don't want to use
-    `scripts/edit-secrets` directly, and should use this instead
-* `scripts/edit-secrets` allows editing an existing secrets data bundle for an
-  environment
-  * Note: you *probably* want `scripts/write-secret`, since editing secrets by
-    hand is a bit of a challenge
-  * e.g. `./scripts/edit-secrets production`, will open `$EDITOR` (defaulting
-    to `vi`)
-  * Secret values must be base64 encoded
-  * The encryption key is rotated before re-uploading
 
 
 #### encryption
