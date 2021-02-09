@@ -1,0 +1,28 @@
+resources:
+- name: greenpeace
+  type: git
+  icon: github
+  source:
+    uri: git@github.com:concourse/greenpeace.git
+    private_key: ((greenpeace_private_key))
+    paths: [pipelines, tasks]
+
+jobs:
+- name: reconfigure-self
+  plan:
+  - get: greenpeace
+    trigger: true
+  - set_pipeline: self
+    file: greenpeace/pipelines/reconfigure.yml
+
+- name: reconfigure-envs
+  plan:
+  - get: greenpeace
+    trigger: true
+    passed: [reconfigure-self]
+  - task: render-pipeline
+    file: greenpeace/tasks/render-ytt.yml
+    params:
+      ARGS: -v cluster=production -f greenpeace/pipelines/greenpeace.yml -f greenpeace/pipelines/data.yml
+  - set_pipeline: greenpeace
+    file: rendered/pipeline.yml
