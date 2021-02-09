@@ -110,7 +110,7 @@ pushd greenpeace/terraform/configure_vault > /dev/null
     -var "greenpeace_private_key=${GREENPEACE_PRIVATE_KEY}" \
     -var "concourse_url=${concourse_url}" \
     -var "concourse_username=${concourse_username}" \
-    -var "concourse_password=${concourse_password}" \
+    -var "concourse_password=${concourse_password}"
 popd > /dev/null
 
 pushd secrets > /dev/null
