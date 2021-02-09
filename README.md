@@ -100,7 +100,7 @@ responsible for continuously deploying the `production` cluster.
 deploy, you should run this pipeline on a local Concourse:
 
 ```sh
-ytt -v cluster=dispatcher -f pipeline/ | \
+ytt -v cluster=dispatcher -f pipelines/greenpeace.yml -f pipelines/data.yml | \
   fly -t dev set-pipeline \
     -l sensitive/vars.yml \
     -p dispatcher-greenpeace \
@@ -111,6 +111,12 @@ After the `production` cluster is up, the pipeline can be run from CI to update
 Concourse on the `dispatcher`.
 
 `dispatcher`'s Concourse can be accessed at [`dispatcher.concourse-ci.org`](https://dispatcher.concourse-ci.org/).
+
+After deploying the `dispatcher`, you should set the reconfigure pipeline:
+
+```sh
+fly -t dispatcher sp -p reconfigure -c pipelines/reconfigure.yml
+```
 
 ### restoring the CI db
 

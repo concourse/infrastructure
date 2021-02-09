@@ -1,0 +1,22 @@
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    repository: k14s/image
+
+inputs:
+- name: greenpeace
+
+outputs:
+- name: rendered
+
+params:
+  ARGS:
+
+run:
+  path: bash
+  args:
+  - -c
+  - ytt $ARGS > rendered/pipeline.yml
+  user: root
