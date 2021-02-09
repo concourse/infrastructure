@@ -118,6 +118,17 @@ After deploying the `dispatcher`, you should set the reconfigure pipeline:
 fly -t dispatcher sp -p reconfigure -c pipelines/reconfigure.yml
 ```
 
+This will configure the `production` pipeline, which will trigger automatically
+and create the production cluster. Once the `terraform` job completes, you should set the reconfigure pipeline on CI:
+
+```sh
+fly -t ci sp -p reconfigure-pipelines -c ~/workspace/ci/pipelines/reconfigure.yml
+```
+
+This will bootstrap the initial pipelines and teams. Note that there may be a
+race condition between creating the initial pipelines and teams - if the
+reconfigure jobs error, they should pass on a rerun.
+
 ### restoring the CI db
 
 A script can be manually run to restore the old CI DB from a backup. The DB instance ID and backup
