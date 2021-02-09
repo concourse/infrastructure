@@ -24,5 +24,5 @@ jobs:
     file: greenpeace/tasks/render-ytt.yml
     params:
       ARGS: -v cluster=production -f greenpeace/pipelines/greenpeace.yml -f greenpeace/pipelines/data.yml
-  - set_pipeline: greenpeace
+  - set_pipeline: production
     file: rendered/pipeline.yml
