@@ -90,13 +90,6 @@ worker:
     failureThreshold: 10
     timeoutSeconds: 45
   hardAntiAffinity: true
-  env:
-  - name: CONCOURSE_GARDEN_NETWORK_POOL
-    value: "10.254.0.0/16"
-  - name: CONCOURSE_GARDEN_MAX_CONTAINERS
-    value: "500"
-  - name: CONCOURSE_GARDEN_DENY_NETWORK
-    value: "169.254.169.254/32"
   resources:
     limits:   { cpu: 7500m, memory: 14Gi }
     requests: { cpu: 0m,    memory: 0Gi  }
@@ -143,6 +136,12 @@ concourse:
     rebalanceInterval: 2h
     baggageclaim: { driver: overlay }
     healthcheckTimeout: 40s
+    runtime: containerd
+    containerd:
+      networkPool: "10.254.0.0/16"
+      maxContainers: "500"
+      restrictedNetworks:
+        - "169.254.169.254/32"
 
 secrets:
   githubClientId: ${github_client_id}
