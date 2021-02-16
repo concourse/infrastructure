@@ -60,12 +60,12 @@ variable "boarding_pass_image_digest" {
 
 variable "concourse_image_repo" {
   description = "Concourse image repo to use for the ATC and the linux workers"
-  default     = "concourse/concourse-dev"
+  default     = "concourse/concourse-rc"
 }
 
 variable "concourse_image_digest" {
   description = "digest for the concourse_image_repo image to use for the ATC and the linux workers"
-  default     = "sha256:5cfe2d006c85c157a657a64e86099c44ed959d8a50621c6719ca94a3fc4f4b8d"
+  default     = "sha256:fa136abb336f2c2aed8d41d21b382d364c3387c24f3fdef15c720c292c9216d4"
 }
 
 variable "concourse_windows_bundle_url" {
