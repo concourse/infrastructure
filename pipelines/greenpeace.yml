@@ -100,7 +100,7 @@ groups:
   - terraform-destroy
 - name: vault
   jobs:
-  #@ if cluster != production:
+  #@ if cluster != "production":
   - sync-secrets-with-production
   #@ end
   - backup-secrets
