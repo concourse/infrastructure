@@ -1,5 +1,5 @@
-image: concourse/concourse-dev
-imageDigest: sha256:5cfe2d006c85c157a657a64e86099c44ed959d8a50621c6719ca94a3fc4f4b8d
+image: concourse/concourse
+imageTag: 7.0
 
 postgresql:
   enabled: true
