@@ -75,6 +75,7 @@ resources:
     json_key: ((greenpeace_gcp_credentials_json))
     versioned_file: #@ "vault/" + cluster + "/data.tar"
 
+#@ if cluster != "production":
 - name: production-secrets
   type: gcs
   icon: database-lock
@@ -82,6 +83,7 @@ resources:
     bucket: concourse-greenpeace
     json_key: ((greenpeace_gcp_credentials_json))
     versioned_file: vault/production/data.tar
+#@ end
 
 - name: root-token-enc
   type: gcs
@@ -98,7 +100,9 @@ groups:
   - terraform-destroy
 - name: vault
   jobs:
+  #@ if cluster != production
   - sync-secrets-with-production
+  #@ end
   - backup-secrets
   - initialize-vault
 - name: all
@@ -106,12 +110,14 @@ groups:
   - '*'
 
 jobs:
+#@ if cluster != "production":
 - name: sync-secrets-with-production
   plan:
   - get: production-secrets
   - put: secrets
     params:
       file: production-secrets/data.tar
+#@ end
 
 #@ if cluster == "production":
 - name: build-boarding-pass
