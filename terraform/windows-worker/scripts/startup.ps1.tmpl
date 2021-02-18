@@ -46,7 +46,7 @@ ${tsa_host_public_key}
 ${worker_key}
 '@ | Out-File -Encoding ASCII .\worker-key
 
-# start Concourse as a service (via nssm)
+# start Concourse as a service via nssm
 nssm install Concourse C:\concourse\bin\concourse.exe
 nssm set Concourse AppParameters worker `
   /work-dir .\work `
