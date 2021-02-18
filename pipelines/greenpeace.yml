@@ -194,7 +194,9 @@ jobs:
       COMMIT: #@ "bump " + cluster + " to latest concourse release"
   - put: greenpeace
     inputs: [greenpeace-new]
-    params: {repository: concourse-chart-dev}
+    params:
+      repository: concourse-chart-dev
+      branch: master
 
 #@ if cluster != "production":
 - name: sync-secrets-with-production
