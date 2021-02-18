@@ -1,17 +1,27 @@
-# This service account is to be used in CI to deploy dutyfree
-resource "kubernetes_service_account" "df-deployer" {
+resource "kubernetes_namespace" "dutyfree" {
+  depends_on = [
+    module.cluster
+  ]
+
   metadata {
-    name = "df-deployer"
-    namespace = "dutyfree"
+    name = "dutyfree"
   }
 }
 
-resource "kubernetes_secret" "df-deployer" {
+# This service account is to be used in CI to deploy dutyfree
+resource "kubernetes_service_account" "df_deployer" {
   metadata {
-    name = "df-deployer"
-    namespace = "dutyfree"
+    name      = "df-deployer"
+    namespace = kubernetes_namespace.dutyfree.id
+  }
+}
+
+resource "kubernetes_secret" "df_deployer" {
+  metadata {
+    name        = "df-deployer"
+    namespace   = kubernetes_namespace.dutyfree.id
     annotations = {
-      "kubernetes.io/service-account.name" = "df-deployer"
+      "kubernetes.io/service-account.name" = kubernetes_service_account.df_deployer.name
     }
   }
 
@@ -19,10 +29,10 @@ resource "kubernetes_secret" "df-deployer" {
 }
 
 # Has access to everything within the namespace
-resource "kubernetes_role" "df-deployer" {
+resource "kubernetes_role" "df_deployer" {
   metadata {
-    name = "df-deployer"
-    namespace = "dutyfree"
+    name      = "df-deployer"
+    namespace = kubernetes_namespace.dutyfree.id
   }
 
   rule {
@@ -34,17 +44,17 @@ resource "kubernetes_role" "df-deployer" {
 
 resource "kubernetes_role_binding" "deployer" {
   metadata {
-    name = "df-deployer"
-    namespace = "dutyfree"
+    name      = "df-deployer"
+    namespace = kubernetes_namespace.dutyfree.id
   }
   role_ref {
-    kind      = "Role"
-    name      = "df-deployer"
+    kind       = "Role"
+    name       = kubernetes_role.df_deployer.name
     api_group  = "rbac.authorization.k8s.io"
   }
   subject {
     kind      = "ServiceAccount"
-    name      = "df-deployer"
-    namespace = "dutyfree"
+    name      = kubernetes_service_account.df_deployer.name
+    namespace = kubernetes_namespace.dutyfree.id
   }
 }
