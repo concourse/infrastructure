@@ -32,3 +32,11 @@ variable "subdomain" {
   description = "The subdomain to prepend to the provided domain."
   default     = "dispatcher"
 }
+
+variable "concourse_image_repo" {
+  description = "Concourse image repo to use for the ATC and the linux workers"
+}
+
+variable "concourse_image_digest" {
+  description = "digest for the concourse_image_repo image to use for the ATC and the linux workers"
+}

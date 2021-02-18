@@ -1,5 +1,5 @@
-image: concourse/concourse
-imageTag: 7.0
+image: ${image_repo}
+imageDigest: ${image_digest}
 
 postgresql:
   enabled: true

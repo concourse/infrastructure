@@ -37,6 +37,9 @@ resource "tls_private_key" "session_signing_key" {
 data "template_file" "concourse_values" {
   template = file("${path.module}/concourse-values.yml.tpl")
   vars = {
+    image_repo   = var.concourse_image_repo
+    image_digest = var.concourse_image_digest
+
     lb_address   = module.concourse_dispatcher_address.address
     external_url = "https://${var.subdomain}.${var.domain}"
 

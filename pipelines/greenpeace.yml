@@ -165,6 +165,8 @@ jobs:
     params:
       terraform_source: #@ "greenpeace/terraform/" + cluster
       vars: #@ vars
+      var_files:
+      - #@ "greenpeace/terraform/" + cluster + "/variables.yml"
 
 - name: initialize-vault
   max_in_flight: 1

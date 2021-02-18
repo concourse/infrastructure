@@ -60,22 +60,18 @@ variable "boarding_pass_image_digest" {
 
 variable "concourse_image_repo" {
   description = "Concourse image repo to use for the ATC and the linux workers"
-  default     = "concourse/concourse"
 }
 
 variable "concourse_image_digest" {
   description = "digest for the concourse_image_repo image to use for the ATC and the linux workers"
-  default     = "sha256:fa136abb336f2c2aed8d41d21b382d364c3387c24f3fdef15c720c292c9216d4"
 }
 
 variable "concourse_windows_bundle_url" {
   description = "URL to the Concourse windows .zip file containing the concourse binary. Can be from the concourse-artifacts bucket or from a GitHub release"
-  default     = "https://github.com/concourse/concourse/releases/download/v7.0.0/concourse-7.0.0-windows-amd64.zip"
 }
 
 variable "concourse_darwin_bundle_url" {
   description = "URL to the Concourse darwin .tgz file containing the concourse binary. Can be from the concourse-artifacts bucket or from a GitHub release"
-  default     = "https://github.com/concourse/concourse/releases/download/v7.0.0/concourse-7.0.0-darwin-amd64.tgz"
 }
 
 variable "macstadium_ip" {
