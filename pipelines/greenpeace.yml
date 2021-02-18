@@ -179,7 +179,7 @@ jobs:
   #@ end
   - task: bump-versions
     file: greenpeace/tasks/replace-file.yml
-    input_mapping: {greenpeace: input}
+    input_mapping: {input: greenpeace}
     output_mapping: {output: greenpeace-new}
     params:
       FILE: #@ "terraform/" + cluster + "/variables.yml"
