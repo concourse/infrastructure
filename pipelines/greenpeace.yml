@@ -187,7 +187,7 @@ jobs:
       #@yaml/text-templated-strings
       CONTENT: |
         concourse_image_repo: ((.:concourse_image_repo))
-        concourse_image_digest: ((.:concourse_image_repo))
+        concourse_image_digest: ((.:concourse_image_digest))
         (@ if cluster == "production": -@)
         concourse_windows_bundle_url: ((.:concourse_windows_bundle_url))
         concourse_darwin_bundle_url: ((.:concourse_darwin_bundle_url))
