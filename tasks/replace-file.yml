@@ -1,0 +1,32 @@
+platform: linux
+
+image_resource:
+  type: registry-image
+  source: {repository: ubuntu}
+
+inputs:
+- name: input
+
+outputs:
+- name: output
+
+params:
+  FILE:
+  CONTENT:
+  COMMIT:
+
+run:
+  path: sh
+  args:
+  - -c
+  - |
+    apt-get update && apt-get install -y git
+
+    cd input
+    printf "$CONTENT" > "$FILE"
+    git add -A
+
+    git config --global user.email "ci@localhost"
+    git config --global user.name "CI Bot"
+
+    git commit -m "$COMMIT" --allow-empty
