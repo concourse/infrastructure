@@ -28,8 +28,8 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/in
 # set up Chocolatey 'refreshenv'
 Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 
-# install build dependencies
-choco install --no-progress -r -y git mingw
+# install dependencies
+choco install --no-progress -r -y git mingw nssm
 
 # refresh $env:Path so Windows tasks don't have to set it themselves
 refreshenv
@@ -46,10 +46,16 @@ ${tsa_host_public_key}
 ${worker_key}
 '@ | Out-File -Encoding ASCII .\worker-key
 
-& .\concourse\bin\concourse.exe worker `
+# start Concourse as a service via nssm
+nssm install Concourse C:\concourse\bin\concourse.exe
+nssm set Concourse AppParameters worker `
   /work-dir .\work `
   /tsa-host ${tsa_host} `
   /tsa-public-key .\tsa-host-public-key `
   /tsa-worker-private-key .\worker-key `
   /team main
+nssm set Concourse AppDirectory C:\
+nssm set Concourse AppStdout C:\concourse.stdout.log
+nssm set Concourse AppStderr C:\concourse.stderr.log
+nssm start Concourse
 } *> C:/startup.log
