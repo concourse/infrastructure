@@ -21,7 +21,7 @@ resource "google_compute_instance" "windows_worker" {
   name         = var.resource_name
   machine_type = "custom-8-16384"
   zone         = data.google_compute_zones.available.names[0]
-  tags         = ["windows-worker"]
+  tags         = ["windows-worker", md5(data.template_file.startup_script.rendered)]
 
   boot_disk {
     initialize_params {
@@ -39,7 +39,9 @@ resource "google_compute_instance" "windows_worker" {
     }
   }
 
-  metadata_startup_script = data.template_file.startup_script.rendered
+  metadata = {
+    windows-startup-script-ps1 = data.template_file.startup_script.rendered
+  }
 
   service_account {
     scopes = [
