@@ -93,7 +93,51 @@ resources:
     json_key: ((greenpeace_gcp_credentials_json))
     versioned_file: #@ "vault/" + cluster + "/root-token.enc"
 
+- name: concourse-latest-release-image
+  type: registry-image
+  icon: docker
+  source: {repository: concourse/concourse}
+
+#! - name: concourse-latest-dev-image
+#!   type: registry-image
+#!   icon: docker
+#!   source: {repository: concourse/concourse-dev, tag: latest}
+#! 
+#! - name: concourse-latest-rc-image
+#!   type: registry-image
+#!   icon: docker
+#!   source: {repository: concourse/concourse-rc}
+
+#@ if cluster == "production":
+- name: concourse-latest-github-release
+  type: github-release
+  icon: package-variant-closed
+  source:
+    owner: concourse
+    repository: concourse
+    access_token: ((concourse_github_release.access_token))
+
+#! - name: concourse-windows-rc
+#!   type: gcs
+#!   icon: microsoft-windows
+#!   source:
+#!     bucket: concourse-artifacts
+#!     json_key: ((concourse_artifacts_json_key))
+#!     regexp: rcs/concourse-(.*)-windows-amd64.zip
+#! 
+#! - name: concourse-darwin-rc
+#!   type: gcs
+#!   icon: apple
+#!   source:
+#!     bucket: concourse-artifacts
+#!     json_key: ((concourse_artifacts_json_key))
+#!     regexp: rcs/concourse-(.*)-darwin-amd64.tgz
+#@ end
+
 groups:
+- name: bump
+  jobs:
+  - bump-*
 - name: terraform
   jobs:
   - terraform
@@ -110,6 +154,48 @@ groups:
   - '*'
 
 jobs:
+- name: bump-concourse-latest-release
+  plan:
+  - in_parallel:
+    - get: greenpeace
+    - get: concourse-image
+      resource: concourse-latest-release-image
+      params: {skip_download: true}
+    #@ if cluster == "production":
+    - get: concourse-release
+      resource: concourse-latest-github-release
+    #@ end
+  - load_var: concourse_image_repo
+    file: concourse-image/repository
+  - load_var: concourse_image_digest
+    file: concourse-image/digest
+  #@ if cluster == "production":
+  - task: get-bundle-urls
+    file: greenpeace/tasks/get-bundle-urls.yml
+  - load_var: concourse_windows_bundle_url
+    file: bundle-urls/windows
+  - load_var: concourse_darwin_bundle_url
+    file: bundle-urls/darwin
+  #@ end
+  - task: bump-versions
+    file: greenpeace/tasks/replace-file.yml
+    input_mapping: {greenpeace: input}
+    output_mapping: {output: greenpeace-new}
+    params:
+      FILE: #@ "terraform/" + cluster + "/variables.yml"
+      #@yaml/text-templated-strings
+      CONTENT: |
+        concourse_image_repo: ((.:concourse_image_repo))
+        concourse_image_digest: ((.:concourse_image_repo))
+        (@ if cluster == "production": -@)
+        concourse_windows_bundle_url: ((.:concourse_windows_bundle_url))
+        concourse_darwin_bundle_url: ((.:concourse_darwin_bundle_url))
+        (@- end @)
+      COMMIT: #@ "bump " + cluster + " to latest concourse release"
+  - put: greenpeace
+    inputs: [greenpeace-new]
+    params: {repository: concourse-chart-dev}
+
 #@ if cluster != "production":
 - name: sync-secrets-with-production
   plan:

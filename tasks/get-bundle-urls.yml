@@ -1,0 +1,16 @@
+platform: linux
+
+image_resource:
+  type: registry-image
+  source: { repository: ubuntu }
+
+inputs:
+- name: greenpeace
+- name: concourse-release
+
+outputs:
+- name: bundle-urls
+
+run:
+  path: greenpeace/tasks/scripts/get-bundle-urls.sh
+
