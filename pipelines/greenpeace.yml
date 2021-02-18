@@ -179,8 +179,8 @@ jobs:
   #@ end
   - task: bump-versions
     file: greenpeace/tasks/replace-file.yml
-    input_mapping: {input: greenpeace}
-    output_mapping: {output: greenpeace-new}
+    input_mapping: {repo: greenpeace}
+    output_mapping: {repo-bumped: greenpeace-bumped}
     params:
       FILE: #@ "terraform/" + cluster + "/variables.yml"
       #@yaml/text-templated-strings
@@ -193,9 +193,9 @@ jobs:
         (@- end @)
       COMMIT: #@ "bump " + cluster + " to latest concourse release"
   - put: greenpeace
-    inputs: [greenpeace-new]
+    inputs: [greenpeace-bumped]
     params:
-      repository: greenpeace-new
+      repository: greenpeace-bumped
       branch: master
 
 #@ if cluster != "production":

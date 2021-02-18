@@ -5,10 +5,11 @@ image_resource:
   source: {repository: alpine/git}
 
 inputs:
-- name: input
+- name: repo
 
 outputs:
-- name: output
+- name: repo-bumped
+  path: repo
 
 params:
   FILE:
