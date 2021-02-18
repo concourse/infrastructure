@@ -1,0 +1,23 @@
+platform: linux
+
+image_resource:
+  type: registry-image
+  source: {repository: alpine}
+
+inputs:
+- name: input
+
+outputs:
+- name: output
+
+params:
+  COMMIT:
+
+run:
+  path: sh
+  args:
+  - -c
+  - |
+    gs_url="$(cat input/url)"
+    echo "https://storage.googleapis.com/${gs_url#'gs://'}" > output/url
+
