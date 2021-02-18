@@ -21,7 +21,7 @@ resource "kubernetes_secret" "df_deployer" {
     name        = "df-deployer"
     namespace   = kubernetes_namespace.dutyfree.id
     annotations = {
-      "kubernetes.io/service-account.name" = kubernetes_service_account.df_deployer.metadata.name
+      "kubernetes.io/service-account.name" = kubernetes_service_account.df_deployer.metadata[0].name
     }
   }
 
@@ -49,12 +49,12 @@ resource "kubernetes_role_binding" "deployer" {
   }
   role_ref {
     kind       = "Role"
-    name       = kubernetes_role.df_deployer.metadata.name
+    name       = kubernetes_role.df_deployer.metadata[0].name
     api_group  = "rbac.authorization.k8s.io"
   }
   subject {
     kind      = "ServiceAccount"
-    name      = kubernetes_service_account.df_deployer.metadata.name
+    name      = kubernetes_service_account.df_deployer.metadata[0].name
     namespace = kubernetes_namespace.dutyfree.id
   }
 }
