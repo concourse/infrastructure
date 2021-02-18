@@ -225,10 +225,18 @@ jobs:
   - load_var: concourse_image_digest
     file: concourse-image/digest
   #@ if cluster == "production":
+  - task: convert-windows-url
+    file: greenpeace/tasks/convert-gs-url.yml
+    input_mapping: {input: concourse-windows-rc}
+    output_mapping: {output: windows}
+  - task: convert-darwin-url
+    file: greenpeace/tasks/convert-gs-url.yml
+    input_mapping: {input: concourse-darwin-rc}
+    output_mapping: {output: darwin}
   - load_var: concourse_windows_bundle_url
-    file: concourse-windows-rc/url
+    file: windows/url
   - load_var: concourse_darwin_bundle_url
-    file: concourse-darwin-rc/url
+    file: darwin/url
   #@ end
   - task: bump-versions
     file: greenpeace/tasks/replace-file.yml
