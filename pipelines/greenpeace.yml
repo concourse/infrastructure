@@ -24,6 +24,14 @@ resources:
     branch: master
     private_key: ((greenpeace_private_key))
 
+- name: greenpeace-bump
+  type: git
+  icon: github
+  source:
+    uri: git@github.com:concourse/greenpeace.git
+    branch: master
+    private_key: ((greenpeace_private_key))
+
 #@ if cluster == "production":
 - name: boarding-pass
   type: git
@@ -193,7 +201,7 @@ jobs:
         concourse_darwin_bundle_url: ((.:concourse_darwin_bundle_url))
         (@- end @)
       COMMIT: #@ "bump " + cluster + " to latest concourse release"
-  - put: greenpeace
+  - put: greenpeace-bump
     inputs: [greenpeace-bumped]
     params:
       repository: greenpeace-bumped
@@ -208,9 +216,9 @@ jobs:
       params: {skip_download: true}
     #@ if cluster == "production":
     - get: concourse-windows-rc
-      params: {skip_download: true}
+      params: {skip_download: "true"}
     - get: concourse-darwin-rc
-      params: {skip_download: true}
+      params: {skip_download: "true"}
     #@ end
   - load_var: concourse_image_repo
     file: concourse-image/repository
@@ -237,7 +245,7 @@ jobs:
         concourse_darwin_bundle_url: ((.:concourse_darwin_bundle_url))
         (@- end @)
       COMMIT: #@ "bump " + cluster + " to latest concourse rc"
-  - put: greenpeace
+  - put: greenpeace-bump
     inputs: [greenpeace-bumped]
     params:
       repository: greenpeace-bumped
