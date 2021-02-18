@@ -18,7 +18,7 @@ resource "google_compute_firewall" "windows_worker" {
 }
 
 resource "google_compute_instance" "windows_worker" {
-  name         = "${var.resource_name}_${substr(md5(data.template_file.startup_script.rendered), 0,
+  name         = "${var.resource_name}-${substr(md5(data.template_file.startup_script.rendered), 0,
 8)}"
   machine_type = "custom-8-16384"
   zone         = data.google_compute_zones.available.names[0]
