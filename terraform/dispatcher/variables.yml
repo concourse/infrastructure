@@ -1,2 +1,3 @@
-concourse_image_repo: concourse/concourse
-concourse_image_digest: sha256:fa136abb336f2c2aed8d41d21b382d364c3387c24f3fdef15c720c292c9216d4
+concourse_image_repo: concourse/concourse-rc
+concourse_image_digest: sha256:6f0683d9c07e218410523bac4a7302cad7aac1fc6225be48ea38f12e790ce843
+
