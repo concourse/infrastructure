@@ -115,7 +115,10 @@ resources:
 - name: concourse-rc-image
   type: registry-image
   icon: docker
-  source: {repository: concourse/concourse-rc, pre_releases: true}
+  source:
+    repository: concourse/concourse-rc
+    pre_releases: true
+    debug: true
 
 #@ if cluster == "production":
 - name: concourse-github-release
