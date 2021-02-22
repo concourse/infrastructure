@@ -15,14 +15,14 @@
 # to the given domain.
 #
 module "concourse_ci_address" {
-  source = "../address"
+  source = "${var.dependencies_path}/address"
 
   dns_zone  = var.dns_zone
   subdomain = var.subdomain
 }
 
 module "boarding_pass_address" {
-  source = "../address"
+  source = "${var.dependencies_path}/address"
 
   dns_zone  = var.dns_zone
   subdomain = "boarding-pass"

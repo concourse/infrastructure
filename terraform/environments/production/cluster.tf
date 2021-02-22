@@ -1,7 +1,7 @@
 # Instantiates the GKE Kubernetes cluster.
 #
 module "cluster" {
-  source = "../cluster"
+  source = "${var.dependencies_path}/cluster"
 
   name    = "production"
   project = var.project
@@ -42,7 +42,7 @@ resource "kubernetes_storage_class" "ssd" {
 }
 
 module "cert_manager_issuer" {
-  source = "../cert_manager_issuer"
+  source = "${var.dependencies_path}/cert_manager_issuer"
 
   cluster_name = "production"
   project      = var.project
