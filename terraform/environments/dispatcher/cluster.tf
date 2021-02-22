@@ -1,7 +1,7 @@
 # Instantiates the GKE Kubernetes cluster.
 #
 module "cluster" {
-  source = "${var.dependencies_path}/cluster"
+  source = "../../dependencies/cluster"
 
   name    = "dispatcher"
   project = var.project

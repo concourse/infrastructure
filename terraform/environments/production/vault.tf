@@ -1,5 +1,5 @@
 module "vault" {
-  source = "${var.dependencies_path}/vault"
+  source = "../../dependencies/vault"
 
   gcp_service_account_id           = "production-vault"
   gcp_service_account_display_name = "Production Vault"
