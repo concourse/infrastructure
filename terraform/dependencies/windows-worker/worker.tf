@@ -70,6 +70,7 @@ resource "google_compute_instance" "windows_worker" {
 
     connection {
       type        = "ssh"
+      host        = google_compute_address.windows_worker.address
       user        = "greenpeace"
       private_key = tls_private_key.greenpeace_ssh.private_key_pem
     }
