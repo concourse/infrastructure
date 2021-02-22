@@ -23,6 +23,16 @@ resources:
     uri: git@github.com:concourse/greenpeace.git
     private_key: ((greenpeace_private_key))
 
+- name: greenpeace-tf-module
+  type: git
+  icon: github
+  source:
+    uri: git@github.com:concourse/greenpeace.git
+    private_key: ((greenpeace_private_key))
+    paths:
+    - #@ "terraform/environments/" + cluster
+    - terraform/dependencies
+
 - name: greenpeace-bump
   type: git
   icon: github
@@ -298,7 +308,7 @@ jobs:
 - name: terraform
   max_in_flight: 1
   plan:
-  - get: greenpeace
+  - get: greenpeace-tf-module
     trigger: true
   #@ vars = {}
   #@ if cluster == "production":
