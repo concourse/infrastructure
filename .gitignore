@@ -2,4 +2,4 @@ sensitive/*
 !sensitive/.gitkeep
 bootstrap/.terraform/
 bootstrap/*.backup
-terraform/*/.terraform
+terraform/**/.terraform
