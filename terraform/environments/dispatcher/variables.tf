@@ -40,8 +40,3 @@ variable "concourse_image_repo" {
 variable "concourse_image_digest" {
   description = "digest for the concourse_image_repo image to use for the ATC and the linux workers"
 }
-
-variable "dependencies_path" {
-  type    = string
-  default = "../../dependencies"
-}
