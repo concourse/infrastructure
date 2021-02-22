@@ -71,7 +71,7 @@ resource "google_compute_instance" "windows_worker" {
     connection {
       type        = "ssh"
       user        = "greenpeace"
-      private_key = tls_private_key.private_key_pem
+      private_key = tls_private_key.greenpeace_ssh.private_key_pem
     }
   }
 }
