@@ -308,7 +308,8 @@ jobs:
 - name: terraform
   max_in_flight: 1
   plan:
-  - get: greenpeace-tf-module
+  - get: greenpeace
+    resource: greenpeace-tf-module
     trigger: true
   #@ vars = {}
   #@ if cluster == "production":
