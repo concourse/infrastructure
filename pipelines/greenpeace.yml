@@ -42,6 +42,22 @@ resources:
     private_key: ((greenpeace_private_key))
 
 #@ if cluster == "production":
+- name: golang-darwin
+  type: s3
+  icon: language-go
+  source:
+    endpoint: storage.googleapis.com
+    bucket: golang
+    regexp: 'go(\d+\.\d+(\.\d+)?)\.darwin-amd64\.pkg'
+
+- name: golang-windows
+  type: s3
+  icon: language-go
+  source:
+    endpoint: storage.googleapis.com
+    bucket: golang
+    regexp: 'go(\d+\.\d+(\.\d+)?)\.windows-amd64\.msi'
+
 - name: boarding-pass
   type: git
   icon: github
@@ -312,7 +328,13 @@ jobs:
     resource: greenpeace-tf-module
     trigger: true
   #@ vars = {}
+  #@ inputs = ["greenpeace"]
   #@ if cluster == "production":
+  - get: golang-darwin
+    trigger: true
+  - get: golang-windows
+    trigger: true
+    #@ inputs += ["golang-darwin", "golang-windows"]
   - get: boarding-pass-image
     passed: [build-boarding-pass]
     trigger: true
@@ -324,6 +346,7 @@ jobs:
     #@ vars["boarding_pass_image_digest"] = "((.:boarding_pass_image_digest))"
   #@ end
   - put: terraform
+    inputs: #@ inputs
     params:
       terraform_source: #@ "greenpeace/terraform/environments/" + cluster
       vars: #@ vars

@@ -23,6 +23,11 @@ resource "google_compute_instance" "windows_worker" {
   zone         = data.google_compute_zones.available.names[0]
   tags         = ["windows-worker"]
 
+  provisioner "file" {
+    source      = "/tmp/build/put/golang-windows/*.msi"
+    destination = "C:/go.msi"
+  }
+
   boot_disk {
     initialize_params {
       image = "windows-server-2004-dc-core-v20201110"
