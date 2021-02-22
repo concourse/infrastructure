@@ -37,7 +37,7 @@ resource "tls_private_key" "session_signing_key" {
 # Concourse deployment.
 #
 module "ci_database" {
-  source = "../database"
+  source = "${var.dependencies_path}/database"
 
   name            = "ci"
   cpus            = "4"
@@ -107,7 +107,7 @@ resource "helm_release" "ci-concourse" {
 }
 
 module "windows_worker" {
-  source = "../windows-worker"
+  source = "${var.dependencies_path}/windows-worker"
 
   resource_name        = "windows-worker-ci"
   concourse_bundle_url = var.concourse_windows_bundle_url
@@ -122,7 +122,7 @@ module "windows_worker" {
 # ci-test.concourse-ci.org
 #
 # module "darwin_worker" {
-#   source = "../darwin-worker"
+#   source = "${var.dependencies_path}/darwin-worker"
 #
 #   macstadium_ip        = var.macstadium_ip
 #   macstadium_username  = var.macstadium_username

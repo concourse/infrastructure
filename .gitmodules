@@ -4,3 +4,6 @@
 [submodule "terraform/vault/charts/vault-helm"]
 	path = terraform/vault/charts/vault-helm
 	url = https://github.com/hashicorp/vault-helm
+[submodule "terraform/dependencies/vault/charts/vault-helm"]
+	path = terraform/dependencies/vault/charts/vault-helm
+	url = https://github.com/hashicorp/vault-helm

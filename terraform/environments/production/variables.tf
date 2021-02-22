@@ -90,3 +90,8 @@ variable "concourse_admin_username" {
   type    = string
   default = "admin"
 }
+
+variable "dependencies_path" {
+  type    = string
+  default = "../../dependencies"
+}
