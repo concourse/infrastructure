@@ -17,11 +17,6 @@ resource "google_compute_firewall" "windows_worker" {
   target_tags = ["windows-worker"]
 }
 
-resource "tls_private_key" "greenpeace_ssh" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
-
 resource "google_compute_instance" "windows_worker" {
   name         = var.resource_name
   machine_type = "custom-8-16384"
@@ -47,8 +42,7 @@ resource "google_compute_instance" "windows_worker" {
   metadata_startup_script = data.template_file.startup_script.rendered
 
   metadata = {
-    # windows-startup-script-ps1 = data.template_file.startup_script.rendered
-    ssh-keys = "greenpeace:${tls_private_key.greenpeace_ssh.public_key_openssh}"
+    windows-startup-script-ps1 = data.template_file.startup_script.rendered
   }
 
   service_account {
@@ -64,26 +58,6 @@ resource "google_compute_instance" "windows_worker" {
     enable_integrity_monitoring = false
   }
 
-  provisioner "file" {
-    source      = "/tmp/build/put/golang-windows/*.msi"
-    destination = "C:/go.msi"
-
-    connection {
-      type        = "ssh"
-      host        = google_compute_address.windows_worker.address
-      user        = "greenpeace"
-      private_key = tls_private_key.greenpeace_ssh.private_key_pem
-    }
-  }
-
-  provisioner "file" {
-    content     = data.template_file.startup_script.rendered
-    destination = "C:/startup.ps1"
-  }
-
-  provisioner "remote-exec" {
-    inline = ["powershell C:/startup.ps1"]
-  }
 }
 
 data "template_file" "startup_script" {
@@ -94,5 +68,6 @@ data "template_file" "startup_script" {
     tsa_host             = var.tsa_host
     tsa_host_public_key  = var.tsa_host_public_key
     worker_key           = var.worker_key
+    go_package_url       = var.go_package_url
   }
 }
