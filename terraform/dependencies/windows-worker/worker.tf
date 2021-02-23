@@ -26,7 +26,7 @@ resource "google_compute_instance" "windows_worker" {
   name         = var.resource_name
   machine_type = "custom-8-16384"
   zone         = data.google_compute_zones.available.names[0]
-  tags         = ["windows-worker"]
+  # tags         = ["windows-worker"]
 
   boot_disk {
     initialize_params {
@@ -47,7 +47,7 @@ resource "google_compute_instance" "windows_worker" {
   metadata_startup_script = data.template_file.startup_script.rendered
 
   metadata = {
-    windows-startup-script-ps1 = data.template_file.startup_script.rendered
+    # windows-startup-script-ps1 = data.template_file.startup_script.rendered
     ssh-keys = "greenpeace:${tls_private_key.greenpeace_ssh.public_key_openssh}"
   }
 
@@ -74,6 +74,15 @@ resource "google_compute_instance" "windows_worker" {
       user        = "greenpeace"
       private_key = tls_private_key.greenpeace_ssh.private_key_pem
     }
+  }
+
+  provisioner "file" {
+    content     = data.template_file.startup_script.rendered
+    destination = "C:/startup.ps1"
+  }
+
+  provisioner "remote-exec" {
+    inline = ["powershell C:/startup.ps1"]
   }
 }
 
