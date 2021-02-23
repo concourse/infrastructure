@@ -288,8 +288,8 @@ jobs:
   - load_var: concourse_windows_bundle_url
     file: windows/url
   - load_var: concourse_darwin_bundle_url
-  #@ end
     file: darwin/url
+  #@ end
   #@ for/end step in push_bumped_versions("rc"):
   - #@ step
 
