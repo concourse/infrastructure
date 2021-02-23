@@ -29,11 +29,6 @@ resource "null_resource" "instance" {
   }
 
   provisioner "file" {
-    source      = "/tmp/build/put/golang-darwin/*.pkg"
-    destination = "/Users/administrator/go.pkg"
-  }
-
-  provisioner "file" {
     content     = var.tsa_host_public_key
     destination = "/Users/administrator/keys/tsa-host-key.pub"
   }
@@ -55,6 +50,7 @@ resource "null_resource" "instance" {
       templatefile("${path.module}/scripts/startup.sh.tmpl", {
         password             = var.macstadium_password,
         concourse_bundle_url = var.concourse_bundle_url,
+        go_package_url       = var.go_package_url
       })
     ]
   }
