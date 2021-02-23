@@ -94,3 +94,7 @@ variable "concourse_admin_username" {
 variable "go_windows_package_url" {
   type    = string
 }
+
+variable "go_darwin_package_url" {
+  type    = string
+}

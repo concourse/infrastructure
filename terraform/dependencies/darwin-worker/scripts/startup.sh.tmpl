@@ -36,7 +36,7 @@ function install_or_upgrade {
   fi
 }
 install_or_upgrade git
-
+curl -L "${go_package_url}" -o go.pkg
 sudo installer -pkg go.pkg -target /
 
 # Download concourse

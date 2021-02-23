@@ -332,6 +332,8 @@ jobs:
   - get: golang-darwin
     trigger: true
     params: {skip_download: "true"}
+  - load_var: go_darwin_package_url
+    file: golang-darwin/url
   - get: golang-windows
     trigger: true
     params: {skip_download: "true"}
@@ -347,6 +349,7 @@ jobs:
     #@ vars["macstadium_password"] = "((macstadium.password))"
     #@ vars["boarding_pass_image_digest"] = "((.:boarding_pass_image_digest))"
     #@ vars["go_windows_package_url"] = "((.:go_windows_package_url))"
+    #@ vars["go_darwin_package_url"] = "((.:go_darwin_package_url))"
   #@ end
   - put: terraform
     params:
