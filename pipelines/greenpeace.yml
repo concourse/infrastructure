@@ -132,11 +132,6 @@ resources:
   icon: docker
   source: {repository: concourse/concourse}
 
-#! - name: concourse-latest-dev-image
-#!   type: registry-image
-#!   icon: docker
-#!   source: {repository: concourse/concourse-dev, tag: latest}
-
 - name: concourse-rc-image
   type: registry-image
   icon: docker
@@ -144,6 +139,11 @@ resources:
     repository: concourse/concourse-rc
     pre_releases: true
     debug: true
+
+- name: concourse-dev-image
+  type: registry-image
+  icon: docker
+  source: {repository: concourse/concourse-dev, tag: latest}
 
 #@ if cluster == "production":
 - name: concourse-github-release
@@ -169,6 +169,22 @@ resources:
     bucket: concourse-artifacts
     json_key: ((concourse_artifacts_json_key))
     regexp: rcs/concourse-(.*)-darwin-amd64.tgz
+
+- name: concourse-windows-dev
+  type: gcs
+  icon: microsoft-windows
+  source:
+    bucket: concourse-artifacts
+    json_key: ((concourse_artifacts_json_key))
+    regexp: dev/concourse-(.*)-windows-amd64.zip
+
+- name: concourse-darwin-dev
+  type: gcs
+  icon: apple
+  source:
+    bucket: concourse-artifacts
+    json_key: ((concourse_artifacts_json_key))
+    regexp: dev/concourse-(.*)-darwin-amd64.tgz
 #@ end
 
 groups:
@@ -189,6 +205,30 @@ groups:
 - name: all
   jobs:
   - '*'
+
+
+#@ def push_bumped_versions(target):
+- task: bump-versions
+  file: greenpeace/tasks/replace-file.yml
+  input_mapping: {repo: greenpeace}
+  output_mapping: {repo-bumped: greenpeace-bumped}
+  params:
+    FILE: #@ "terraform/" + cluster + "/variables.yml"
+    #@yaml/text-templated-strings
+    CONTENT: |
+      concourse_image_repo: ((.:concourse_image_repo))
+      concourse_image_digest: ((.:concourse_image_digest))
+      (@ if cluster == "production": -@)
+      concourse_windows_bundle_url: ((.:concourse_windows_bundle_url))
+      concourse_darwin_bundle_url: ((.:concourse_darwin_bundle_url))
+      (@- end @)
+    COMMIT: #@ "bump " + cluster + " to concourse " + target
+- put: greenpeace-bump
+  inputs: [greenpeace-bumped]
+  params:
+    repository: greenpeace-bumped
+    branch: master
+#@ end
 
 jobs:
 - name: bump-concourse-to-release
@@ -214,26 +254,8 @@ jobs:
   - load_var: concourse_darwin_bundle_url
     file: bundle-urls/darwin
   #@ end
-  - task: bump-versions
-    file: greenpeace/tasks/replace-file.yml
-    input_mapping: {repo: greenpeace}
-    output_mapping: {repo-bumped: greenpeace-bumped}
-    params:
-      FILE: #@ "terraform/" + cluster + "/variables.yml"
-      #@yaml/text-templated-strings
-      CONTENT: |
-        concourse_image_repo: ((.:concourse_image_repo))
-        concourse_image_digest: ((.:concourse_image_digest))
-        (@ if cluster == "production": -@)
-        concourse_windows_bundle_url: ((.:concourse_windows_bundle_url))
-        concourse_darwin_bundle_url: ((.:concourse_darwin_bundle_url))
-        (@- end @)
-      COMMIT: #@ "bump " + cluster + " to latest concourse release"
-  - put: greenpeace-bump
-    inputs: [greenpeace-bumped]
-    params:
-      repository: greenpeace-bumped
-      branch: master
+  #@ for/end step in push_bumped_versions("release"):
+  - #@ step
 
 - name: bump-concourse-to-rc
   plan:
@@ -243,9 +265,11 @@ jobs:
       resource: concourse-rc-image
       params: {skip_download: true}
     #@ if cluster == "production":
-    - get: concourse-windows-rc
+    - get: concourse-windows
+      resource: concourse-windows-rc
       params: {skip_download: "true"}
-    - get: concourse-darwin-rc
+    - get: concourse-darwin
+      resource: concourse-darwin-rc
       params: {skip_download: "true"}
     #@ end
   - load_var: concourse_image_repo
@@ -255,37 +279,55 @@ jobs:
   #@ if cluster == "production":
   - task: convert-windows-url
     file: greenpeace/tasks/convert-gs-url.yml
-    input_mapping: {input: concourse-windows-rc}
+    input_mapping: {input: concourse-windows}
     output_mapping: {output: windows}
   - task: convert-darwin-url
     file: greenpeace/tasks/convert-gs-url.yml
-    input_mapping: {input: concourse-darwin-rc}
+    input_mapping: {input: concourse-darwin}
+    output_mapping: {output: darwin}
+  - load_var: concourse_windows_bundle_url
+    file: windows/url
+  - load_var: concourse_darwin_bundle_url
+  #@ end
+    file: darwin/url
+  #@ for/end step in push_bumped_versions("rc"):
+  - #@ step
+
+- name: bump-concourse-to-dev
+  plan:
+  - in_parallel:
+    - get: greenpeace
+    - get: concourse-image
+      resource: concourse-dev-image
+      params: {skip_download: true}
+    #@ if cluster == "production":
+    - get: concourse-windows
+      resource: concourse-windows-dev
+      params: {skip_download: "true"}
+    - get: concourse-darwin
+      resource: concourse-darwin-dev
+      params: {skip_download: "true"}
+    #@ end
+  - load_var: concourse_image_repo
+    file: concourse-image/repository
+  - load_var: concourse_image_digest
+    file: concourse-image/digest
+  #@ if cluster == "production":
+  - task: convert-windows-url
+    file: greenpeace/tasks/convert-gs-url.yml
+    input_mapping: {input: concourse-windows}
+    output_mapping: {output: windows}
+  - task: convert-darwin-url
+    file: greenpeace/tasks/convert-gs-url.yml
+    input_mapping: {input: concourse-darwin}
     output_mapping: {output: darwin}
   - load_var: concourse_windows_bundle_url
     file: windows/url
   - load_var: concourse_darwin_bundle_url
     file: darwin/url
   #@ end
-  - task: bump-versions
-    file: greenpeace/tasks/replace-file.yml
-    input_mapping: {repo: greenpeace}
-    output_mapping: {repo-bumped: greenpeace-bumped}
-    params:
-      FILE: #@ "terraform/" + cluster + "/variables.yml"
-      #@yaml/text-templated-strings
-      CONTENT: |
-        concourse_image_repo: ((.:concourse_image_repo))
-        concourse_image_digest: ((.:concourse_image_digest))
-        (@ if cluster == "production": -@)
-        concourse_windows_bundle_url: ((.:concourse_windows_bundle_url))
-        concourse_darwin_bundle_url: ((.:concourse_darwin_bundle_url))
-        (@- end @)
-      COMMIT: #@ "bump " + cluster + " to latest concourse rc"
-  - put: greenpeace-bump
-    inputs: [greenpeace-bumped]
-    params:
-      repository: greenpeace-bumped
-      branch: master
+  #@ for/end step in push_bumped_versions("dev"):
+  - #@ step
 
 #@ if cluster != "production":
 - name: sync-secrets-with-production
