@@ -176,7 +176,7 @@ resources:
   source:
     bucket: concourse-artifacts
     json_key: ((concourse_artifacts_json_key))
-    regexp: dev/concourse-(.*)-windows-amd64.zip
+    regexp: dev/concourse-(.*).windows.amd64.zip
 
 - name: concourse-darwin-dev
   type: gcs
@@ -184,7 +184,7 @@ resources:
   source:
     bucket: concourse-artifacts
     json_key: ((concourse_artifacts_json_key))
-    regexp: dev/concourse-(.*)-darwin-amd64.tgz
+    regexp: dev/concourse-(.*).darwin.amd64.tgz
 #@ end
 
 groups:
