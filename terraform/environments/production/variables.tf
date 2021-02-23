@@ -90,3 +90,7 @@ variable "concourse_admin_username" {
   type    = string
   default = "admin"
 }
+
+variable "go_windows_package_url" {
+  type    = string
+}

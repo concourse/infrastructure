@@ -114,6 +114,7 @@ module "windows_worker" {
   tsa_host             = "${module.concourse_ci_address.address}:2222"
   tsa_host_public_key  = tls_private_key.host_key.public_key_openssh
   worker_key           = tls_private_key.worker_key.private_key_pem
+  go_package_url       = var.go_windows_package_url
 }
 
 # Disabling until we switch over to Greenpeace for CI. The darwin-worker module

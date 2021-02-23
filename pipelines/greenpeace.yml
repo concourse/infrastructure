@@ -328,13 +328,15 @@ jobs:
     resource: greenpeace-tf-module
     trigger: true
   #@ vars = {}
-  #@ inputs = ["greenpeace"]
   #@ if cluster == "production":
   - get: golang-darwin
     trigger: true
+    params: {skip_download: "true"}
   - get: golang-windows
     trigger: true
-    #@ inputs += ["golang-darwin", "golang-windows"]
+    params: {skip_download: "true"}
+  - load_var: go_windows_package_url
+    file: golang-windows/url
   - get: boarding-pass-image
     passed: [build-boarding-pass]
     trigger: true
@@ -344,9 +346,9 @@ jobs:
     #@ vars["macstadium_username"] = "((macstadium.username))"
     #@ vars["macstadium_password"] = "((macstadium.password))"
     #@ vars["boarding_pass_image_digest"] = "((.:boarding_pass_image_digest))"
+    #@ vars["go_windows_package_url"] = "((.:go_windows_package_url))"
   #@ end
   - put: terraform
-    inputs: #@ inputs
     params:
       terraform_source: #@ "greenpeace/terraform/environments/" + cluster
       vars: #@ vars

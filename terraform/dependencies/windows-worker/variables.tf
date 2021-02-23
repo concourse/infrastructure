@@ -22,3 +22,8 @@ variable "worker_key" {
   type        = string
   description = "Private key of the worker"
 }
+
+variable "go_package_url" {
+  type        = string
+  description = "Golang package url"
+}

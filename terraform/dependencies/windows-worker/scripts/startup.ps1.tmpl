@@ -16,6 +16,7 @@ Start-Process -FilePath ./StackDriverMonitoring.exe -ArgumentList "/S /D=C:\Moni
 rm StackDriverMonitoring.exe
 
 # install Go
+Invoke-WebRequest -Uri ${go_package_url} -OutFile go.msi
 Start-Process -FilePath ./go.msi -ArgumentList "/passive /norestart" -Wait -PassThru
 rm go.msi
 
