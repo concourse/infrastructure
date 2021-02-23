@@ -213,7 +213,7 @@ groups:
   input_mapping: {repo: greenpeace}
   output_mapping: {repo-bumped: greenpeace-bumped}
   params:
-    FILE: #@ "terraform/" + cluster + "/variables.yml"
+    FILE: #@ "terraform/environments/" + cluster + "/variables.yml"
     #@yaml/text-templated-strings
     CONTENT: |
       concourse_image_repo: ((.:concourse_image_repo))

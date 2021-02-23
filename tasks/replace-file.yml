@@ -21,6 +21,8 @@ run:
   args:
   - -c
   - |
+    set -e
+
     cd repo
     printf "$CONTENT" > "$FILE"
     git add -A
