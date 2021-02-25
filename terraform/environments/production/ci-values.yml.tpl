@@ -9,7 +9,7 @@ web:
     rollingUpdate: "4"
   replicas: 1
   nodeSelector:
-    cloud.google.com/gke-nodepool: generic-1
+    cloud.google.com/gke-nodepool: generic
   env:
   - name: CONCOURSE_X_FRAME_OPTIONS
     value: ""
@@ -82,6 +82,8 @@ persistence:
 
 worker:
   replicas: 1
+  nodeSelector:
+    cloud.google.com/gke-nodepool: ci-workers
   annotations:
     manual-update-revision: "1"
   terminationGracePeriodSeconds: 3600
