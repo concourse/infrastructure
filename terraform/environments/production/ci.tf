@@ -88,14 +88,14 @@ data "template_file" "ci_values" {
   }
 }
 
-resource "helm_release" "ci-concourse" {
+resource "helm_release" "ci_concourse" {
   namespace  = kubernetes_namespace.ci.id
-  name       = "concourse"
+  name       = "ci"
   repository = "https://concourse-charts.storage.googleapis.com"
   chart      = "concourse"
   version    = "11.1.0"
 
-  timeout = 900
+  timeout = 1800
 
   values = [
     data.template_file.ci_values.rendered,
