@@ -48,7 +48,7 @@ resource "kubernetes_network_policy" "ci_pr_only_external" {
 
   spec {
     pod_selector {
-      match_labels {
+      match_labels = {
         release = helm_release.ci_pr.metadata[0].name
       }
     }
@@ -72,7 +72,7 @@ resource "kubernetes_network_policy" "ci_pr_only_external" {
           }
         }
         pod_selector {
-          match_labels {
+          match_labels = {
             app = "${helm_release.ci_concourse.metadata[0].name}-web"
           }
         }
