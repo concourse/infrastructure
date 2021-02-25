@@ -41,7 +41,7 @@ module "ci_database" {
 
   name            = "ci"
   cpus            = "4"
-  disk_size_gb    = "40"
+  disk_size_gb    = "150"
   memory_mb       = "5120"
   region          = var.region
   zone            = var.zone
