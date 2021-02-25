@@ -88,7 +88,7 @@ data "template_file" "ci_values" {
   }
 }
 
-resource "helm_release" "ci_concourse" {
+resource "helm_release" "ci" {
   namespace  = kubernetes_namespace.ci.id
   name       = "ci"
   repository = "https://concourse-charts.storage.googleapis.com"
