@@ -18,7 +18,7 @@ data "template_file" "ci_pr_values" {
     worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
 
     ci_namespace    = kubernetes_namespace.ci.id
-    ci_release_name = helm_release.ci_concourse.name
+    ci_release_name = helm_release.ci_concourse.metadata[0].name
   }
 }
 
@@ -49,7 +49,7 @@ resource "kubernetes_network_policy" "ci_pr_only_external" {
   spec {
     pod_selector {
       match_labels {
-        release = helm_release.ci_pr.name
+        release = helm_release.ci_pr.metadata[0].name
       }
     }
 
@@ -68,12 +68,12 @@ resource "kubernetes_network_policy" "ci_pr_only_external" {
       to {
         namespace_selector {
           match_labels = {
-            release = helm_release.ci_concourse.name
+            release = helm_release.ci_concourse.metadata[0].name
           }
         }
         pod_selector {
           match_labels {
-            app = "${helm_release.ci_concourse.name}-web"
+            app = "${helm_release.ci_concourse.metadata[0].name}-web"
           }
         }
       }
