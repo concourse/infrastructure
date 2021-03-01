@@ -14,7 +14,7 @@ core 2020.05.01
 gsutil 4.50
 
 $ terraform version
-Terraform v0.13.5
+Terraform v0.14.7
 
 $ jq --version
 jq-1.6
