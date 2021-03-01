@@ -3,12 +3,15 @@
 
 #@ cluster = data.values.cluster or assert.fail("cluster must be specified")
 
+.shared:
+  tfversion: &tfversion '0.14.7'
+
 resource_types:
 - name: terraform
   type: registry-image
   source:
     repository: ljfranklin/terraform-resource
-    tag: '0.13.5'
+    tag: *tfversion
 
 - name: gcs
   type: registry-image
@@ -428,7 +431,7 @@ jobs:
       GCP_CREDENTIALS_JSON: ((greenpeace_gcp_credentials_json))
       GREENPEACE_PRIVATE_KEY: ((greenpeace_private_key))
       CLUSTER_NAME: #@ cluster
-      TERRAFORM_VERSION: '0.13.5'
+      TERRAFORM_VERSION: *tfversion
 
 - name: backup-secrets
   max_in_flight: 1
@@ -453,7 +456,7 @@ jobs:
     file: greenpeace/tasks/export-secrets.yml
     params:
       GCP_CREDENTIALS_JSON: ((greenpeace_gcp_credentials_json))
-      TERRAFORM_VERSION: '0.13.5'
+      TERRAFORM_VERSION: *tfversion
   - put: secrets
     params:
       file: secrets/data.tar
