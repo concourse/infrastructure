@@ -17,8 +17,7 @@ data "template_file" "ci_pr_values" {
     host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
     worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
 
-    ci_namespace    = kubernetes_namespace.ci.id
-    ci_release_name = helm_release.ci.metadata[0].name
+    host = "${helm_release.ci.metadata[0].name}-web-worker-gateway.${kubernetes_namespace.ci.id}.svc.cluster.local:2222"
   }
 }
 
