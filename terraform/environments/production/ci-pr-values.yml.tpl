@@ -6,6 +6,12 @@ persistence:
     storageClass: ssd
     size: 750Gi
 
+postgresql:
+  enabled: false
+
+web:
+  enabled: false
+
 worker:
   replicas: 3
   nodeSelector:
