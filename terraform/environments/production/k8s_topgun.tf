@@ -103,6 +103,8 @@ data "template_file" "ci_topgun_worker_values" {
 }
 
 resource "helm_release" "k8s_topgun_worker" {
+  provider = helm.k8s_topgun
+
   namespace  = kubernetes_namespace.ci_topgun_worker.id
   name       = "topgun-worker"
   repository = "https://concourse-charts.storage.googleapis.com"
