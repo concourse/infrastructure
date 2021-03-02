@@ -35,7 +35,7 @@ concourse:
   worker:
     tag: "pr"
     tsa:
-      hosts: ['${ci_release_name}-web-worker-gateway.${ci_namespace}.svc.cluster.local:2222']
+      hosts: ["${host}"]
     rebalanceInterval: 2h
     baggageclaim: { driver: overlay }
     healthcheckTimeout: 40s
