@@ -90,7 +90,7 @@ resource "kubernetes_namespace" "ci_topgun_worker" {
 }
 
 data "template_file" "ci_topgun_worker_values" {
-  template = file("${path.module}/ci-topgun-worker-values.yml.tpl")
+  template = file("${path.module}/k8s_topgun_worker-values.yml.tpl")
   vars = {
     image_repo   = var.concourse_image_repo
     image_digest = var.concourse_image_digest
