@@ -134,9 +134,6 @@ reconfigure jobs error, they should pass on a rerun.
 A script can be manually run to restore the old CI DB from a backup. The DB instance ID and backup
 ID can be found by running:
 
-Note that the disk capacity of the new DB must be as large as the disk capacity of the old DB.
-https://cloud.google.com/sql/docs/postgres/backup-recovery/restore#tips-restore-different-instance
-
 ```sh
 $ gcloud sql instances list
 $ gcloud sql backups list -i [instance_id]
@@ -154,6 +151,9 @@ If DB was restored but the re-encryption part fails, it can be retried by runnin
 ```sh
 $ ./scripts/reencrypt-db [old_encryption_key]
 ```
+
+Note that the disk capacity of the new DB must be as large as the disk capacity of the old DB.
+https://cloud.google.com/sql/docs/postgres/backup-recovery/restore#tips-restore-different-instance
 
 ### managing secrets
 
