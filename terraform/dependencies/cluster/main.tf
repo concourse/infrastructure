@@ -70,7 +70,7 @@ resource "google_container_cluster" "main" {
 
   network_policy {
     provider = "CALICO"
-    enabled = true
+    enabled  = true
   }
 }
 
@@ -103,6 +103,7 @@ resource "google_container_node_pool" "main" {
     disk_size_gb    = each.value.disk_size
     disk_type       = each.value.disk_type
     image_type      = each.value.image
+    labels          = coalesce(each.value.labels, {})
 
     workload_metadata_config {
       node_metadata = "GKE_METADATA_SERVER"
