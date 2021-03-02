@@ -15,7 +15,7 @@ persistence:
 worker:
   replicas: 1
   nodeSelector:
-    cloud.google.com/gke-nodepool: topgun-workers
+    cloud.google.com/gke-nodepool: ci-workers
   annotations:
     manual-update-revision: "1"
   terminationGracePeriodSeconds: 300
