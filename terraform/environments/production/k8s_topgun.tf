@@ -63,7 +63,7 @@ module "k8s_topgun_cluster" {
   }
 }
 
-resource "kubernetes_storage_class" "ssd" {
+resource "kubernetes_storage_class" "k8s_topgun_ssd" {
   provider = kubernetes.k8s_topgun
 
   metadata {
