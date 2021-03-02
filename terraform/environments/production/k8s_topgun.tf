@@ -39,7 +39,7 @@ module "k8s_topgun_cluster" {
         "https://www.googleapis.com/auth/cloud-platform",
       ]
       labels = {
-        nodeImage = "cos"
+        nodeImage = "ubuntu"
       }
     },
     "cos" = {
@@ -57,7 +57,7 @@ module "k8s_topgun_cluster" {
         "https://www.googleapis.com/auth/cloud-platform",
       ]
       labels = {
-        nodeImage = "ubuntu"
+        nodeImage = "cos"
       }
     },
   }
