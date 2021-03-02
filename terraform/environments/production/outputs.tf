@@ -11,7 +11,7 @@ output project {
 }
 
 output ci_concourse_release_name {
-  value = helm_release.ci-concourse.name
+  value = helm_release.ci.name
 }
 
 output ci_namespace {
