@@ -24,7 +24,7 @@ module "k8s_topgun_cluster" {
         "https://www.googleapis.com/auth/cloud-platform",
       ]
     },
-    "cos" = {
+    "ubuntu" = {
       auto_upgrade    = true
       disk_size       = "100"
       disk_type       = "pd-ssd"
@@ -42,7 +42,7 @@ module "k8s_topgun_cluster" {
         nodeImage = "cos"
       }
     },
-    "ubuntu" = {
+    "cos" = {
       auto_upgrade    = true
       disk_size       = "100"
       disk_type       = "pd-ssd"
