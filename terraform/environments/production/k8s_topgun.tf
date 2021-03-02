@@ -1,7 +1,7 @@
 module "k8s_topgun_cluster" {
   source = "../../dependencies/cluster"
 
-  name    = "k8s_topgun"
+  name    = "k8s-topgun"
   project = var.project
   region  = var.region
   zone    = var.zone
