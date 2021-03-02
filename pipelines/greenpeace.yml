@@ -467,7 +467,7 @@ jobs:
   - get: greenpeace
   - put: terraform
     params:
-      terraform_source: #@ "greenpeace/terraform/" + cluster
+      terraform_source: #@ "greenpeace/terraform/environments" + cluster
       action: destroy
     get_params:
       action: destroy
