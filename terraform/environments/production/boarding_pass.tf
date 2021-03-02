@@ -40,23 +40,23 @@ resource "kubernetes_deployment" "boarding_pass" {
   }
 }
 
-resource "kubernetes_service" "boarding_pass" {
-  metadata {
-    name      = "boarding-pass"
-    namespace = kubernetes_namespace.boarding_pass.id
-  }
-
-  spec {
-    selector = {
-      app = "boarding-pass"
-    }
-
-    port {
-      port        = 80
-      target_port = 80
-    }
-
-    type             = "LoadBalancer"
-    load_balancer_ip = module.boarding_pass_address.address
-  }
-}
+#resource "kubernetes_service" "boarding_pass" {
+#  metadata {
+#    name      = "boarding-pass"
+#    namespace = kubernetes_namespace.boarding_pass.id
+#  }
+#
+#  spec {
+#    selector = {
+#      app = "boarding-pass"
+#    }
+#
+#    port {
+#      port        = 80
+#      target_port = 80
+#    }
+#
+#    type             = "LoadBalancer"
+#    load_balancer_ip = module.boarding_pass_address.address
+#  }
+#}
