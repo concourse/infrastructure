@@ -1,9 +1,6 @@
 [submodule "vendor/vault-backend-migrator"]
 	path = vendor/vault-backend-migrator
 	url = https://github.com/adamdecaf/vault-backend-migrator
-[submodule "terraform/vault/charts/vault-helm"]
-	path = terraform/vault/charts/vault-helm
-	url = https://github.com/hashicorp/vault-helm
 [submodule "terraform/dependencies/vault/charts/vault-helm"]
 	path = terraform/dependencies/vault/charts/vault-helm
 	url = https://github.com/hashicorp/vault-helm
