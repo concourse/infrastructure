@@ -23,7 +23,28 @@ output "vault_namespace" {
 }
 
 output "vault_ca_cert" {
-  value = module.vault.ca_pem
+  value     = module.vault.ca_pem
+  sensitive = true
+}
+
+output "vault_secrets" {
+  sensitive = true
+  value = [
+    {
+      path = "concourse/main/concourse"
+      data = {
+        url      = module.concourse_ci_address.address
+        username = var.concourse_admin_username
+        password = random_password.admin_password.result
+      }
+    },
+    {
+      path = "concourse/main/greenpeace_gcp_credentials_json"
+      data = {
+        value = var.credentials
+      }
+    },
+  ]
 }
 
 output "greenpeace_crypto_key_self_link" {
@@ -56,37 +77,4 @@ output "ci_database_cert" {
 output "ci_database_private_key" {
   value     = module.ci_database.private_key
   sensitive = true
-}
-
-output "concoure_url" {
-  value = module.concourse_ci_address.address
-}
-
-output "concourse_admin_username" {
-  value = var.concourse_admin_username
-}
-
-output "concourse_admin_password" {
-  value     = random_password.admin_password.result
-  sensitive = true
-}
-
-output "vault_secrets" {
-  sensitive = true
-  value = [
-    {
-      path = "concourse/main/concourse"
-      data = {
-        url      = module.concourse_ci_address.address
-        username = var.concourse_admin_username
-        password = random_password.admin_password.result
-      }
-    },
-    {
-      path = "concourse/main/greenpeace_gcp_credentials_json"
-      data = {
-        value = var.credentials
-      }
-    },
-  ]
 }
