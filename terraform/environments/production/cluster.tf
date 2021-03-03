@@ -8,7 +8,8 @@ module "cluster" {
   region  = var.region
   zone    = var.zone
 
-  release_channel = "STABLE"
+  #release_channel = "STABLE"
+  node_version = "1.16.15-gke.7800"
 
   node_pools = {
     "generic" = {
