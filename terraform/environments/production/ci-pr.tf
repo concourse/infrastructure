@@ -52,8 +52,6 @@ resource "kubernetes_network_policy" "ci_pr_only_external" {
       }
     }
 
-    ingress {}
-
     egress {
       ports {
         port     = "53"
@@ -63,7 +61,9 @@ resource "kubernetes_network_policy" "ci_pr_only_external" {
         port     = "53"
         protocol = "UDP"
       }
+    }
 
+    egress {
       to {
         namespace_selector {
           match_labels = {
