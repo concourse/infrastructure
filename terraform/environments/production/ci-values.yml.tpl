@@ -6,14 +6,14 @@ postgresql:
 
 web:
   annotations:
-    rollingUpdate: "4"
+    rollingUpdate: "5"
   replicas: 1
   nodeSelector:
     cloud.google.com/gke-nodepool: generic
   env:
   - name: CONCOURSE_X_FRAME_OPTIONS
     value: ""
-  # The OTLP tracing stuff aren't on the latest chart yet so we're stting them as env vars
+  # The OTLP tracing stuff aren't on the latest chart yet so we're setting them as env vars
   - name: CONCOURSE_TRACING_SERVICE_NAME
     value: web
   - name: CONCOURSE_TRACING_OTLP_ADDRESS
