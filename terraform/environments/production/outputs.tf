@@ -73,7 +73,7 @@ output "concourse_admin_password" {
 
 output "vault_secrets" {
   sensitive = true
-  value = jsonencode([
+  value = [
     {
       path = "concourse/main/concourse"
       data = jsonencode({
@@ -88,11 +88,5 @@ output "vault_secrets" {
         value = var.credentials
       })
     },
-    {
-      path = "concourse/main/greenpeace_private_key"
-      data = jsonencode({
-        value = var.greenpeace_private_key
-      })
-    },
-  ])
+  ]
 }
