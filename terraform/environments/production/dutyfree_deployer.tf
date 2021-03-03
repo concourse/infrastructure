@@ -1,11 +1,11 @@
 resource "kubernetes_namespace" "dutyfree" {
-  depends_on = [
-    module.cluster
-  ]
-
   metadata {
     name = "dutyfree"
   }
+
+  depends_on = [
+    module.cluster.node_pools
+  ]
 }
 
 # This service account is to be used in CI to deploy dutyfree

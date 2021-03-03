@@ -1,11 +1,11 @@
 resource "kubernetes_namespace" "ci_pr" {
-  depends_on = [
-    module.cluster
-  ]
-
   metadata {
     name = "ci-pr"
   }
+
+  depends_on = [
+    module.cluster.node_pools
+  ]
 }
 
 data "template_file" "ci_pr_values" {

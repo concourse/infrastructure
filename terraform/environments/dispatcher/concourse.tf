@@ -2,6 +2,10 @@ resource "kubernetes_namespace" "concourse" {
   metadata {
     name = "concourse"
   }
+
+  depends_on = [
+    module.cluster.node_pools
+  ]
 }
 
 resource "random_password" "encryption_key" {
