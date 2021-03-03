@@ -39,8 +39,6 @@ resource "google_container_cluster" "main" {
     channel = var.release_channel
   }
 
-  min_master_version = var.node_version
-
   addons_config {
     http_load_balancing {
       disabled = false
