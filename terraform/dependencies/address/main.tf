@@ -3,7 +3,7 @@ data "google_dns_managed_zone" "main" {
 }
 
 resource "google_compute_address" "main" {
-  name = var.subdomain
+  name = coalesce(var.compute_address_name, var.subdomain)
 }
 
 resource "google_dns_record_set" "main" {

@@ -19,6 +19,9 @@ module "concourse_ci_address" {
 
   dns_zone  = var.dns_zone
   subdomain = var.subdomain
+
+  # Necessary to avoid conflict when switching over to greenpeace deployed CI
+  compute_address_name = "ci-new"
 }
 
 module "boarding_pass_address" {
