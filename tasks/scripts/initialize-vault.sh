@@ -23,10 +23,6 @@ popd > /dev/null
 pushd terraform/ > /dev/null
   gcloud container clusters get-credentials "$(tfoutput cluster_name)" --zone "$(tfoutput cluster_zone)" --project "$(tfoutput project)"
 
-  concourse_url="$(tfoutput concourse_url)"
-  concourse_username="$(tfoutput concourse_admin_username)"
-  concourse_password="$(tfoutput concourse_admin_password)"
-
   printf "\nport-forwarding the vault service to port 8200...\n"
   kubectl port-forward service/vault -n "$(tfoutput vault_namespace)" 8200:8200 >/dev/null &
   port_forward_pid=$!
@@ -92,29 +88,47 @@ pushd terraform/ > /dev/null
   kubectl exec vault-0 -n "$(tfoutput vault_namespace)" -- vault login "$token" > /dev/null
 
   vault_ca_cert="$(tfoutput vault_ca_cert)"
+  vault_secrets="$(tfoutput vault_secrets)"
 popd > /dev/null
+
+vault_version="$(curl -k -s https://127.0.0.1:8200/v1/sys/health | jq -r '.version')"
+curl -O "https://releases.hashicorp.com/vault/${vault_version}/vault_${vault_version}_linux_amd64.zip"
+unzip "vault_${vault_version}_linux_amd64.zip" -d /usr/local/bin
+chmod +x /usr/local/bin/vault
 
 export VAULT_TOKEN="${token}"
 export VAULT_ADDR="https://127.0.0.1:8200"
 export VAULT_SKIP_VERIFY="true"
 
-pushd greenpeace/terraform/configure_vault > /dev/null
-  terraform init \
-    -backend-config "credentials=${GCP_CREDENTIALS_JSON}"
-  terraform workspace select "$CLUSTER_NAME-vault" || terraform workspace new "$CLUSTER_NAME-vault"
-  terraform apply \
-    -auto-approve \
-    -input=false \
-    -var "concourse_cert=${vault_ca_cert}" \
-    -var "credentials=${GCP_CREDENTIALS_JSON}" \
-    -var "greenpeace_private_key=${GREENPEACE_PRIVATE_KEY}" \
-    -var "concourse_url=${concourse_url}" \
-    -var "concourse_username=${concourse_username}" \
-    -var "concourse_password=${concourse_password}"
-popd > /dev/null
+# enable cert auth backend
+if vault auth list | grep "cert/"; then
+  echo "cert auth is already enabled"
+else
+  vault auth enable cert
+fi
 
+# authorize concourse's cert
+vault write auth/cert/certs/concourse "policies=concourse" "certificate=${vault_ca_cert}"
+
+# enable secrets packend (kv1)
+if vault secrets list | grep "concourse/"; then
+  echo "secret backend is alreadty enabled"
+else
+  vault secrets enable -version=1 -path=concourse kv
+fi
+
+# decrypt and import the secrets backup
 pushd secrets > /dev/null
   decrypt "${greenpeace_crypto_key_self_link}"
 popd
-
 vault-backend-migrator/vault-backend-migrator -import concourse/ -file secrets/secrets.json
+
+# add the terraform created secrets
+for row in $(echo "${vault_secrets}" | jq -r '.[] | @base64'); do
+  _jq() {
+   echo ${row} | base64 --decode | jq -r ${1}
+  }
+
+  echo "writing secret $(_jq '.path')"
+  _jq '.data' | vault write "$(_jq '.path')" -
+done

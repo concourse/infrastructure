@@ -53,7 +53,7 @@ data "template_file" "concourse_values" {
     db_password = jsonencode(random_password.db_password.result)
 
     encryption_key = jsonencode(random_password.encryption_key.result)
-    local_users    = jsonencode("admin:${random_password.admin_password.result}")
+    local_users    = jsonencode("${var.concourse_admin_username}:${random_password.admin_password.result}")
 
     host_key     = jsonencode(tls_private_key.host_key.private_key_pem)
     host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
