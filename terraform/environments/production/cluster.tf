@@ -71,13 +71,13 @@ resource "kubernetes_storage_class" "ssd" {
   volume_binding_mode = "Immediate"
 }
 
-module "cert_manager_issuer" {
-  source = "../../dependencies/cert_manager_issuer"
-
-  cluster_name = "production"
-  project      = var.project
-
-  depends_on = [
-    module.cluster.node_pools,
-  ]
-}
+#module "cert_manager_issuer" {
+#  source = "../../dependencies/cert_manager_issuer"
+#
+#  cluster_name = "production"
+#  project      = var.project
+#
+#  depends_on = [
+#    module.cluster.node_pools,
+#  ]
+#}
