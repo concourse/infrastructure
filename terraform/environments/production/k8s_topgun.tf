@@ -62,62 +62,62 @@ module "k8s_topgun_cluster" {
     },
   }
 }
-
-resource "kubernetes_storage_class" "k8s_topgun_ssd" {
-  provider = kubernetes.k8s_topgun
-
-  metadata {
-    name = "ssd"
-  }
-  storage_provisioner = "kubernetes.io/gce-pd"
-  reclaim_policy      = "Delete"
-  parameters = {
-    type = "pd-ssd"
-  }
-  volume_binding_mode = "Immediate"
-}
-
-resource "kubernetes_namespace" "ci_topgun_worker" {
-  provider = kubernetes.k8s_topgun
-
-  depends_on = [
-    module.k8s_topgun_cluster
-  ]
-
-  metadata {
-    name = "ci-topgun-worker"
-  }
-}
-
-data "template_file" "ci_topgun_worker_values" {
-  template = file("${path.module}/k8s_topgun_worker-values.yml.tpl")
-  vars = {
-    image_repo   = var.concourse_image_repo
-    image_digest = var.concourse_image_digest
-
-    host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
-    worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
-
-    host = "https://${var.subdomain}.${var.domain}:2222"
-  }
-}
-
-resource "helm_release" "k8s_topgun_worker" {
-  provider = helm.k8s_topgun
-
-  namespace  = kubernetes_namespace.ci_topgun_worker.id
-  name       = "topgun-worker"
-  repository = "https://concourse-charts.storage.googleapis.com"
-  chart      = "concourse"
-  version    = "11.1.0"
-
-  timeout = 1800
-
-  values = [
-    data.template_file.ci_topgun_worker_values.rendered,
-  ]
-
-  depends_on = [
-    module.k8s_topgun_cluster.node_pools,
-  ]
-}
+#
+#resource "kubernetes_storage_class" "k8s_topgun_ssd" {
+#  provider = kubernetes.k8s_topgun
+#
+#  metadata {
+#    name = "ssd"
+#  }
+#  storage_provisioner = "kubernetes.io/gce-pd"
+#  reclaim_policy      = "Delete"
+#  parameters = {
+#    type = "pd-ssd"
+#  }
+#  volume_binding_mode = "Immediate"
+#}
+#
+#resource "kubernetes_namespace" "ci_topgun_worker" {
+#  provider = kubernetes.k8s_topgun
+#
+#  depends_on = [
+#    module.k8s_topgun_cluster
+#  ]
+#
+#  metadata {
+#    name = "ci-topgun-worker"
+#  }
+#}
+#
+#data "template_file" "ci_topgun_worker_values" {
+#  template = file("${path.module}/k8s_topgun_worker-values.yml.tpl")
+#  vars = {
+#    image_repo   = var.concourse_image_repo
+#    image_digest = var.concourse_image_digest
+#
+#    host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
+#    worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
+#
+#    host = "https://${var.subdomain}.${var.domain}:2222"
+#  }
+#}
+#
+#resource "helm_release" "k8s_topgun_worker" {
+#  provider = helm.k8s_topgun
+#
+#  namespace  = kubernetes_namespace.ci_topgun_worker.id
+#  name       = "topgun-worker"
+#  repository = "https://concourse-charts.storage.googleapis.com"
+#  chart      = "concourse"
+#  version    = "11.1.0"
+#
+#  timeout = 1800
+#
+#  values = [
+#    data.template_file.ci_topgun_worker_values.rendered,
+#  ]
+#
+#  depends_on = [
+#    module.k8s_topgun_cluster.node_pools,
+#  ]
+#}
