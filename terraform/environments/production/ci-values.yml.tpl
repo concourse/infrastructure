@@ -7,7 +7,7 @@ postgresql:
 web:
   annotations:
     rollingUpdate: "5"
-  replicas: 1
+  replicas: 2
   nodeSelector:
     cloud.google.com/gke-nodepool: generic
   env:
@@ -81,7 +81,7 @@ persistence:
     size: 750Gi
 
 worker:
-  replicas: 1
+  replicas: 8
   nodeSelector:
     cloud.google.com/gke-nodepool: ci-workers
   annotations:
