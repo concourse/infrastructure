@@ -76,17 +76,17 @@ output "vault_secrets" {
   value = [
     {
       path = "concourse/main/concourse"
-      data = jsonencode({
+      data = {
         url      = module.concourse_ci_address.address
         username = var.concourse_admin_username
         password = random_password.admin_password.result
-      })
+      }
     },
     {
       path = "concourse/main/greenpeace_gcp_credentials_json"
-      data = jsonencode({
+      data = {
         value = var.credentials
-      })
+      }
     },
   ]
 }
