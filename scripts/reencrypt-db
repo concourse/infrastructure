@@ -7,7 +7,7 @@ if [ "$#" != "1" ]; then
   exit 1
 fi
 
-cd $(dirname $0)/../terraform/production
+cd $(dirname $0)/../terraform/environments/production
 
 old_encryption_key="$1"
 
@@ -44,14 +44,13 @@ while true; do
   sleep 5
 done
 
-image="$(kubectl get deploy "$ci_deployment_name" -n "$ci_namespace" -o jsonpath={.spec.template.spec.containers[0].image})"
-
 echo "Reading values from Helm release..."
 
 values="$(helm get values "$ci_release_name" -n "$ci_namespace" -o json)"
 
+image="$(jq -r .image <<< $values)@$(jq -r .imageDigest <<< $values)"
 
-temp_dir="$(pwd)/../../sensitive/certs"
+temp_dir="$(pwd)/../../../sensitive/certs"
 rm -rf "$temp_dir"
 mkdir "$temp_dir"
 

@@ -8,7 +8,7 @@ if [ "$#" != "1" ]; then
 fi
 
 # TODO: not hard-coded to production
-cd $(dirname $0)/../terraform/production
+cd $(dirname $0)/../terraform/environments/production
 
 database="$1"
 output="$(terraform output -json)"
