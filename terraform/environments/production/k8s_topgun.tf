@@ -63,19 +63,19 @@ module "k8s_topgun_cluster" {
   }
 }
 
-#resource "kubernetes_storage_class" "k8s_topgun_ssd" {
-#  provider = kubernetes.k8s_topgun
-#
-#  metadata {
-#    name = "ssd"
-#  }
-#  storage_provisioner = "kubernetes.io/gce-pd"
-#  reclaim_policy      = "Delete"
-#  parameters = {
-#    type = "pd-ssd"
-#  }
-#  volume_binding_mode = "Immediate"
-#}
+resource "kubernetes_storage_class" "k8s_topgun_ssd" {
+  provider = kubernetes.k8s_topgun
+
+  metadata {
+    name = "ssd"
+  }
+  storage_provisioner = "kubernetes.io/gce-pd"
+  reclaim_policy      = "Delete"
+  parameters = {
+    type = "pd-ssd"
+  }
+  volume_binding_mode = "Immediate"
+}
 
 resource "kubernetes_namespace" "ci_topgun_worker" {
   provider = kubernetes.k8s_topgun
