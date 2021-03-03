@@ -117,20 +117,15 @@ module "windows_worker" {
   go_package_url       = var.go_windows_package_url
 }
 
-# Disabling until we switch over to Greenpeace for CI. The darwin-worker module
-# doesn't actually create a new VM - it just provisions the one we have.
-# Re-provisioning it will break builds on our current CI, since it'll point to
-# ci-test.concourse-ci.org
-#
-# module "darwin_worker" {
-#   source = "../../dependencies/darwin-worker"
-#
-#   macstadium_ip        = var.macstadium_ip
-#   macstadium_username  = var.macstadium_username
-#   macstadium_password  = var.macstadium_password
-#   concourse_bundle_url = var.concourse_darwin_bundle_url
-#   tsa_host             = "${module.concourse_ci_address.address}:2222"
-#   tsa_host_public_key  = tls_private_key.host_key.public_key_openssh
-#   worker_key           = tls_private_key.worker_key.private_key_pem
-#   go_package_url       = var.go_darwin_package_url
-# }
+module "darwin_worker" {
+  source = "../../dependencies/darwin-worker"
+
+  macstadium_ip        = var.macstadium_ip
+  macstadium_username  = var.macstadium_username
+  macstadium_password  = var.macstadium_password
+  concourse_bundle_url = var.concourse_darwin_bundle_url
+  tsa_host             = "${module.concourse_ci_address.address}:2222"
+  tsa_host_public_key  = tls_private_key.host_key.public_key_openssh
+  worker_key           = tls_private_key.worker_key.private_key_pem
+  go_package_url       = var.go_darwin_package_url
+}
