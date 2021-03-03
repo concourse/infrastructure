@@ -8,7 +8,7 @@ if [ "$#" != "3" ]; then
 fi
 
 
-pushd $(dirname $0)/../terraform/production
+pushd $(dirname $0)/../terraform/environments/production
   database=ci
   src_instance_id="$1"
   backup_id="$2"

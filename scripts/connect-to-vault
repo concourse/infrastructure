@@ -12,7 +12,7 @@ if [ "$#" != "1" ]; then
 fi
 
 env="$1"
-cd "$(dirname $0)/../terraform/$env"
+cd "$(dirname $0)/../terraform/environments/$env"
 
 echo "switching kube context to cluster $(tfoutput cluster_name)..."
 gcloud container clusters get-credentials "$(tfoutput cluster_name)" --zone "$(tfoutput cluster_zone)" --project "$(tfoutput project)"
