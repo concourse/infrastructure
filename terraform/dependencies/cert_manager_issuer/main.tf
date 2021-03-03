@@ -30,7 +30,7 @@ resource "helm_release" "cert_manager" {
 
   repository = "https://charts.jetstack.io"
   chart      = "cert-manager"
-  version    = "1.0.2"
+  version    = "1.2.0"
 
   values = [
     jsonencode({
