@@ -1,67 +1,67 @@
-module "k8s_topgun_cluster" {
-  source = "../../dependencies/cluster"
-
-  name    = "k8s-topgun"
-  project = var.project
-  region  = var.region
-  zone    = var.zone
-
-  release_channel = "STABLE"
-
-  node_pools = {
-    "ci-workers" = {
-      auto_upgrade    = true
-      disk_size       = "20"
-      disk_type       = "pd-ssd"
-      image           = "COS"
-      local_ssds      = 0
-      machine_type    = "n1-standard-8"
-      max             = 3
-      min             = 1
-      preemptible     = false
-      service_account = null
-      extra_oauth_scopes = [
-        "https://www.googleapis.com/auth/cloud-platform",
-      ]
-    },
-    "ubuntu" = {
-      auto_upgrade    = true
-      disk_size       = "100"
-      disk_type       = "pd-ssd"
-      image           = "Ubuntu"
-      local_ssds      = 0
-      machine_type    = "n1-highcpu-8"
-      max             = 10
-      min             = 1
-      preemptible     = false
-      service_account = null
-      extra_oauth_scopes = [
-        "https://www.googleapis.com/auth/cloud-platform",
-      ]
-      labels = {
-        nodeImage = "ubuntu"
-      }
-    },
-    "cos" = {
-      auto_upgrade    = true
-      disk_size       = "100"
-      disk_type       = "pd-ssd"
-      image           = "COS"
-      local_ssds      = 0
-      machine_type    = "n1-highcpu-8"
-      max             = 10
-      min             = 1
-      preemptible     = false
-      service_account = null
-      extra_oauth_scopes = [
-        "https://www.googleapis.com/auth/cloud-platform",
-      ]
-      labels = {
-        nodeImage = "cos"
-      }
-    },
-  }
-}
+#module "k8s_topgun_cluster" {
+#  source = "../../dependencies/cluster"
+#
+#  name    = "k8s-topgun"
+#  project = var.project
+#  region  = var.region
+#  zone    = var.zone
+#
+#  release_channel = "STABLE"
+#
+#  node_pools = {
+#    "ci-workers" = {
+#      auto_upgrade    = true
+#      disk_size       = "20"
+#      disk_type       = "pd-ssd"
+#      image           = "COS"
+#      local_ssds      = 0
+#      machine_type    = "n1-standard-8"
+#      max             = 3
+#      min             = 1
+#      preemptible     = false
+#      service_account = null
+#      extra_oauth_scopes = [
+#        "https://www.googleapis.com/auth/cloud-platform",
+#      ]
+#    },
+#    "ubuntu" = {
+#      auto_upgrade    = true
+#      disk_size       = "100"
+#      disk_type       = "pd-ssd"
+#      image           = "Ubuntu"
+#      local_ssds      = 0
+#      machine_type    = "n1-highcpu-8"
+#      max             = 10
+#      min             = 1
+#      preemptible     = false
+#      service_account = null
+#      extra_oauth_scopes = [
+#        "https://www.googleapis.com/auth/cloud-platform",
+#      ]
+#      labels = {
+#        nodeImage = "ubuntu"
+#      }
+#    },
+#    "cos" = {
+#      auto_upgrade    = true
+#      disk_size       = "100"
+#      disk_type       = "pd-ssd"
+#      image           = "COS"
+#      local_ssds      = 0
+#      machine_type    = "n1-highcpu-8"
+#      max             = 10
+#      min             = 1
+#      preemptible     = false
+#      service_account = null
+#      extra_oauth_scopes = [
+#        "https://www.googleapis.com/auth/cloud-platform",
+#      ]
+#      labels = {
+#        nodeImage = "cos"
+#      }
+#    },
+#  }
+#}
 #
 #resource "kubernetes_storage_class" "k8s_topgun_ssd" {
 #  provider = kubernetes.k8s_topgun
