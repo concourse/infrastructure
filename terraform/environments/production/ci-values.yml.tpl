@@ -61,7 +61,7 @@ web:
         # https://github.com/wavefrontHQ/wavefront-proxy/blob/master/pkg/etc/wavefront/wavefront-proxy/wavefront.conf.default
         value: |
           --prefix concourse
-          --hostname ci-test.concourse-ci.org
+          --hostname ci.concourse-ci.org
           --traceJaegerGrpcListenerPorts 14250
           --traceJaegerApplicationName Concourse
       - name: WAVEFRONT_TOKEN

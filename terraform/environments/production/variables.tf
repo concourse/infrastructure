@@ -30,7 +30,7 @@ variable "domain" {
 
 variable "subdomain" {
   description = "The subdomain to prepend to the provided domain."
-  default     = "ci-test"
+  default     = "ci"
 }
 
 # This KMS keyring+crypto key are created in bootstrap
