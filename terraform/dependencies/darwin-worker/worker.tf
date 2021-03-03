@@ -1,20 +1,3 @@
-variable "macstadium_ip" {
-  type = string
-}
-
-variable "macstadium_username" {
-  type = string
-}
-
-variable "macstadium_password" {
-  type = string
-}
-
-variable "concourse_bundle_url" {
-  type    = string
-  default = "https://storage.googleapis.com/concourse-artifacts/dev/concourse-6.7.0+dev.461.5e9e2ec33.darwin.amd64.tgz"
-}
-
 resource "null_resource" "instance" {
   triggers = {
     ip  = var.macstadium_ip
