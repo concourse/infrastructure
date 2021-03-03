@@ -40,3 +40,8 @@ variable "concourse_image_repo" {
 variable "concourse_image_digest" {
   description = "digest for the concourse_image_repo image to use for the ATC and the linux workers"
 }
+
+variable "concourse_admin_username" {
+  type    = string
+  default = "admin"
+}
