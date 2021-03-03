@@ -102,7 +102,7 @@ data "template_file" "ci_topgun_worker_values" {
     host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
     worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
 
-    host = "https://${var.subdomain}.${var.domain}:2222"
+    host = "${var.subdomain}.${var.domain}:2222"
   }
 }
 
