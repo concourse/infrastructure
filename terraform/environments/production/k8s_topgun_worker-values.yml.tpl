@@ -17,7 +17,7 @@ worker:
   nodeSelector:
     cloud.google.com/gke-nodepool: ci-workers
   annotations:
-    manual-update-revision: "1"
+    manual-update-revision: "2"
   terminationGracePeriodSeconds: 300
   updateStrategy:
     rollingUpdate:
