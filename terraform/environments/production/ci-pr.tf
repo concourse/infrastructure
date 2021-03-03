@@ -67,7 +67,7 @@ resource "kubernetes_network_policy" "ci_pr_only_external" {
       to {
         namespace_selector {
           match_labels = {
-            release = helm_release.ci.metadata[0].name
+            name = kubernetes_namespace.ci.id
           }
         }
         pod_selector {

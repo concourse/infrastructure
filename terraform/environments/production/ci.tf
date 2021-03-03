@@ -1,6 +1,10 @@
 resource "kubernetes_namespace" "ci" {
   metadata {
     name = "ci"
+
+    labels = {
+      name = "ci"
+    }
   }
 
   depends_on = [
