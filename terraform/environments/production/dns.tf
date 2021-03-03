@@ -11,7 +11,7 @@
 #   }
 # }
 
-# Reserves an address for `ci-test.concourse-ci.org` and ties it
+# Reserves an address for `ci.concourse-ci.org` and ties it
 # to the given domain.
 #
 module "concourse_ci_address" {

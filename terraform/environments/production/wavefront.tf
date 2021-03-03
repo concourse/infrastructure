@@ -57,7 +57,7 @@ processors:
     actions:
     - key: cluster
       action: insert
-      value: ci-test.concourse-ci.org
+      value: ci.concourse-ci.org
     # uncomment to disable "intelligent" sampling by wavefront
     # - key: debug
     #   action: insert
@@ -70,7 +70,7 @@ processors:
       operations:
         - action: add_label
           new_label: url
-          new_value: ci-test.concourse-ci.org
+          new_value: ci.concourse-ci.org
 service:
   pipelines:
     traces:
