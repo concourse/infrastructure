@@ -88,23 +88,23 @@ data "template_file" "ci_values" {
   }
 }
 
-resource "helm_release" "ci" {
-  namespace  = kubernetes_namespace.ci.id
-  name       = "ci"
-  repository = "https://concourse-charts.storage.googleapis.com"
-  chart      = "concourse"
-  version    = "11.1.0"
-
-  timeout = 1800
-
-  values = [
-    data.template_file.ci_values.rendered,
-  ]
-
-  depends_on = [
-    module.cluster.node_pools,
-  ]
-}
+#resource "helm_release" "ci" {
+#  namespace  = kubernetes_namespace.ci.id
+#  name       = "ci"
+#  repository = "https://concourse-charts.storage.googleapis.com"
+#  chart      = "concourse"
+#  version    = "11.1.0"
+#
+#  timeout = 1800
+#
+#  values = [
+#    data.template_file.ci_values.rendered,
+#  ]
+#
+#  depends_on = [
+#    module.cluster.node_pools,
+#  ]
+#}
 
 module "windows_worker" {
   source = "../../dependencies/windows-worker"
