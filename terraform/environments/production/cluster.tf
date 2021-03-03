@@ -9,7 +9,7 @@ module "cluster" {
   zone    = var.zone
 
   #release_channel = "STABLE"
-  min_master_version = "1.16.15-gke.7800"
+  node_version = "1.16.15-gke.7800"
 
   node_pools = {
     "generic" = {
