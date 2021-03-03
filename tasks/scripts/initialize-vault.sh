@@ -112,7 +112,7 @@ vault write auth/cert/certs/concourse "policies=concourse" "certificate=${vault_
 
 # enable secrets packend (kv1)
 if vault secrets list | grep "concourse/"; then
-  echo "secret backend is alreadty enabled"
+  echo "secret backend is already enabled"
 else
   vault secrets enable -version=1 -path=concourse kv
 fi
@@ -126,9 +126,8 @@ vault-backend-migrator/vault-backend-migrator -import concourse/ -file secrets/s
 # add the terraform created secrets
 for row in $(echo "${vault_secrets}" | jq -r '.[] | @base64'); do
   _jq() {
-   echo ${row} | base64 --decode | jq -r ${1}
+    echo ${row} | base64 --decode | jq -r ${1}
   }
 
-  echo "writing secret $(_jq '.path')"
   _jq '.data' | vault write "$(_jq '.path')" -
 done
