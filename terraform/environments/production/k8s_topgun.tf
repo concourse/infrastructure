@@ -81,7 +81,7 @@ resource "kubernetes_namespace" "ci_topgun_worker" {
   provider = kubernetes.k8s_topgun
 
   depends_on = [
-    module.k8s_topgun_cluster
+    module.k8s_topgun_cluster.node_pools
   ]
 
   metadata {
