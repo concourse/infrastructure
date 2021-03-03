@@ -1,11 +1,11 @@
 resource "kubernetes_namespace" "ci" {
-  depends_on = [
-    module.cluster
-  ]
-
   metadata {
     name = "ci"
   }
+
+  depends_on = [
+    module.cluster.node_pools
+  ]
 }
 
 resource "random_password" "encryption_key" {

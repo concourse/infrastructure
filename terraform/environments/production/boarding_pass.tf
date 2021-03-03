@@ -1,11 +1,11 @@
 #resource "kubernetes_namespace" "boarding_pass" {
-#  depends_on = [
-#    module.cluster
-#  ]
-#
 #  metadata {
 #    name = "boarding-pass"
 #  }
+#
+#  depends_on = [
+#    module.cluster.node_pools
+#  ]
 #}
 #
 #resource "kubernetes_deployment" "boarding_pass" {

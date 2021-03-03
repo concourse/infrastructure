@@ -69,6 +69,10 @@ resource "kubernetes_storage_class" "ssd" {
     type = "pd-ssd"
   }
   volume_binding_mode = "Immediate"
+
+  depends_on = [
+    module.cluster.node_pools
+  ]
 }
 
 #module "cert_manager_issuer" {

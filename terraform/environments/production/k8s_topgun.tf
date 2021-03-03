@@ -75,18 +75,22 @@ resource "kubernetes_storage_class" "k8s_topgun_ssd" {
     type = "pd-ssd"
   }
   volume_binding_mode = "Immediate"
+
+  depends_on = [
+    module.k8s_topgun_cluster.node_pools
+  ]
 }
 
 resource "kubernetes_namespace" "ci_topgun_worker" {
   provider = kubernetes.k8s_topgun
 
-  depends_on = [
-    module.k8s_topgun_cluster.node_pools
-  ]
-
   metadata {
     name = "ci-topgun-worker"
   }
+
+  depends_on = [
+    module.k8s_topgun_cluster.node_pools
+  ]
 }
 
 data "template_file" "ci_topgun_worker_values" {
