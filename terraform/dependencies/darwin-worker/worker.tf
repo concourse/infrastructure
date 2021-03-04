@@ -1,7 +1,7 @@
 resource "null_resource" "instance" {
   triggers = {
-    ip  = var.macstadium_ip
-    url = var.concourse_bundle_url
+    ip      = var.macstadium_ip
+    trigger = sha256(data.template_file.startup_script.rendered)
   }
 
   connection {
@@ -30,11 +30,17 @@ resource "null_resource" "instance" {
 
   provisioner "remote-exec" {
     inline = [
-      templatefile("${path.module}/scripts/startup.sh.tmpl", {
-        password             = var.macstadium_password,
-        concourse_bundle_url = var.concourse_bundle_url,
-        go_package_url       = var.go_package_url
-      })
+      data.template_file.startup_script.rendered,
     ]
+  }
+}
+
+data "template_file" "startup_script" {
+  template = file("${path.module}/scripts/startup.sh.tmpl")
+
+  vars = {
+    password             = var.macstadium_password,
+    concourse_bundle_url = var.concourse_bundle_url,
+    go_package_url       = var.go_package_url
   }
 }
