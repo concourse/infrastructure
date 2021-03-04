@@ -20,7 +20,9 @@ web:
     value: 127.0.0.1:55680
   - name: CONCOURSE_TRACING_OTLP_USE_TLS
     value: "false"
-
+  # TODO: use concourse.concourse.web.enablePipelineInstances instead once the chart is bumped
+  - name: CONCOURSE_ENABLE_PIPELINE_INSTANCES
+    value: "true"
 
   resources:
     requests:
@@ -116,7 +118,6 @@ concourse:
     streamingArtifactsCompression: zstd
     enableGlobalResources: true
     enableAcrossStep: true
-    enablePipelineInstances: true
     baggageclaimResponseHeaderTimeout: 5m
     encryption:
       enabled: true
