@@ -116,6 +116,7 @@ concourse:
     streamingArtifactsCompression: zstd
     enableGlobalResources: true
     enableAcrossStep: true
+    enablePipelineInstances: true
     encryption:
       enabled: true
     kubernetes:
