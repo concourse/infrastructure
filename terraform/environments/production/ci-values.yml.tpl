@@ -117,6 +117,7 @@ concourse:
     enableGlobalResources: true
     enableAcrossStep: true
     enablePipelineInstances: true
+    baggageclaimResponseHeaderTimeout: 5m
     encryption:
       enabled: true
     kubernetes:
