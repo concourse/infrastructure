@@ -86,7 +86,7 @@ worker:
     cloud.google.com/gke-nodepool: ci-workers
   annotations:
     manual-update-revision: "1"
-  terminationGracePeriodSeconds: 300
+  terminationGracePeriodSeconds: 120
   updateStrategy:
     rollingUpdate:
       partition: 0
