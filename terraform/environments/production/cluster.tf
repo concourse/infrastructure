@@ -30,7 +30,7 @@ module "cluster" {
       auto_upgrade    = true
       disk_size       = "50"
       disk_type       = "pd-ssd"
-      image           = "COS"
+      image           = "Ubuntu"
       local_ssds      = 0
       machine_type    = "custom-8-16384"
       max             = 10
@@ -45,7 +45,7 @@ module "cluster" {
       auto_upgrade    = true
       disk_size       = "50"
       disk_type       = "pd-ssd"
-      image           = "COS"
+      image           = "Ubuntu"
       local_ssds      = 0
       machine_type    = "custom-8-16384"
       max             = 5
