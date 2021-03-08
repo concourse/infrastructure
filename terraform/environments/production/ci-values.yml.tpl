@@ -23,6 +23,9 @@ web:
   # TODO: use concourse.concourse.web.enablePipelineInstances instead once the chart is bumped
   - name: CONCOURSE_ENABLE_PIPELINE_INSTANCES
     value: "true"
+  # TODO: use concourse.concourse.web.enableAcrossStep instead once the chart is bumped
+  - name: CONCOURSE_ENABLE_ACROSS_STEP
+    value: "true"
 
   resources:
     requests:
@@ -117,7 +120,6 @@ concourse:
     maxActiveTasksPerWorker: 5
     streamingArtifactsCompression: zstd
     enableGlobalResources: true
-    enableAcrossStep: true
     baggageclaimResponseHeaderTimeout: 5m
     encryption:
       enabled: true
