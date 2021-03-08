@@ -15,7 +15,8 @@ output "vault_namespace" {
 }
 
 output "vault_ca_cert" {
-  value = module.vault.ca_pem
+  value     = module.vault.ca_pem
+  sensitive = true
 }
 
 output "vault_secrets" {
