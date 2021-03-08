@@ -14,6 +14,9 @@ fi
 env="$1"
 cd "$(dirname $0)/../terraform/environments/$env"
 
+terraform init
+terraform workspace select "$env"
+
 echo "switching kube context to cluster $(tfoutput cluster_name)..."
 gcloud container clusters get-credentials "$(tfoutput cluster_name)" --zone "$(tfoutput cluster_zone)" --project "$(tfoutput project)"
 

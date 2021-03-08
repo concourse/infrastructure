@@ -3,12 +3,17 @@
 set -e -u
 
 if [ "$#" != "1" ]; then
-  echo "usage: $0 <ci|hush-house|...>" >&2
+  echo "usage: $0 <ci|...>" >&2
   exit 1
 fi
 
 # TODO: not hard-coded to production
-cd $(dirname $0)/../terraform/environments/production
+env=production
+
+cd "$(dirname $0)/../terraform/environments/$env"
+
+terraform init
+terraform workspace select "$env"
 
 database="$1"
 output="$(terraform output -json)"
