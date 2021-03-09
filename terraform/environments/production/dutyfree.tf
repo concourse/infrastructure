@@ -34,6 +34,35 @@ resource "kubernetes_deployment" "dutyfree" {
         container {
           image = "concourse/dutyfree@${var.dutyfree_image_digest}"
           name  = "dutyfree"
+
+          env {
+            name = "PORT"
+            value = "9090"
+          }
+
+          env {
+            name = "GH_TOKEN"
+            value = var.dutyfree_github_token
+          }
+
+          ports {
+            name = "http"
+            container_port = 9090
+            protocol = "TCP"
+          }
+
+          readiness_probe {
+            http_get {
+              path = "/"
+              port = "http"
+            }
+          }
+          liveness_probe {
+            http_get {
+              path = "/"
+              port = "http"
+            }
+          }
         }
       }
     }

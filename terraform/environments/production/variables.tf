@@ -62,6 +62,10 @@ variable "dutyfree_image_digest" {
   description = "Digest of the dutyfree image"
 }
 
+variable "dutyfree_github_token" {
+  description = "Github API token for dutyfree"
+}
+
 variable "concourse_image_repo" {
   description = "Concourse image repo to use for the ATC and the linux workers"
 }

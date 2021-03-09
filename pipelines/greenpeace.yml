@@ -406,6 +406,7 @@ jobs:
     #@ vars["macstadium_password"] = "((macstadium.password))"
     #@ vars["boarding_pass_image_digest"] = "((.:boarding_pass_image_digest))"
     #@ vars["dutyfree_image_digest"] = "((.:dutyfree_image_digest))"
+    #@ vars["dutyfree_github_token"] = "((dutyfree_github_token))"
     #@ vars["go_windows_package_url"] = "((.:go_windows_package_url))"
     #@ vars["go_darwin_package_url"] = "((.:go_darwin_package_url))"
   #@ end
