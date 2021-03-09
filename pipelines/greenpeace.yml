@@ -61,13 +61,6 @@ resources:
     bucket: golang
     regexp: 'go(\d+\.\d+(\.\d+)?)\.windows-amd64\.msi'
 
-- name: boarding-pass
-  type: git
-  icon: github
-  source:
-    uri: git@github.com:concourse/boarding-pass.git
-    private_key: ((greenpeace_private_key))
-
 - name: boarding-pass-image
   type: registry-image
   icon: docker
@@ -85,11 +78,6 @@ resources:
     tag: latest
     username: ((docker.username))
     password: ((docker.password))
-
-- name: oci-build-task
-  type: registry-image
-  icon: docker
-  source: {repository: vito/oci-build-task}
 #@ end
 
 - name: daily
@@ -349,31 +337,6 @@ jobs:
       file: production-secrets/data.tar
 #@ end
 
-#@ if cluster == "production":
-- name: build-boarding-pass
-  plan:
-  - get: greenpeace
-  - get: oci-build-task
-  - get: boarding-pass
-    trigger: true
-  - task: build-boarding-pass
-    file: boarding-pass/ci/build.yml
-  - task: build
-    image: oci-build-task
-    privileged: true
-    config:
-      platform: linux
-      params: {CONTEXT: greenpeace/dockerfiles/boarding_pass}
-      inputs:
-      - {name: greenpeace}
-      - {name: static-content, path: greenpeace/dockerfiles/boarding_pass/static-content}
-      outputs: [{name: image}]
-      caches: [{path: cache}]
-      run: {path: build}
-  - put: boarding-pass-image
-    params: {image: image/image.tar}
-#@ end
-
 - name: terraform
   max_in_flight: 1
   plan:
@@ -393,7 +356,6 @@ jobs:
   - load_var: go_windows_package_url
     file: golang-windows/url
   - get: boarding-pass-image
-    passed: [build-boarding-pass]
     trigger: true
   - load_var: boarding_pass_image_digest
     file: boarding-pass-image/digest
