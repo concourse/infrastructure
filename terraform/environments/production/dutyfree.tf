@@ -45,7 +45,7 @@ resource "kubernetes_deployment" "dutyfree" {
             value = var.dutyfree_github_token
           }
 
-          ports {
+          port {
             name = "http"
             container_port = 9090
             protocol = "TCP"
