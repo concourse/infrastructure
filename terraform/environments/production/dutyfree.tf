@@ -110,7 +110,7 @@ resource "kubernetes_ingress" "dutyfree" {
     # consume the GCP cert via annotations
     annotations = {
       "ingress.gcp.kubernetes.io/pre-shared-cert"   = google_compute_managed_ssl_certificate.dutyfree.name
-      "kubernetes.io/ingress.global-static-ip-name" = module.dutyfree_address.address
+      "kubernetes.io/ingress.global-static-ip-name" = module.dutyfree_address.name
       "kubernetes.io/ingress.allow-http"            = "false"
     }
   }
