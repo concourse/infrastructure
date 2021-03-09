@@ -86,7 +86,6 @@ resource "kubernetes_service" "dutyfree" {
     }
 
     type             = "LoadBalancer"
-    load_balancer_ip = module.dutyfree_address.address
   }
 }
 
