@@ -105,6 +105,7 @@ resource "google_compute_managed_ssl_certificate" "dutyfree" {
 resource "kubernetes_ingress" "dutyfree" {
   metadata {
     name = "dutyfree"
+    namespace = kubernetes_namespace.dutyfree.id
 
     # consume the GCP cert via annotations
     annotations = {
