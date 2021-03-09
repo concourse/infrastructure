@@ -58,6 +58,10 @@ variable "boarding_pass_image_digest" {
   description = "Digest of the boarding pass image"
 }
 
+variable "dutyfree_image_digest" {
+  description = "Digest of the dutyfree image"
+}
+
 variable "concourse_image_repo" {
   description = "Concourse image repo to use for the ATC and the linux workers"
 }

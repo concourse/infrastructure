@@ -30,3 +30,10 @@ module "boarding_pass_address" {
   dns_zone  = var.dns_zone
   subdomain = "boarding-pass"
 }
+
+module "dutyfree_address" {
+  source = "../../dependencies/address"
+
+  dns_zone  = var.dns_zone
+  subdomain = "resource-types"
+}
