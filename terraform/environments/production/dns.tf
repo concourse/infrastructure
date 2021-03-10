@@ -32,7 +32,7 @@ module "boarding_pass_address" {
 }
 
 module "dutyfree_address" {
-  source = "../../dependencies/address"
+  source = "../../dependencies/global_address"
 
   dns_zone  = var.dns_zone
   subdomain = "resource-types"

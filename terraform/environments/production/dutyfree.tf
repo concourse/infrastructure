@@ -36,19 +36,19 @@ resource "kubernetes_deployment" "dutyfree" {
           name  = "dutyfree"
 
           env {
-            name = "PORT"
+            name  = "PORT"
             value = "9090"
           }
 
           env {
-            name = "GH_TOKEN"
+            name  = "GH_TOKEN"
             value = var.dutyfree_github_token
           }
 
           port {
-            name = "http"
+            name           = "http"
             container_port = 9090
-            protocol = "TCP"
+            protocol       = "TCP"
           }
 
           readiness_probe {
@@ -83,18 +83,18 @@ resource "kubernetes_service" "dutyfree" {
     port {
       port        = 80
       target_port = 9090
+      protocol    = "TCP"
     }
 
-    type             = "LoadBalancer"
+    type = "NodePort"
   }
 }
 
 
 # Create the cert outside of k8s and from GCP directly
 resource "google_compute_managed_ssl_certificate" "dutyfree" {
-  provider = "google-beta"
-
-  name = "dispatcher-dutyfree-ssl"
+  provider = google-beta
+  name     = "dispatcher-dutyfree-ssl"
 
   managed {
     domains = ["resource-types.concourse-ci.org"]
@@ -103,7 +103,7 @@ resource "google_compute_managed_ssl_certificate" "dutyfree" {
 
 resource "kubernetes_ingress" "dutyfree" {
   metadata {
-    name = "dutyfree"
+    name      = "dutyfree"
     namespace = kubernetes_namespace.dutyfree.id
 
     # consume the GCP cert via annotations
