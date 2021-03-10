@@ -14,6 +14,6 @@ resource "google_dns_record_set" "main" {
   managed_zone = data.google_dns_managed_zone.main.name
 
   rrdatas = [
-    google_compute_address.main.address,
+    google_compute_global_address.main.address,
   ]
 }
