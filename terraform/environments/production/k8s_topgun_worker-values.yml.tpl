@@ -33,6 +33,7 @@ worker:
 
 concourse:
   worker:
+    logLevel: debug
     tag: "k8s-topgun"
     tsa:
       hosts: ["${host}"]

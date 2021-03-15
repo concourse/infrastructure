@@ -116,6 +116,7 @@ concourse:
     externalUrl: ${external_url}
     bindPort: 80
     clusterName: ci
+    logLevel: debug
     containerPlacementStrategy: limit-active-tasks
     maxActiveTasksPerWorker: 5
     streamingArtifactsCompression: zstd
@@ -141,8 +142,11 @@ concourse:
       host: ${db_ip}
       database: ${db_database}
       sslmode: verify-ca
+  tsa:
+    logLevel: debug
 
   worker:
+    logLevel: debug
     rebalanceInterval: 2h
     baggageclaim: { driver: overlay }
     healthcheckTimeout: 40s

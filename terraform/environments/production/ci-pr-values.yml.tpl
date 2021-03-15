@@ -33,6 +33,7 @@ worker:
 
 concourse:
   worker:
+    logLevel: debug
     tag: "pr"
     tsa:
       hosts: ["${host}"]
