@@ -172,7 +172,7 @@ resources:
   source:
     bucket: concourse-artifacts
     json_key: ((concourse_artifacts_json_key))
-    regexp: rcs/concourse-(\d+\.\d+\.\d+-.*)-windows-amd64.zip
+    regexp: rcs/concourse-(\d+\.\d+\.\d+-.*)-windows\.amd64\.zip
 
 - name: concourse-darwin-rc
   type: gcs
