@@ -33,7 +33,7 @@ output "vault_secrets" {
     {
       path = "concourse/main/concourse"
       data = {
-        url      = module.concourse_ci_address.address
+        url      = "https://${var.subdomain}.${var.domain}"
         username = var.concourse_admin_username
         password = random_password.admin_password.result
       }
