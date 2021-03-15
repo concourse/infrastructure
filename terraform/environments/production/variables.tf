@@ -74,6 +74,10 @@ variable "concourse_image_digest" {
   description = "digest for the concourse_image_repo image to use for the ATC and the linux workers"
 }
 
+variable "concourse_chart_version" {
+  description = "Concourse Helm chart version to use for the kubernetes deployments"
+}
+
 variable "concourse_windows_bundle_url" {
   description = "URL to the Concourse windows .zip file containing the concourse binary. Can be from the concourse-artifacts bucket or from a GitHub release"
 }

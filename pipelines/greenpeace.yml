@@ -18,6 +18,10 @@ resource_types:
   source:
     repository: frodenas/gcs-resource
 
+- name: helm-chart
+  type: registry-image
+  source: {repository: linkyard/helm-chart-resource, tag: 2.17.0}
+
 resources:
 - name: greenpeace
   type: git
@@ -143,6 +147,15 @@ resources:
   type: registry-image
   icon: docker
   source: {repository: concourse/concourse-dev, tag: latest}
+
+- name: concourse-chart
+  type: helm-chart
+  icon: &helm-icon ship-wheel
+  source:
+    chart: concourse/concourse
+    repos:
+      - name: concourse
+        url: https://concourse-charts.storage.googleapis.com
 
 #@ if cluster == "production":
 - name: concourse-github-release
@@ -343,7 +356,11 @@ jobs:
   - get: greenpeace
     resource: greenpeace-tf-module
     trigger: true
+  - get: concourse-chart
+  - load_var: concourse_chart_version
+    file: concourse-chart/version
   #@ vars = {}
+  #@ vars["concourse_chart_version"] = "((.:concourse_chart_version))"
   #@ if cluster == "production":
   - get: golang-darwin
     trigger: true

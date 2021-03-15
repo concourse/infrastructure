@@ -113,7 +113,7 @@ resource "helm_release" "k8s_topgun_worker" {
   name       = "topgun-worker"
   repository = "https://concourse-charts.storage.googleapis.com"
   chart      = "concourse"
-  version    = "11.1.0"
+  version    = var.concourse_chart_version
 
   timeout = 1800
 

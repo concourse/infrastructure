@@ -75,6 +75,7 @@ resource "helm_release" "dispatcher_concourse" {
   repository = "https://concourse-charts.storage.googleapis.com"
   chart      = "concourse"
   version    = "11.1.0"
+  # version    = var.concourse_chart_version
 
   timeout = 900
 
