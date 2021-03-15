@@ -7,7 +7,7 @@ postgresql:
   postgresqlPassword: ${db_password}
   postgresqlDatabase: concourse
   service:
-    clusterIP:
+    clusterIP: null
 
 web:
   annotations:
