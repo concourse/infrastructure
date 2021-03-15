@@ -110,7 +110,7 @@ concourse:
       mainTeam:
         localUser: admin
         github:
-          team: concourse:Pivotal
+          team: concourse:maintainers
       github:
         enabled: true
     externalUrl: ${external_url}
