@@ -50,6 +50,10 @@ resource "google_sql_database_instance" "main" {
     location_preference {
       zone = var.zone
     }
+
+    insights_config {
+      query_insights_enabled = true
+    }
   }
   deletion_protection = false
 }
