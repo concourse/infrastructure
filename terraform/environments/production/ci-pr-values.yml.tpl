@@ -13,7 +13,7 @@ web:
   enabled: false
 
 worker:
-  replicas: 3
+  replicas: 6
   nodeSelector:
     cloud.google.com/gke-nodepool: ci-pr-workers
   annotations:

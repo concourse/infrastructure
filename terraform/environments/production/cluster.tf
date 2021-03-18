@@ -48,7 +48,7 @@ module "cluster" {
       image           = "Ubuntu"
       local_ssds      = 0
       machine_type    = "custom-8-16384"
-      max             = 5
+      max             = 10
       min             = 1
       preemptible     = false
       service_account = null
