@@ -22,6 +22,10 @@ resource_types:
   type: registry-image
   source: {repository: linkyard/helm-chart-resource, tag: 2.17.0}
 
+- name: slack-notifier
+  type: registry-image
+  source: {repository: mockersf/concourse-slack-notifier}
+
 resources:
 - name: greenpeace
   type: git
@@ -90,6 +94,15 @@ resources:
   source:
     start: 2:00 AM
     stop: 3:00 AM
+
+- name: notify
+  type: slack-notifier
+  icon: slack
+  source:
+    url: ((slack_hook))
+    username: ((basic_auth.username))
+    password: ((basic_auth.password))
+    concourse_url: https://dispatcher.concourse-ci.org
 
 - name: terraform
   type: terraform
@@ -395,6 +408,11 @@ jobs:
       vars: #@ vars
       var_files:
       - #@ "greenpeace/terraform/environments/" + cluster + "/variables.yml"
+  on_failure: &failed-ci
+    put: notify
+    params:
+      mode: normal
+      alert_type: failed
 
 - name: initialize-vault
   max_in_flight: 1
