@@ -70,6 +70,12 @@ users:
 EOF
       }
     },
+    {
+      path = "concourse/main/registry_image_resource_gcr"
+      data = {
+        repo = "gcr.io/${var.project}/registry-image-test"
+      }
+    },
   ]
 }
 
