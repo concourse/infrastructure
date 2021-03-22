@@ -6,8 +6,13 @@ resource "google_service_account" "registry_image_tester" {
   description  = "Used by the registry-image resource to push to GCR as part of its integration tests."
 }
 
-resource "google_project_iam_member" "registry_image_tester_gcr_write" {
-  role   = "roles/artifactregistry.writer"
+resource "google_project_iam_member" "registry_image_tester" {
+  for_each = {
+    "storageObjectAdmin" = "roles/storage.objectAdmin"
+    "gcrWriter"          = "roles/artifactregistry.writer"
+  }
+
+  role   = each.value
   member = "serviceAccount:${google_service_account.registry_image_tester.email}"
 }
 
