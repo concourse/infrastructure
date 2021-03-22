@@ -8,8 +8,8 @@ resource "google_service_account" "registry_image_tester" {
 
 resource "google_project_iam_member" "registry_image_tester" {
   for_each = {
-    "storageObjectAdmin" = "roles/storage.objectAdmin"
-    "gcrWriter"          = "roles/artifactregistry.writer"
+    "storageAdmin" = "roles/storage.admin"
+    "gcrWriter"    = "roles/artifactregistry.writer"
   }
 
   role   = each.value
