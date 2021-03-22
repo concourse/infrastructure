@@ -52,6 +52,9 @@ resource "google_project_iam_member" "greenpeace_terraform_policy" {
     # needed for creating node pools
     "serviceAccountUser" = "roles/iam.serviceAccountUser"
 
+    # needed for creating service account keys
+    "serviceAccountKeyAdmin" = "roles/iam.serviceAccountKeyAdmin"
+
     "secretManager" = "roles/secretmanager.admin"
 
     "gcrAdmin" = "roles/artifactregistry.admin"
