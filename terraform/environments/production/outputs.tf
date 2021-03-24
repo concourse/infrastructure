@@ -73,8 +73,8 @@ EOF
     {
       path = "concourse/main/registry_image_resource_gcr"
       data = {
-        repo     = "gcr.io/${var.project}/registry-image-test"
-        password = base64decode(google_service_account_key.registry_image_tester.private_key)
+        repo                = "gcr.io/${var.project}/registry-image-test"
+        service_account_key = base64decode(google_service_account_key.registry_image_tester.private_key)
       }
     },
   ]
