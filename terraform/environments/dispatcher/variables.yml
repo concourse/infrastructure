@@ -1,3 +1,3 @@
 concourse_image_repo: concourse/concourse-dev
-concourse_image_digest: sha256:36879489d7d32795846015e731ca1eec11ab53a255344e6654f54471b7bdbb37
+concourse_image_digest: sha256:9b7eda79d89e79518125b7f4c7d1249a220708ef345fe1ecee6bfb14aef713b7
 
