@@ -1,4 +1,4 @@
 concourse_image_repo: concourse/concourse-dev
-concourse_image_digest: sha256:c43dde0ceb16699f4d7da7dc216ea0fdb0f0f31a065f5d7de834e1ef0fbf26d0
-concourse_windows_bundle_url: https://storage.googleapis.com/concourse-artifacts/branch/rewrite-atc-worker/concourse-7.2.0+dev.1619478660.062cd4f56.windows.amd64.zip
-concourse_darwin_bundle_url: https://storage.googleapis.com/concourse-artifacts/branch/rewrite-atc-worker/concourse-7.2.0+dev.1619478660.062cd4f56.darwin.amd64.tgz
+concourse_image_digest: sha256:a2c7e59c0d49dbf60adf4ae491fdfb3c01c10f4ea94126b9a86737e315b8205d
+concourse_windows_bundle_url: https://storage.googleapis.com/concourse-artifacts/branch/rewrite-atc-worker/concourse-7.2.0+dev.1619744980.d1ebc95f4.windows.amd64.zip
+concourse_darwin_bundle_url: https://storage.googleapis.com/concourse-artifacts/branch/rewrite-atc-worker/concourse-7.2.0+dev.1619744980.d1ebc95f4.darwin.amd64.tgz
