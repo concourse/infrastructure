@@ -1,5 +1,9 @@
 locals {
-  # To add a new key, just add a unique name to this set
+  # To add a new key, just add a unique name to this set.
+  # The key will be saved in Vault as: ((deploy_keys.NAME-OF-KEY))
+  # You will need to add the public key to the desired repo in
+  # https://github.com/concourse/governance/tree/master/repos
+  # (the public key is emitted in `terraform outputs`)
   deploy_key_names = toset([
     "ci-repo-push",
   ])
