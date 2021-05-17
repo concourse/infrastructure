@@ -16,7 +16,7 @@ locals {
 
   deploy_key_public_keys = tomap({
     for deploy_key in local.deploy_key_names :
-    deploy_key => tls_private_key.deploy_key[deploy_key].public_key_pem
+    deploy_key => tls_private_key.deploy_key[deploy_key].public_key_openssh
   })
 }
 
