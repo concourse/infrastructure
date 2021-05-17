@@ -16,6 +16,7 @@ locals {
 }
 
 resource "tls_private_key" "deploy_key" {
-  for_each  = local.deploy_key_names
-  algorithm = "ECDSA"
+  for_each    = local.deploy_key_names
+  algorithm   = "ECDSA"
+  ecdsa_curve = "P384"
 }
