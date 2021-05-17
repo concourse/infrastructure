@@ -29,7 +29,7 @@ output "vault_ca_cert" {
 
 output "vault_secrets" {
   sensitive = true
-  value = [
+  value = concat([
     {
       path = "concourse/main/concourse"
       data = {
@@ -77,7 +77,7 @@ EOF
         service_account_key = base64decode(google_service_account_key.registry_image_tester.private_key)
       }
     },
-  ]
+  ], local.deploy_key_vault_secrets)
 }
 
 output "greenpeace_crypto_key_self_link" {
@@ -110,4 +110,8 @@ output "ci_database_cert" {
 output "ci_database_private_key" {
   value     = module.ci_database.private_key
   sensitive = true
+}
+
+output "deploy_key_public_keys" {
+  value = local.deploy_key_public_keys
 }
