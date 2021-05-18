@@ -10,8 +10,8 @@ resource "google_dns_record_set" "mailgun_mx" {
   managed_zone = data.google_dns_managed_zone.main.name
 
   rrdatas = [
-    "10 mxa.mailgun.org",
-    "10 mxb.mailgun.org"
+    "10 mxa.mailgun.org.",
+    "10 mxb.mailgun.org."
   ]
 }
 
@@ -23,7 +23,7 @@ resource "google_dns_record_set" "mailgun_verification" {
   managed_zone = data.google_dns_managed_zone.main.name
 
   rrdatas = [
-    "v=spf1 include:mailgun.org ~all"
+    "\"v=spf1 include:mailgun.org ~all\""
   ]
 }
 
@@ -47,6 +47,6 @@ resource "google_dns_record_set" "mailgun_tracking" {
   managed_zone = data.google_dns_managed_zone.main.name
 
   rrdatas = [
-    "mailgun.org"
+    "mailgun.org."
   ]
 }

@@ -42,5 +42,5 @@ module "mailgun_records" {
   source = "../../dependencies/mailgun"
 
   dns_zone     = var.dns_zone
-  verification = "k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCiXNfw2u/anSOEvASvp94Rt+sp4ujO/AETVVtnqT3MC3By1EZBD8b0JowMZZKGkT9RwstC55fM66hhuJ0Az0lUZql2hex96k3mZjNUghaMoiPbIxa7bjYI2+vVEGIq5Y95PUJnKZMqEhe4WTob+vWGBsmKxHTr0lueShiO9fXFfwIDAQAB"
+  verification = "\"k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCiXNfw2u/anSOEvASvp94Rt+sp4ujO/AETVVtnqT3MC3By1EZBD8b0JowMZZKGkT9RwstC55fM66hhuJ0Az0lUZql2hex96k3mZjNUghaMoiPbIxa7bjYI2+vVEGIq5Y95PUJnKZMqEhe4WTob+vWGBsmKxHTr0lueShiO9fXFfwIDAQAB\""
 }
