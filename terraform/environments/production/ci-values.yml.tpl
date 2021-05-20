@@ -20,6 +20,8 @@ web:
     value: 127.0.0.1:55680
   - name: CONCOURSE_TRACING_OTLP_USE_TLS
     value: "false"
+  - name: CONCOURSE_DISABLE_CACHE_STREAMED_VOLUMES
+    value: "true"
 
   resources:
     requests:
@@ -114,7 +116,6 @@ concourse:
     containerPlacementStrategy: limit-active-tasks
     limitActiveTasks: 5
     streamingArtifactsCompression: zstd
-    disableCacheStreamedVolumes: true
     enableGlobalResources: true
     enableAcrossStep: true
     enablePipelineInstances: true
