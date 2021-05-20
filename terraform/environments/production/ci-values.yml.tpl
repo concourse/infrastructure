@@ -114,6 +114,7 @@ concourse:
     containerPlacementStrategy: limit-active-tasks
     limitActiveTasks: 5
     streamingArtifactsCompression: zstd
+    disableCacheStreamedVolumes: true
     enableGlobalResources: true
     enableAcrossStep: true
     enablePipelineInstances: true
