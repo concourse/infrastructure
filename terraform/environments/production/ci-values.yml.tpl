@@ -13,6 +13,8 @@ web:
   env:
   - name: CONCOURSE_X_FRAME_OPTIONS
     value: ""
+  - name: CONCOURSE_CONTENT_SECURITY_POLICY
+    value: "default-src 'self' https://concourse-ci.org https://*.concourse-ci.org"
   # The OTLP tracing stuff aren't on the latest chart yet so we're setting them as env vars
   - name: CONCOURSE_TRACING_SERVICE_NAME
     value: web
