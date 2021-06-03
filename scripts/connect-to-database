@@ -10,7 +10,8 @@ fi
 # TODO: not hard-coded to production
 env=production
 
-cd "$(dirname $0)/../terraform/environments/$env"
+root="$(realpath $(dirname $0)/..)"
+cd "$root/terraform/environments/$env"
 
 terraform init
 terraform workspace select "$env"
@@ -26,15 +27,15 @@ function read_attr() {
 ip="$(read_attr ip)"
 password="$(read_attr password)"
 
-ca_cert=/tmp/${database}-ca.crt
-read_attr ca_cert > $ca_cert
+ca_cert="$root/sensitive/${database}-ca.crt"
+read_attr ca_cert > "$ca_cert"
 
-client_cert=/tmp/${database}-client.crt
-read_attr cert > $client_cert
+client_cert="$root/sensitive/${database}-client.crt"
+read_attr cert > "$client_cert"
 
-client_key=/tmp/${database}-client.key
-read_attr private_key > $client_key
-chmod 0600 $client_key
+client_key="$root/sensitive/${database}-client.key"
+read_attr private_key > "$client_key"
+chmod 0600 "$client_key"
 
 echo "ip:       ${ip}"
 echo "password: ${password}"
