@@ -55,7 +55,8 @@ resource "google_sql_database_instance" "main" {
       query_insights_enabled = true
     }
   }
-  deletion_protection = false
+  // set this to "false" if you need to delete the instance
+  deletion_protection = true
 }
 
 resource "google_sql_database" "db" {
