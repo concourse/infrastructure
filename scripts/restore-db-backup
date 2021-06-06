@@ -62,15 +62,13 @@ pushd $(dirname $0)/../terraform/environments/production
 
   # user and password are also restored from the backup
 
-  user="$(jq -r '.secrets.postgresUser' <<< $output)"
-  password="$(jq -r '.secrets.postgresPassword' <<< $output)"
+  user="atc"
+  password="$(jq -r '.["'$database'_database_password"].value' <<< $output)"
 
   # the current version of gcloud upserts instead of insert on create
   echo "Recreating the postgres user..."
 
   gcloud sql users create "$user" --instance="$dst_instance_id" --password="$password"
-
-
 popd
 
 echo "Running the re-encryption script"
