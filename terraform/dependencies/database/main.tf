@@ -61,7 +61,7 @@ resource "google_sql_database_instance" "main" {
   lifecycle {
     ignore_changes = [
       # Ignore changes to disk_size, which GCP can autoscale
-      settings.disk_size,
+      "settings[0].disk_size",
     ]
   }
 }
