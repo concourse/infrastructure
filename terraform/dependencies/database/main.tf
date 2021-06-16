@@ -57,6 +57,13 @@ resource "google_sql_database_instance" "main" {
   }
   // set this to "false" if you need to delete the instance
   deletion_protection = true
+
+  lifecycle {
+    ignore_changes = [
+      # Ignore changes to disk_size, which GCP can autoscale
+      settings.disk_size,
+    ]
+  }
 }
 
 resource "google_sql_database" "db" {
