@@ -125,3 +125,23 @@ resource "helm_release" "k8s_topgun_worker" {
     module.k8s_topgun_cluster.node_pools,
   ]
 }
+
+resource "google_service_account" "k8s_topgun" {
+  account_id   = "k8s-topgun"
+  display_name = "K8s Topgun"
+  description  = "Has access to the K8s topgun cluster, used for k8s topgun and k8s smoke tests."
+}
+
+resource "google_project_iam_member" "k8s_topgun" {
+  for_each = {
+    "containerDev" = "roles/container.developer"
+  }
+
+  role   = each.value
+  member = "serviceAccount:${google_service_account.k8s_topgun.email}"
+}
+
+resource "google_service_account_key" "k8s_topgun" {
+  service_account_id = google_service_account.k8s_topgun.name
+  public_key_type    = "TYPE_X509_PEM_FILE"
+}

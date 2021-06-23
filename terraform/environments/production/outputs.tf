@@ -45,6 +45,15 @@ output "vault_secrets" {
       }
     },
     {
+      path = "concourse/main/k8s_topgun",
+      data = {
+        cluster_name        = module.k8s_topgun_cluster.name,
+        cluster_zone        = module.k8s_topgun_cluster.zone,
+        service_account_key = base64decode(google_service_account_key.k8s_topgun.private_key),
+      }
+    },
+    # TODO: get rid of this
+    {
       path = "concourse/main/kube_config"
       data = {
         value = <<EOF
