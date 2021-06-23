@@ -131,7 +131,7 @@ data "google_iam_role" "container_developer" {
 }
 
 resource "google_project_iam_custom_role" "k8s_topgun" {
-  role_id     = "k8s-topgun-role"
+  role_id     = "k8s_topgun_role"
   title       = "K8s Topgun Role"
   description = "Role used by k8s topgun service account to create/delete resources in the k8s-topgun cluster."
   permissions = concat(
