@@ -52,33 +52,6 @@ output "vault_secrets" {
         service_account_key = base64decode(google_service_account_key.k8s_topgun.private_key),
       }
     },
-    # TODO: get rid of this
-    {
-      path = "concourse/main/kube_config"
-      data = {
-        value = <<EOF
-apiVersion: v1
-kind: Config
-clusters:
-- cluster:
-    certificate-authority-data: ${jsonencode(module.k8s_topgun_cluster.cluster_ca_certificate)}
-    server: https://${module.k8s_topgun_cluster.endpoint}
-  name: gke_cf-concourse-production_us-central1-a_k8s-topgun
-contexts:
-- context:
-    cluster: gke_cf-concourse-production_us-central1-a_k8s-topgun
-    user: concourse
-  name: topgun
-current-context: topgun
-preferences: {}
-users:
-- name: concourse
-  user:
-    username: ${jsonencode(module.k8s_topgun_cluster.username)}
-    password: ${jsonencode(module.k8s_topgun_cluster.password)}
-EOF
-      }
-    },
     {
       path = "concourse/main/registry_image_resource_gcr"
       data = {
