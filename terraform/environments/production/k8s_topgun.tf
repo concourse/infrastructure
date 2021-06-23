@@ -126,22 +126,6 @@ resource "helm_release" "k8s_topgun_worker" {
   ]
 }
 
-data "google_iam_role" "container_developer" {
-  name = "roles/container.developer"
-}
-
-resource "google_project_iam_custom_role" "k8s_topgun" {
-  role_id     = "k8s_topgun_role"
-  title       = "K8s Topgun Role"
-  description = "Role used by k8s topgun service account to create/delete resources in the k8s-topgun cluster."
-  permissions = concat(
-    data.google_iam_role.container_developer.included_permissions,
-    [
-      "container.roleBindings.create",
-    ]
-  )
-}
-
 resource "google_service_account" "k8s_topgun" {
   account_id   = "k8s-topgun"
   display_name = "K8s Topgun"
@@ -150,7 +134,7 @@ resource "google_service_account" "k8s_topgun" {
 
 resource "google_project_iam_member" "k8s_topgun" {
   for_each = {
-    "k8s_topgun" = google_project_iam_custom_role.k8s_topgun.id
+    "containerAdmin" = "roles/container.admin"
   }
 
   role   = each.value
