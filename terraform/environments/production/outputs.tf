@@ -49,6 +49,7 @@ output "vault_secrets" {
       data = {
         cluster_name        = module.k8s_topgun_cluster.name,
         cluster_zone        = module.k8s_topgun_cluster.zone,
+        cluster_project     = module.k8s_topgun_cluster.zone,
         service_account_key = base64decode(google_service_account_key.k8s_topgun.private_key),
       }
     },
