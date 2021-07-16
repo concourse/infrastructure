@@ -40,8 +40,8 @@ concourse:
     rebalanceInterval: 2h
     baggageclaim: { driver: overlay }
     healthcheckTimeout: 40s
-    runtime: containerd
-    containerd:
+    runtime: guardian
+    garden:
       networkPool: "10.254.0.0/16"
       maxContainers: "500"
       restrictedNetworks:
