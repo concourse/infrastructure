@@ -101,7 +101,7 @@ resource "kubernetes_deployment" "main" {
 data "template_file" "cluster_metrics_configmap" {
   template = file("${path.module}/configmap.yml.tpl")
   vars = {
-    hostname         = var.hostname
+    url              = var.url
     metrics_endpoint = var.metrics_endpoint
   }
 }

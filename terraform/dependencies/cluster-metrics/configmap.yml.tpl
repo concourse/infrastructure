@@ -41,7 +41,7 @@ exporters:
   logging:
     loglevel: debug
   prometheusremotewrite:
-    endpoint: ${metrics_endpoint}
+    endpoint: http://${metrics_endpoint}
 processors:
   metricstransform/insert_url:
     transforms:
@@ -51,7 +51,7 @@ processors:
       operations:
         - action: add_label
           new_label: url
-          new_value: ${hostname}
+          new_value: ${url}
 service:
   pipelines:
     metrics:

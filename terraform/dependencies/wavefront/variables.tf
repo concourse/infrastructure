@@ -1,14 +1,14 @@
 variable "prefix" {
-  type = string
+  type        = string
   description = "Prefix for all metric and trace names"
 }
 
-variable "hostname" {
-  type = string
+variable "url" {
+  type        = string
   description = "URL to differentiate different clusters"
 }
 
 variable "token" {
-  type = string
+  type        = string
   description = "Wavefront API token"
 }

@@ -77,7 +77,7 @@ resource "kubernetes_deployment" "main" {
             name  = "WAVEFRONT_PROXY_ARGS"
             value = <<-EOT
             --prefix ${var.prefix}
-            --hostname ${var.hostname}
+            --hostname ${var.url}
             --traceJaegerGrpcListenerPorts 14250
             --traceJaegerApplicationName ${var.prefix}
             EOT

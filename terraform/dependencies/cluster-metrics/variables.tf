@@ -1,4 +1,4 @@
-variable "hostname" {
+variable "url" {
   type        = string
   description = "URL to differentiate different clusters"
 }
