@@ -27,7 +27,7 @@ resource "kubernetes_cluster_role" "main" {
 resource "kubernetes_service_account" "main" {
   metadata {
     name      = "cluster-metrics"
-    namespace = kubernetes_namespace.main.id
+    namespace = kubernetes_namespace.main.metadata.0.name
   }
 }
 
@@ -39,20 +39,20 @@ resource "kubernetes_cluster_role_binding" "main" {
   role_ref {
     kind      = "ClusterRole"
     api_group = "rbac.authorization.k8s.io"
-    name      = kubernetes_cluster_role.main.id
+    name      = kubernetes_cluster_role.main.metadata.0.name
   }
 
   subject {
     kind      = "ServiceAccount"
-    name      = kubernetes_service_account.main.id
-    namespace = kubernetes_namespace.main.id
+    name      = kubernetes_service_account.main.metadata.0.name
+    namespace = kubernetes_namespace.main.metadata.0.name
   }
 }
 
 resource "kubernetes_deployment" "main" {
   metadata {
     name      = "cluster-metrics"
-    namespace = kubernetes_namespace.main.id
+    namespace = kubernetes_namespace.main.metadata.0.name
     labels = {
       app = "cluster_metrics"
     }
@@ -73,7 +73,7 @@ resource "kubernetes_deployment" "main" {
         }
       }
       spec {
-        service_account_name = kubernetes_service_account.main.id
+        service_account_name = kubernetes_service_account.main.metadata.0.name
         container {
           name  = "otel-collector"
           image = "otel/opentelemetry-collector-contrib:0.16.0"
@@ -88,7 +88,7 @@ resource "kubernetes_deployment" "main" {
         }
         volume {
           config_map {
-            name = kubernetes_config_map.main.id
+            name = kubernetes_config_map.main.metadata.0.name
           }
         }
       }
@@ -107,7 +107,7 @@ data "template_file" "cluster_metrics_configmap" {
 resource "kubernetes_config_map" "main" {
   metadata {
     name      = "otel-config"
-    namespace = kubernetes_namespace.main.id
+    namespace = kubernetes_namespace.main.metadata.0.name
   }
 
   data = {

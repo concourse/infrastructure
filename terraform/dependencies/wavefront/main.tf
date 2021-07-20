@@ -7,7 +7,7 @@ resource "kubernetes_namespace" "main" {
 resource "kubernetes_secret" "main" {
   metadata {
     name      = "wavefront"
-    namespace = kubernetes_namespace.main.id
+    namespace = kubernetes_namespace.main.metadata.0.name
   }
 
   data = {
@@ -18,7 +18,7 @@ resource "kubernetes_secret" "main" {
 resource "kubernetes_deployment" "main" {
   metadata {
     name      = "wavefront-proxy"
-    namespace = kubernetes_namespace.main.id
+    namespace = kubernetes_namespace.main.metadata.0.name
     labels = {
       app = "wavefront-proxy"
     }
@@ -84,7 +84,7 @@ resource "kubernetes_deployment" "main" {
             name = "WAVEFRONT_TOKEN"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.main.id
+                name = kubernetes_secret.main.metadata.0.name
                 key  = "token"
               }
             }
@@ -110,7 +110,7 @@ resource "kubernetes_deployment" "main" {
 resource "kubernetes_service" "tracing" {
   metadata {
     name      = "tracing"
-    namespace = kubernetes_namespace.main.id
+    namespace = kubernetes_namespace.main.metadata.0.name
   }
   spec {
     selector = {
@@ -128,7 +128,7 @@ resource "kubernetes_service" "tracing" {
 resource "kubernetes_service" "metrics" {
   metadata {
     name      = "metrics"
-    namespace = kubernetes_namespace.main.id
+    namespace = kubernetes_namespace.main.metadata.0.name
   }
   spec {
     selector = {
