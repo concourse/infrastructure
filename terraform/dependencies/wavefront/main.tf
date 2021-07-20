@@ -4,6 +4,16 @@ resource "kubernetes_namespace" "main" {
   }
 }
 
+resource "kubernetes_secret" "main" {
+  metadata {
+    name = "wavefront"
+  }
+
+  data = {
+    token = var.token
+  }
+}
+
 resource "kubernetes_deployment" "main" {
   metadata {
     name      = "wavefront-proxy"
@@ -94,6 +104,10 @@ resource "kubernetes_deployment" "main" {
       }
     }
   }
+
+  depends_on = [
+    kubernetes_secret.main
+  ]
 }
 
 resource "kubernetes_service" "tracing" {
@@ -127,14 +141,5 @@ resource "kubernetes_service" "metrics" {
       target_port = 9000
     }
     type = "LoadBalancer"
-  }
-}
-resource "kubernetes_secret" "wavefront" {
-  metadata {
-    name = "wavefront-proxy"
-  }
-
-  data = {
-    token = var.token
   }
 }
