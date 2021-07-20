@@ -10,6 +10,8 @@ resource "kubernetes_secret" "main" {
     namespace = kubernetes_namespace.main.metadata.0.name
   }
 
+  type = "Opaque"
+
   data = {
     token = var.token
   }
