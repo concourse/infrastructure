@@ -66,11 +66,85 @@ data "template_file" "concourse_values" {
     vault_ca_cert            = jsonencode(module.vault.ca_pem)
     vault_client_cert        = jsonencode(module.vault.client_cert_pem)
     vault_client_private_key = jsonencode(module.vault.client_private_key_pem)
+
+    otelcol_config_map_name = kubernetes_config_map.otel_collector.metadata.0.name
+  }
+}
+
+resource "kubernetes_config_map" "otel_collector" {
+  metadata {
+    name      = "otelcol-config"
+    namespace = kubernetes_namespace.concourse.metadata.0.name
+  }
+
+  data = {
+    "otelcol.yml" = <<-EOF
+      receivers:
+        otlp:
+          protocols:
+            grpc:
+              endpoint: 0.0.0.0:55680
+        prometheus:
+          config:
+            scrape_configs:
+            - job_name: 'otel-collector'
+              scrape_interval: 30s
+              static_configs:
+                - targets: ['0.0.0.0:9391']
+      exporters:
+        jaeger:
+          endpoint: ${module.wavefront.tracing_endpoint}
+          insecure: true
+        logging:
+          loglevel: debug
+        prometheusremotewrite:
+          endpoint: http://${module.wavefront.metrics_endpoint}
+      processors:
+        attributes/strip_tags:
+          actions:
+          - key: telemetry.sdk.name
+            action: delete
+          - key: telemetry.sdk.language
+            action: delete
+          - key: instrumentation.name
+            action: delete
+        attributes/insert_cluster:
+          actions:
+          - key: cluster
+            action: insert
+            value: ${module.concourse_dispatcher_address.dns_address}
+        metricstransform/insert_url:
+          transforms:
+          - include: .*
+            match_type: regexp
+            action: update
+            operations:
+              - action: add_label
+                new_label: url
+                new_value: ${module.concourse_dispatcher_address.dns_address}
+      service:
+        pipelines:
+          traces:
+            receivers:
+            - otlp
+            processors:
+            - attributes/strip_tags
+            - attributes/insert_cluster
+            exporters:
+            - jaeger
+          metrics:
+            receivers:
+            - prometheus
+            processors:
+            - metricstransform/insert_url
+            exporters:
+            - prometheusremotewrite
+      EOF
   }
 }
 
 resource "helm_release" "dispatcher_concourse" {
-  namespace  = kubernetes_namespace.concourse.id
+  namespace  = kubernetes_namespace.concourse.metadata.0.name
   name       = "concourse"
   repository = "https://concourse-charts.storage.googleapis.com"
   chart      = "concourse"
