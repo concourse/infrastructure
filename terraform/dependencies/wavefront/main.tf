@@ -84,7 +84,7 @@ resource "kubernetes_deployment" "main" {
             name = "WAVEFRONT_TOKEN"
             value_from {
               secret_key_ref {
-                name = "wavefront"
+                name = kubernetes_secret.main.id
                 key  = "token"
               }
             }
@@ -105,10 +105,6 @@ resource "kubernetes_deployment" "main" {
       }
     }
   }
-
-  depends_on = [
-    kubernetes_secret.main
-  ]
 }
 
 resource "kubernetes_service" "tracing" {

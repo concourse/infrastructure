@@ -1,6 +1,6 @@
 resource "kubernetes_namespace" "main" {
   metadata {
-    name = "wavefront-proxy"
+    name = "cluster-metrics"
   }
 }
 
@@ -86,6 +86,11 @@ resource "kubernetes_deployment" "main" {
             mount_path = "/etc/config"
           }
         }
+        volume {
+          config_map {
+            name = kubernetes_config_map.main.id
+          }
+        }
       }
     }
   }
@@ -101,7 +106,7 @@ data "template_file" "cluster_metrics_configmap" {
 
 resource "kubernetes_config_map" "main" {
   metadata {
-    name      = "wavefront-proxy"
+    name      = "otel-config"
     namespace = kubernetes_namespace.main.id
   }
 
