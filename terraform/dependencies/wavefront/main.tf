@@ -123,7 +123,7 @@ resource "kubernetes_service" "tracing" {
       port        = 14250
       target_port = 14250
     }
-    type = "LoadBalancer"
+    type = "ClusterIP"
   }
 }
 
@@ -141,6 +141,6 @@ resource "kubernetes_service" "metrics" {
       port        = 9000
       target_port = 9000
     }
-    type = "LoadBalancer"
+    type = "ClusterIP"
   }
 }
