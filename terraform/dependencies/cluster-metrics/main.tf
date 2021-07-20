@@ -79,7 +79,7 @@ resource "kubernetes_deployment" "main" {
           image = "otel/opentelemetry-collector-contrib:0.16.0"
           args = [
             "--config=/etc/config/otelcol.yml",
-            "--log-level=DEBUG",
+            # "--log-level=DEBUG",
           ]
 
           volume_mount {

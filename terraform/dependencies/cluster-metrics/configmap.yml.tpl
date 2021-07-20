@@ -10,11 +10,6 @@ receivers:
           bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
           kubernetes_sd_configs: [{role: node}]
 
-          # metric_relabel_configs:
-          #   - source_labels: [namespace]
-          #     regex: '(ci|ci-pr|hush-house|vault|workers)'
-          #     action: keep
-
           relabel_configs:
             - target_label: __address__
               replacement: kubernetes.default.svc:443
