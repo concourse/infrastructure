@@ -10,7 +10,7 @@ resource "kubernetes_cluster_role" "main" {
   }
   rule {
     api_groups = [""]
-    resources  = ["nodes", "node/proxy", "node/metrics", "services", "endpoints", "pods", "ingresses", "configmaps"]
+    resources  = ["nodes", "nodes/proxy", "nodes/metrics", "services", "endpoints", "pods", "ingresses", "configmaps"]
     verbs      = ["get", "list", "watch"]
   }
   rule {
