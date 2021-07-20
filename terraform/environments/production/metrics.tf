@@ -28,7 +28,7 @@ module "cluster-metrics" {
 resource "kubernetes_config_map" "otel_collector" {
   metadata {
     name      = "otelcol-config"
-    namespace = kubernetes_namespace.concourse.metadata.0.name
+    namespace = kubernetes_namespace.ci.metadata.0.name
   }
 
   data = {
@@ -66,7 +66,7 @@ resource "kubernetes_config_map" "otel_collector" {
           actions:
           - key: cluster
             action: insert
-            value: ${module.concourse_dispatcher_address.dns_address}
+            value: ${module.concourse_ci_address.dns_address}
         metricstransform/insert_url:
           transforms:
           - include: .*
@@ -75,7 +75,7 @@ resource "kubernetes_config_map" "otel_collector" {
             operations:
               - action: add_label
                 new_label: url
-                new_value: ${module.concourse_dispatcher_address.dns_address}
+                new_value: ${module.concourse_ci_address.dns_address}
       service:
         pipelines:
           traces:
