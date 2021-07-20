@@ -1,10 +1,10 @@
-resource "kubernetes_namespace" "cluster_metrics" {
+resource "kubernetes_namespace" "main" {
   metadata {
     name = "wavefront-proxy"
   }
 }
 
-resource "kubernetes_cluster_role" "cluster_metrics" {
+resource "kubernetes_cluster_role" "main" {
   metadata {
     name = "cluster-metrics"
   }
@@ -24,13 +24,14 @@ resource "kubernetes_cluster_role" "cluster_metrics" {
   }
 }
 
-resource "kubernetes_service_account" "cluster_metrics" {
+resource "kubernetes_service_account" "main" {
   metadata {
-    name = "cluster-metrics"
+    name      = "cluster-metrics"
+    namespace = kubernetes_namespace.main.id
   }
 }
 
-resource "kubernetes_cluster_role_binding" "cluster_metrics" {
+resource "kubernetes_cluster_role_binding" "main" {
   metadata {
     name = "cluster-metrics"
   }
@@ -38,20 +39,20 @@ resource "kubernetes_cluster_role_binding" "cluster_metrics" {
   role_ref {
     kind      = "ClusterRole"
     api_group = "rbac.authorization.k8s.io"
-    name      = kubernetes_cluster_role.cluster_metrics.id
+    name      = kubernetes_cluster_role.main.id
   }
 
   subject {
     kind      = "ServiceAccount"
-    name      = kubernetes_service_account.cluster_metrics.id
-    namespace = kubernetes_namespace.cluster_metrics.id
+    name      = kubernetes_service_account.main.id
+    namespace = kubernetes_namespace.main.id
   }
 }
 
-resource "kubernetes_deployment" "cluster_metrics" {
+resource "kubernetes_deployment" "main" {
   metadata {
     name      = "cluster-metrics"
-    namespace = kubernetes_namespace.cluster_metrics.id
+    namespace = kubernetes_namespace.main.id
     labels = {
       app = "cluster_metrics"
     }
@@ -72,7 +73,7 @@ resource "kubernetes_deployment" "cluster_metrics" {
         }
       }
       spec {
-        service_account_name = kubernetes_service_account.cluster_metrics.id
+        service_account_name = kubernetes_service_account.main.id
         container {
           name  = "otel-collector"
           image = "otel/opentelemetry-collector-contrib:0.16.0"
@@ -98,9 +99,10 @@ data "template_file" "cluster_metrics_configmap" {
   }
 }
 
-resource "kubernetes_config_map" "cluster_metrics" {
+resource "kubernetes_config_map" "main" {
   metadata {
-    name = "wavefront-proxy"
+    name      = "wavefront-proxy"
+    namespace = kubernetes_namespace.main.id
   }
 
   data = {

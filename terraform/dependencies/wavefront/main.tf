@@ -6,7 +6,8 @@ resource "kubernetes_namespace" "main" {
 
 resource "kubernetes_secret" "main" {
   metadata {
-    name = "wavefront"
+    name      = "wavefront"
+    namespace = kubernetes_namespace.main.id
   }
 
   data = {
@@ -112,7 +113,8 @@ resource "kubernetes_deployment" "main" {
 
 resource "kubernetes_service" "tracing" {
   metadata {
-    name = "tracing"
+    name      = "tracing"
+    namespace = kubernetes_namespace.main.id
   }
   spec {
     selector = {
@@ -129,7 +131,8 @@ resource "kubernetes_service" "tracing" {
 
 resource "kubernetes_service" "metrics" {
   metadata {
-    name = "metrics"
+    name      = "metrics"
+    namespace = kubernetes_namespace.main.id
   }
   spec {
     selector = {
