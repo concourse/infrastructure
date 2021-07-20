@@ -87,6 +87,7 @@ resource "kubernetes_deployment" "main" {
           }
         }
         volume {
+          name = "otel-config"
           config_map {
             name = kubernetes_config_map.main.metadata.0.name
           }
