@@ -73,7 +73,7 @@ resource "kubernetes_deployment" "main" {
             name = "WAVEFRONT_TOKEN"
             value_from {
               secret_key_ref {
-                name = "wavefront-proxy"
+                name = "wavefront"
                 key  = "token"
               }
             }
@@ -129,7 +129,7 @@ resource "kubernetes_service" "metrics" {
     type = "LoadBalancer"
   }
 }
-resource "kubernetes_secret" "wavefront_token" {
+resource "kubernetes_secret" "wavefront" {
   metadata {
     name = "wavefront-proxy"
   }
