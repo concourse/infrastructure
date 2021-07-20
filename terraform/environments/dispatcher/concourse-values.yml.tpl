@@ -98,6 +98,8 @@ concourse:
       useCaCert: true
     letsEncrypt: { enabled: true, acmeURL: "https://acme-v02.api.letsencrypt.org/directory" }
     tls: { enabled: true, bindPort: 443 }
+    prometheus:
+      enabled: true
 
   worker:
     rebalanceInterval: 2h

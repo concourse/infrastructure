@@ -27,7 +27,7 @@ resource "kubernetes_deployment" "main" {
   }
 
   spec {
-    replicas = 2
+    replicas = 1
     selector {
       match_labels = {
         app = "wavefront-proxy"
@@ -53,6 +53,10 @@ resource "kubernetes_deployment" "main" {
             "-convert-paths=true"
           ]
 
+          port {
+            container_port = 9000
+          }
+
           resources {
             limits = {
               cpu    = "0.5"
@@ -68,6 +72,10 @@ resource "kubernetes_deployment" "main" {
         container {
           name  = "wavefront-proxy"
           image = "wavefronthq/proxy:9.2"
+
+          port {
+            container_port = 14250
+          }
 
           env {
             name  = "WAVEFRONT_URL"
