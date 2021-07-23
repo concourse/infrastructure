@@ -4,6 +4,9 @@ imageDigest: ${image_digest}
 postgresql:
   enabled: false
 
+worker:
+ enabled: false
+
 web:
   annotations:
     rollingUpdate: "5"
@@ -45,31 +48,6 @@ web:
     - name: otelcol-config
       configMap:
         name: ${otelcol_config_map_name}
-
-
-persistence:
-  worker:
-    storageClass: ssd
-    size: 750Gi
-
-worker:
-  replicas: 8
-  nodeSelector:
-    cloud.google.com/gke-nodepool: ci-workers
-  annotations:
-    manual-update-revision: "1"
-  terminationGracePeriodSeconds: 120
-  updateStrategy:
-    rollingUpdate:
-      partition: 0
-  livenessProbe:
-    periodSeconds: 60
-    failureThreshold: 10
-    timeoutSeconds: 45
-  hardAntiAffinity: true
-  resources:
-    limits:   { cpu: 7500m, memory: 14Gi }
-    requests: { cpu: 0m,    memory: 0Gi  }
 
 concourse:
   web:
@@ -118,18 +96,6 @@ concourse:
   tsa:
     logLevel: debug
 
-  worker:
-    logLevel: debug
-    rebalanceInterval: 2h
-    baggageclaim: { driver: overlay }
-    healthcheckTimeout: 40s
-    runtime: containerd
-    containerd:
-      networkPool: "10.254.0.0/16"
-      maxContainers: "500"
-      restrictedNetworks:
-        - "169.254.169.254/32"
-
 secrets:
   githubClientId: ${github_client_id}
   githubClientSecret: ${github_client_secret}
@@ -144,9 +110,6 @@ secrets:
   localUsers: ${local_users}
 
   hostKey: ${host_key}
-  hostKeyPub: ${host_key_pub}
-
-  workerKey: ${worker_key}
   workerKeyPub: ${worker_key_pub}
 
   sessionSigningKey: ${session_signing_key}

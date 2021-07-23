@@ -1,24 +1,24 @@
 image: ${image_repo}
 imageDigest: ${image_digest}
 
-persistence:
-  worker:
-    storageClass: ssd
-    size: 750Gi
-
 postgresql:
   enabled: false
 
 web:
   enabled: false
 
+persistence:
+  worker:
+    storageClass: ssd
+    size: 750Gi
+
 worker:
-  replicas: 3
+  replicas: 8
   nodeSelector:
-    cloud.google.com/gke-nodepool: ci-pr-workers
+    cloud.google.com/gke-nodepool: ci-workers
   annotations:
     manual-update-revision: "1"
-  terminationGracePeriodSeconds: 300
+  terminationGracePeriodSeconds: 120
   updateStrategy:
     rollingUpdate:
       partition: 0
@@ -34,13 +34,12 @@ worker:
 concourse:
   worker:
     logLevel: debug
-    tag: "pr"
     tsa: {hosts: ["${host}"]}
     rebalanceInterval: 2h
     baggageclaim: { driver: overlay }
     healthcheckTimeout: 40s
-    runtime: guardian
-    garden:
+    runtime: containerd
+    containerd:
       networkPool: "10.254.0.0/16"
       maxContainers: "500"
       restrictedNetworks:

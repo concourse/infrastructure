@@ -98,10 +98,39 @@ resource "helm_release" "ci" {
   chart      = "concourse"
   version    = var.concourse_chart_version
 
+  values = [
+    data.template_file.ci_values.rendered,
+  ]
+
+  depends_on = [
+    module.cluster.node_pools,
+  ]
+}
+
+data "template_file" "ci_workers_values" {
+  template = file("${path.module}/ci-workers-values.yml.tpl")
+  vars = {
+    image_repo   = var.concourse_image_repo
+    image_digest = var.concourse_image_digest
+
+    host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
+    worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
+
+    host = "${helm_release.ci.metadata[0].name}-web-worker-gateway.${kubernetes_namespace.ci.id}.svc.cluster.local:2222"
+  }
+}
+
+resource "helm_release" "ci_workers" {
+  namespace  = kubernetes_namespace.ci.id
+  name       = "ci-workers"
+  repository = "https://concourse-charts.storage.googleapis.com"
+  chart      = "concourse"
+  version    = var.concourse_chart_version
+
   timeout = 1800
 
   values = [
-    data.template_file.ci_values.rendered,
+    data.template_file.ci_workers_values.rendered,
   ]
 
   depends_on = [
