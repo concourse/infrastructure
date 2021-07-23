@@ -96,8 +96,8 @@ resource "kubernetes_namespace" "ci_topgun_worker" {
 data "template_file" "ci_topgun_worker_values" {
   template = file("${path.module}/k8s_topgun_worker-values.yml.tpl")
   vars = {
-    image_repo   = var.concourse_image_repo
-    image_digest = var.concourse_image_digest
+    image_repo   = var.concourse_worker_image_repo
+    image_digest = var.concourse_worker_image_digest
 
     host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
     worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)

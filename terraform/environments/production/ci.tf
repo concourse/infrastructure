@@ -55,8 +55,8 @@ module "ci_database" {
 data "template_file" "ci_values" {
   template = file("${path.module}/ci-values.yml.tpl")
   vars = {
-    image_repo   = var.concourse_image_repo
-    image_digest = var.concourse_image_digest
+    image_repo   = var.concourse_web_image_repo
+    image_digest = var.concourse_web_image_digest
 
     lb_address   = module.concourse_ci_address.address
     external_url = "https://${var.subdomain}.${var.domain}"
@@ -110,8 +110,8 @@ resource "helm_release" "ci" {
 data "template_file" "ci_workers_values" {
   template = file("${path.module}/ci-workers-values.yml.tpl")
   vars = {
-    image_repo   = var.concourse_image_repo
-    image_digest = var.concourse_image_digest
+    image_repo   = var.concourse_worker_image_repo
+    image_digest = var.concourse_worker_image_digest
 
     host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
     worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)

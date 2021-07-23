@@ -233,6 +233,7 @@ groups:
 
 
 #@ def push_bumped_versions(target):
+do:
 - task: bump-versions
   file: greenpeace/tasks/replace-file.yml
   input_mapping: {repo: greenpeace}
@@ -241,11 +242,16 @@ groups:
     FILE: #@ "terraform/environments/" + cluster + "/variables.yml"
     #@yaml/text-templated-strings
     CONTENT: |
-      concourse_image_repo: ((.:concourse_image_repo))
-      concourse_image_digest: ((.:concourse_image_digest))
       (@ if cluster == "production": -@)
+      concourse_web_image_repo: ((.:concourse_image_repo))
+      concourse_web_image_digest: ((.:concourse_image_digest))
+      concourse_worker_image_repo: ((.:concourse_image_repo))
+      concourse_worker_image_digest: ((.:concourse_image_digest))
       concourse_windows_bundle_url: ((.:concourse_windows_bundle_url))
       concourse_darwin_bundle_url: ((.:concourse_darwin_bundle_url))
+      (@- else: -@)
+      concourse_image_repo: ((.:concourse_image_repo))
+      concourse_image_digest: ((.:concourse_image_digest))
       (@- end @)
     COMMIT: #@ "bump " + cluster + " to concourse " + target
 - put: greenpeace-bump
@@ -279,8 +285,7 @@ jobs:
   - load_var: concourse_darwin_bundle_url
     file: bundle-urls/darwin
   #@ end
-  #@ for/end step in push_bumped_versions("release"):
-  - #@ step
+  - #@ push_bumped_versions("release")
 
 - name: bump-concourse-to-rc
   plan:
@@ -315,8 +320,7 @@ jobs:
   - load_var: concourse_darwin_bundle_url
     file: darwin/url
   #@ end
-  #@ for/end step in push_bumped_versions("rc"):
-  - #@ step
+  - #@ push_bumped_versions("rc")
 
 - name: bump-concourse-to-dev
   plan:
@@ -351,8 +355,7 @@ jobs:
   - load_var: concourse_darwin_bundle_url
     file: darwin/url
   #@ end
-  #@ for/end step in push_bumped_versions("dev"):
-  - #@ step
+  - #@ push_bumped_versions("dev")
 
 #@ if cluster != "production":
 - name: sync-secrets-with-production

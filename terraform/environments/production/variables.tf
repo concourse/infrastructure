@@ -66,12 +66,20 @@ variable "dutyfree_github_token" {
   description = "Github API token for dutyfree"
 }
 
-variable "concourse_image_repo" {
-  description = "Concourse image repo to use for the ATC and the linux workers"
+variable "concourse_web_image_repo" {
+  description = "Concourse image repo to use for the ATC"
 }
 
-variable "concourse_image_digest" {
-  description = "digest for the concourse_image_repo image to use for the ATC and the linux workers"
+variable "concourse_web_image_digest" {
+  description = "Digest of the concourse_web_image_repo image to use for the ATC"
+}
+
+variable "concourse_worker_image_repo" {
+  description = "Concourse image repo to use for the linux workers"
+}
+
+variable "concourse_worker_image_digest" {
+  description = "Digest of the concourse_worker_image_repo image to use for the linux workers"
 }
 
 variable "concourse_chart_version" {
