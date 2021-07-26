@@ -1,5 +1,5 @@
 concourse_web_image_repo: concourse/concourse-dev
-concourse_web_image_digest: sha256:b935bd2edc10fb262fc56b7f970021a70a8aaf5296e845dc587aa147becffbc1
+concourse_web_image_digest: sha256:e8dc80bc0c016066a86e33d00b9203c6d891641248c363b7b986a74107ca0b6c
 concourse_worker_image_repo: concourse/concourse-dev
 concourse_worker_image_digest: sha256:b935bd2edc10fb262fc56b7f970021a70a8aaf5296e845dc587aa147becffbc1
 concourse_windows_bundle_url: https://storage.googleapis.com/concourse-artifacts/branch/plan-refactor/concourse-7.3.2+dev.1626808405.76021963c.windows.amd64.zip
