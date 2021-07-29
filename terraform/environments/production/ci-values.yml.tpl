@@ -68,6 +68,7 @@ concourse:
     enableGlobalResources: true
     enableAcrossStep: true
     enablePipelineInstances: true
+    enableResourceCausality: true
     baggageclaimResponseHeaderTimeout: 5m
     encryption:
       enabled: true
