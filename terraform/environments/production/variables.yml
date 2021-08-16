@@ -1,5 +1,5 @@
-concourse_web_image_repo: concourse/concourse-rc
-concourse_web_image_digest: sha256:2748b65b6977da5b4a1dc333816120c74b5bbc2327dd3603b1340905b71cfd47
+concourse_web_image_repo: concourse/concourse-dev
+concourse_web_image_digest: sha256:c843d0f28651cd07038629c6ef98894ee3b3c1586aa851610ba710cb901ada44
 concourse_worker_image_repo: concourse/concourse-rc
 concourse_worker_image_digest: sha256:2748b65b6977da5b4a1dc333816120c74b5bbc2327dd3603b1340905b71cfd47
 concourse_windows_bundle_url: https://storage.googleapis.com/concourse-artifacts/rcs/concourse-7.4.0-rc.2+9dea1e635.windows.amd64.zip
