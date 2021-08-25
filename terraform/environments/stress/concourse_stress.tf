@@ -34,10 +34,10 @@ data "template_file" "concourse_stress_values" {
     lb_address   = module.concourse_stress_address.address
     external_url = "https://${var.stress_subdomain}.${var.domain}"
 
-    db_ip          = module.stress_database.ip
-    db_user        = module.stress_database.user
-    db_password    = module.stress_database.password
-    db_database    = module.stress_database.database
+    db_ip          = jsonencode(module.stress_database.ip)
+    db_user        = jsonencode(module.stress_database.user)
+    db_password    = jsonencode(module.stress_database.password)
+    db_database    = jsonencode(module.stress_database.database)
     db_ca_cert     = jsonencode(module.stress_database.ca_cert)
     db_cert        = jsonencode(module.stress_database.cert)
     db_private_key = jsonencode(module.stress_database.private_key)
