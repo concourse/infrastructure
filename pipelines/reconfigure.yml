@@ -23,6 +23,7 @@ jobs:
   - across:
     - var: env
       values: [production, stress]
+      max_in_flight: all
     do:
     - task: render-pipeline
       file: greenpeace/tasks/render-ytt.yml
