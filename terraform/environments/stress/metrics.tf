@@ -51,6 +51,7 @@ resource "kubernetes_config_map" "otel_collector_baseline" {
   data = {
     "otelcol.yml" = templatefile("${path.module}/otelcol.yml.tpl", {
       tracing_endpoint = module.wavefront.tracing_endpoint
+      metrics_endpoint = module.wavefront.metrics_endpoint
       cluster_url      = module.concourse_baseline_address.dns_address
     })
   }

@@ -17,7 +17,7 @@ exporters:
   logging:
     loglevel: debug
   prometheusremotewrite:
-    endpoint: http://${tracing_endpoint}
+    endpoint: http://${metrics_endpoint}
 processors:
   attributes/strip_tags:
     actions:
