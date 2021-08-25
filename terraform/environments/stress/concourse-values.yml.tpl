@@ -89,6 +89,7 @@ concourse:
       sharedPath: shared
       authBackend: "cert"
       useCaCert: true
+      useAuthParam: false
     letsEncrypt: { enabled: true, acmeURL: "https://acme-v02.api.letsencrypt.org/directory" }
     tls: { enabled: true, bindPort: 443 }
     prometheus:
