@@ -20,9 +20,13 @@ jobs:
   - get: greenpeace
     trigger: true
     passed: [reconfigure-self]
-  - task: render-pipeline
-    file: greenpeace/tasks/render-ytt.yml
-    params:
-      ARGS: -v cluster=production -f greenpeace/pipelines/greenpeace.yml -f greenpeace/pipelines/data.yml
-  - set_pipeline: production
-    file: rendered/pipeline.yml
+  - across:
+    - var: env
+      values: [production, stress]
+    do:
+    - task: render-pipeline
+      file: greenpeace/tasks/render-ytt.yml
+      params:
+        ARGS: -v cluster=((.:env)) -f greenpeace/pipelines/greenpeace.yml -f greenpeace/pipelines/data.yml
+    - set_pipeline: ((.:env))
+      file: rendered/pipeline.yml
