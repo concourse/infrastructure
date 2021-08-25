@@ -66,7 +66,7 @@ resource "helm_release" "concourse_stress" {
   name       = "concourse"
   repository = "https://concourse-charts.storage.googleapis.com"
   chart      = "concourse"
-  version    = var.concourse_stress_chart_version
+  version    = var.concourse_chart_version
 
   timeout = 900
 

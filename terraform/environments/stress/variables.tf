@@ -46,10 +46,6 @@ variable "concourse_stress_image_digest" {
   description = "digest for the concourse_image_repo image to use for the ATC and the linux workers for the stress environment"
 }
 
-variable "concourse_stress_chart_version" {
-  description = "Concourse Helm chart version to use for the kubernetes deployments for the stress environment"
-}
-
 variable "concourse_baseline_image_repo" {
   description = "Concourse image repo to use for the ATC and the linux workers for the baseline environment"
 }
@@ -58,6 +54,6 @@ variable "concourse_baseline_image_digest" {
   description = "digest for the concourse_image_repo image to use for the ATC and the linux workers for the baseline environment"
 }
 
-variable "concourse_baseline_chart_version" {
-  description = "Concourse Helm chart version to use for the kubernetes deployments for the baseline environment"
+variable "concourse_chart_version" {
+  description = "Concourse Helm chart version to use for the kubernetes deployments for the environment"
 }
