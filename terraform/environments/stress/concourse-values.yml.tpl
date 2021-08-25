@@ -46,7 +46,7 @@ web:
 worker:
   replicas: 8
   nodeSelector:
-    cloud.google.com/gke-nodepool: workers
+    cloud.google.com/gke-nodepool: ${cluster_name}-workers
   annotations:
     manual-update-revision: "1"
   terminationGracePeriodSeconds: 3600

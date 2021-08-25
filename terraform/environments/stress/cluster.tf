@@ -24,14 +24,29 @@ module "cluster" {
         "https://www.googleapis.com/auth/cloud-platform",
       ]
     },
-    "workers" = {
+    "stress-workers" = {
       auto_upgrade    = true
       disk_size       = "50"
       disk_type       = "pd-ssd"
       image           = "Ubuntu"
       local_ssds      = 0
       machine_type    = "custom-8-16384"
-      max             = 20
+      max             = 10
+      min             = 0
+      preemptible     = false
+      service_account = null
+      extra_oauth_scopes = [
+        "https://www.googleapis.com/auth/cloud-platform",
+      ]
+    },
+    "baseline-workers" = {
+      auto_upgrade    = true
+      disk_size       = "50"
+      disk_type       = "pd-ssd"
+      image           = "Ubuntu"
+      local_ssds      = 0
+      machine_type    = "custom-8-16384"
+      max             = 10
       min             = 0
       preemptible     = false
       service_account = null
