@@ -49,7 +49,7 @@ worker:
     cloud.google.com/gke-nodepool: ${cluster_name}-workers
   annotations:
     manual-update-revision: "1"
-  terminationGracePeriodSeconds: 3600
+  terminationGracePeriodSeconds: 60
   livenessProbe:
     periodSeconds: 60
     failureThreshold: 10
@@ -68,6 +68,7 @@ worker:
 
 concourse:
   web:
+    logLevel: debug
     auth:
       mainTeam:
         localUser: admin
@@ -100,6 +101,7 @@ concourse:
       sslmode: verify-ca
 
   worker:
+    logLevel: debug
     rebalanceInterval: 2h
     baggageclaim: { driver: overlay }
     healthcheckTimeout: 40s
