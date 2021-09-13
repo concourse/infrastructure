@@ -64,7 +64,7 @@ concourse:
     logLevel: debug
     containerPlacementStrategy: limit-active-tasks
     limitActiveTasks: 5
-    streamingArtifactsCompression: zstd
+    streamingArtifactsCompression: gzip
     enableGlobalResources: true
     enableAcrossStep: true
     enablePipelineInstances: true
