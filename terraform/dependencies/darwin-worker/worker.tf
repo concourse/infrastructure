@@ -1,7 +1,8 @@
 resource "null_resource" "instance" {
   triggers = {
-    ip      = var.macstadium_ip
-    trigger = sha256(data.template_file.startup_script.rendered)
+    ip                = var.macstadium_ip
+    trigger           = sha256(data.template_file.startup_script.rendered)
+    concourse-startup = sha256(data.template_file.concourse_startup.rendered)
   }
 
   connection {
@@ -22,10 +23,7 @@ resource "null_resource" "instance" {
   }
 
   provisioner "file" {
-    content = templatefile("${path.module}/scripts/concourse.sh.tmpl", {
-      tsa_host = var.tsa_host,
-      worker_dir = var.worker_dir,
-    })
+    content = data.template_file.concourse_startup.rendered
     destination = "/Users/administrator/concourse.sh"
   }
 
@@ -43,5 +41,13 @@ data "template_file" "startup_script" {
     password             = var.macstadium_password,
     concourse_bundle_url = var.concourse_bundle_url,
     go_package_url       = var.go_package_url
+  }
+}
+
+data "template_file" "concourse_startup" {
+  template = file("${path.module}/scripts/concourse.sh.tmpl")
+
+  vars = {
+      tsa_host = var.tsa_host,
   }
 }

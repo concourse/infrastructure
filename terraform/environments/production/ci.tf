@@ -160,5 +160,4 @@ module "darwin_worker" {
   tsa_host_public_key  = tls_private_key.host_key.public_key_openssh
   worker_key           = tls_private_key.worker_key.private_key_pem
   go_package_url       = var.go_darwin_package_url
-  worker_dir           = var.worker_dir
 }

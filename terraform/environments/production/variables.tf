@@ -118,8 +118,3 @@ variable "go_windows_package_url" {
 variable "go_darwin_package_url" {
   type = string
 }
-
-variable "worker_dir" {
-  type = string
-  description = "Directory where Concourse will store containers and volumes"
-}
