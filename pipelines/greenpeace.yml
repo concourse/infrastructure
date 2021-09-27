@@ -404,6 +404,7 @@ jobs:
     #@ vars["dutyfree_github_token"] = "((dutyfree_github_token))"
     #@ vars["go_windows_package_url"] = "((.:go_windows_package_url))"
     #@ vars["go_darwin_package_url"] = "((.:go_darwin_package_url))"
+    #@ vars["worker+dir"] = "/Volumes/WD 1TB External Drive"
   #@ end
   - put: terraform
     params:
