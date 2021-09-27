@@ -34,3 +34,8 @@ variable "go_package_url" {
   type        = string
   description = "Golang package url"
 }
+
+variable "worker_dir" {
+  type = string
+  description = "Directory where Concourse will store containers and volumes"
+}

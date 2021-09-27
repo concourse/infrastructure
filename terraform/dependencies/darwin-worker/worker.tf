@@ -24,6 +24,7 @@ resource "null_resource" "instance" {
   provisioner "file" {
     content = templatefile("${path.module}/scripts/concourse.sh.tmpl", {
       tsa_host = var.tsa_host,
+      worker_dir = var.worker_dir,
     })
     destination = "/Users/administrator/concourse.sh"
   }
