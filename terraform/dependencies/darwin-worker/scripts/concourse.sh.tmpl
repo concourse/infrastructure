@@ -3,7 +3,7 @@
 set -eu
 
 concourse/bin/concourse worker \
-    --work-dir "/Volumes/ExternalDrive" \
+    --work-dir "./work" \
     --tsa-host ${tsa_host} \
     --tsa-public-key ./keys/tsa-host-key.pub \
     --tsa-worker-private-key ./keys/worker-key \
