@@ -16,13 +16,9 @@ function rotate_keys {
   encrypt $1
 }
 
-# https://console.cloud.google.com/security/kms/ for
-# key keyring and location info
 function decrypt {
   gcloud kms decrypt \
     --key $1 \
-    --keyring $2 \
-    --location $3 \
     --plaintext-file key \
     --ciphertext-file key.enc
 
