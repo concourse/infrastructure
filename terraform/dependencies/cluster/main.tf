@@ -27,7 +27,7 @@ resource "google_container_cluster" "main" {
   }
 
   workload_identity_config {
-    identity_namespace = "${var.project}.svc.id.goog"
+    workload_pool = "${var.project}.svc.id.goog"
   }
 
   release_channel {
@@ -92,7 +92,7 @@ resource "google_container_node_pool" "main" {
     labels          = try(each.value.labels, {})
 
     workload_metadata_config {
-      node_metadata = "GKE_METADATA_SERVER"
+      mode = "GKE_METADATA"
     }
 
     metadata = {

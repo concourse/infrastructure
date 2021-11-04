@@ -74,6 +74,7 @@ resource "google_storage_bucket" "vault" {
   name = var.bucket_name
 
   uniform_bucket_level_access = true
+  location                    = "US"
   force_destroy               = true
 
   versioning {
@@ -97,6 +98,7 @@ resource "google_project_iam_member" "policy" {
     "kmsEncrypt" = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   }
 
+  project = "${var.project}"
   role   = each.value
   member = "serviceAccount:${google_service_account.vault.email}"
 }
