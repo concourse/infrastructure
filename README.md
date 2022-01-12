@@ -181,6 +181,9 @@ our vaults)
   * The command will generate a `gsutil` command to upload the encrypted bundle
     to `gs://concourse-greenpeace/vault/production/data.tar`
 
+#### vault ca cert expires
+
+When the vault ca cert expires, it is automatically re-created through the terraform job for that environment. For example, if the dispatcher vault ca cert expires, it would be through [terraform job in the dispatcher pipeline](https://ci.concourse-ci.org/teams/main/pipelines/dispatcher-greenpeace/jobs/terraform). Once this terraform job has deleted the old ca cert, created a new one and run successfully, you might have to restart the vault pod manually using `kubectl delete pod -n <namespace> vault-0`.
 
 #### encryption
 
