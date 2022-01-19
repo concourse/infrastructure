@@ -72,6 +72,10 @@ resource "google_sql_database" "db" {
   instance  = google_sql_database_instance.main.name
   charset   = "UTF8"
   collation = "en_US.UTF8"
+
+  depends_on = [
+    google_sql_user.user,
+  ]
 }
 
 resource "random_password" "password" {

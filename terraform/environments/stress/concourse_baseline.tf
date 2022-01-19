@@ -66,7 +66,7 @@ resource "helm_release" "concourse_baseline" {
   name       = "concourse"
   repository = "https://concourse-charts.storage.googleapis.com"
   chart      = "concourse"
-  version    = var.concourse_chart_version
+  version    = "14.0.3"
 
   timeout = 900
 
