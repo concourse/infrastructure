@@ -68,7 +68,7 @@ resource "helm_release" "concourse_baseline" {
   chart      = "concourse"
   version    = "14.5.6"
 
-  timeout = 900
+  timeout = 2000
 
   values = [
     data.template_file.concourse_baseline_values.rendered,

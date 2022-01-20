@@ -68,7 +68,7 @@ resource "helm_release" "concourse_stress" {
   chart      = "concourse"
   version    = var.concourse_chart_version
 
-  timeout = 900
+  timeout = 2000
 
   values = [
     data.template_file.concourse_stress_values.rendered,
