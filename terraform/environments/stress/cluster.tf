@@ -33,6 +33,7 @@ module "cluster" {
       machine_type    = "custom-8-16384"
       max             = 10
       min             = 0
+      initial_node_count = 17
       preemptible     = false
       service_account = null
       extra_oauth_scopes = [
@@ -48,6 +49,7 @@ module "cluster" {
       machine_type    = "custom-8-16384"
       max             = 10
       min             = 0
+      initial_node_count = 17
       preemptible     = false
       service_account = null
       extra_oauth_scopes = [
