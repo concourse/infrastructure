@@ -36,7 +36,7 @@ data "template_file" "concourse_baseline_values" {
 
     db_ip          = module.baseline_database.ip
     db_user        = module.baseline_database.user
-    db_password    = module.baseline_database.password
+    db_password    = jsonencode(module.baseline_database.password)
     db_database    = module.baseline_database.database
     db_ca_cert     = jsonencode(module.baseline_database.ca_cert)
     db_cert        = jsonencode(module.baseline_database.cert)
