@@ -26,3 +26,8 @@ variable "release_channel" {
   default     = "UNSPECIFIED"
   description = "The frequency of automatic updates to the Kubernetes cluster. One of UNSPECIFIED (no updates), RAPID, REGULAR, or STABLE."
 }
+
+variable "initial_node_count" {
+  default     = 1
+  description = "The number of nodes to create in this cluster's default node pool."
+}

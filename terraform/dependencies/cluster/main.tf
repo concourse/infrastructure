@@ -19,7 +19,13 @@ resource "google_container_cluster" "main" {
   subnetwork = module.vpc.subnet_name
 
   remove_default_node_pool = true
-  initial_node_count       = 1
+  initial_node_count       = var.initial_node_count
+
+  lifecycle {
+    ignore_changes = [
+      initial_node_count
+    ]
+  }
 
   ip_allocation_policy {
     cluster_secondary_range_name  = module.vpc.pods_range_name
