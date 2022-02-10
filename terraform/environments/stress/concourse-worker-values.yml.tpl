@@ -37,6 +37,10 @@ concourse:
     rebalanceInterval: 2h
     baggageclaim: { driver: overlay }
     healthcheckTimeout: 40s
+    tracing:
+      serviceName:
+      jaegerEndpoint:
+      jaegerService:
 
 secrets:
   hostKeyPub: ${host_key_pub}
