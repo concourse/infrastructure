@@ -44,27 +44,7 @@ web:
         name: ${otelcol_config_map_name}
 
 worker:
-  replicas: 8
-  nodeSelector:
-    cloud.google.com/gke-nodepool: ${cluster_name}-workers
-  annotations:
-    manual-update-revision: "1"
-  terminationGracePeriodSeconds: 60
-  livenessProbe:
-    periodSeconds: 60
-    failureThreshold: 10
-    timeoutSeconds: 45
-  hardAntiAffinity: true
-  env:
-  - name: CONCOURSE_GARDEN_NETWORK_POOL
-    value: "10.254.0.0/16"
-  - name: CONCOURSE_GARDEN_MAX_CONTAINERS
-    value: "500"
-  - name: CONCOURSE_GARDEN_DENY_NETWORK
-    value: "169.254.169.254/32"
-  resources:
-    limits:   { cpu: 1000m, memory: 6Gi }
-    requests: { cpu: 0m,    memory: 0Gi  }
+ enabled: false
 
 concourse:
   web:
@@ -100,12 +80,6 @@ concourse:
       database: ${db_database}
       sslmode: verify-ca
 
-  worker:
-    logLevel: debug
-    rebalanceInterval: 2h
-    baggageclaim: { driver: overlay }
-    healthcheckTimeout: 40s
-
 secrets:
   postgresUser: ${db_user}
   postgresPassword: ${db_password}
@@ -117,9 +91,6 @@ secrets:
   localUsers: ${local_users}
 
   hostKey: ${host_key}
-  hostKeyPub: ${host_key_pub}
-
-  workerKey: ${worker_key}
   workerKeyPub: ${worker_key_pub}
 
   sessionSigningKey: ${session_signing_key}

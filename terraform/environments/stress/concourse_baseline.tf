@@ -79,3 +79,35 @@ resource "helm_release" "concourse_baseline" {
   ]
 }
 
+data "template_file" "baseline_workers_values" {
+  template = file("${path.module}/concourse-worker-values.yml.tpl")
+  vars = {
+    cluster_name = "baseline"
+
+    image_repo   = var.concourse_baseline_image_repo
+    image_digest = var.concourse_baseline_image_digest
+
+    host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
+    worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
+
+    host = "${helm_release.concourse_baseline.metadata[0].name}-web-worker-gateway.${kubernetes_namespace.baseline.id}.svc.cluster.local:2222"
+  }
+}
+
+resource "helm_release" "baseline_workers" {
+  namespace  = kubernetes_namespace.baseline.id
+  name       = "baseline-workers"
+  repository = "https://concourse-charts.storage.googleapis.com"
+  chart      = "concourse"
+  version    = var.concourse_chart_version
+
+  timeout = 2000
+
+  values = [
+    data.template_file.baseline_workers_values.rendered,
+  ]
+
+  depends_on = [
+    module.cluster.node_pools,
+  ]
+}

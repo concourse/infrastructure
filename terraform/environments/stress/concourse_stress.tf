@@ -78,3 +78,36 @@ resource "helm_release" "concourse_stress" {
     module.cluster.node_pools,
   ]
 }
+
+data "template_file" "stress_workers_values" {
+  template = file("${path.module}/concourse-worker-values.yml.tpl")
+  vars = {
+    cluster_name = "stress"
+
+    image_repo   = var.concourse_stress_image_repo
+    image_digest = var.concourse_stress_image_digest
+
+    host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
+    worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
+
+    host = "${helm_release.concourse_stress.metadata[0].name}-web-worker-gateway.${kubernetes_namespace.stress.id}.svc.cluster.local:2222"
+  }
+}
+
+resource "helm_release" "stress_workers" {
+  namespace  = kubernetes_namespace.stress.id
+  name       = "stress-workers"
+  repository = "https://concourse-charts.storage.googleapis.com"
+  chart      = "concourse"
+  version    = var.concourse_chart_version
+
+  timeout = 2000
+
+  values = [
+    data.template_file.stress_workers_values.rendered,
+  ]
+
+  depends_on = [
+    module.cluster.node_pools,
+  ]
+}
