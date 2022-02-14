@@ -55,8 +55,7 @@ concourse:
     externalUrl: ${external_url}
     bindPort: 80
     clusterName: ${cluster_name}
-    containerPlacementStrategy: limit-active-tasks
-    maxActiveTasksPerWorker: 5
+    containerPlacementStrategy: fewest-build-containers
     enableGlobalResources: true
     encryption: { enabled: true }
     enableArchivePipeline: true

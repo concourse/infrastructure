@@ -8,7 +8,7 @@ web:
   enabled: false
 
 worker:
-  replicas: 8
+  replicas: 12
   nodeSelector:
     cloud.google.com/gke-nodepool: ${cluster_name}-workers
   annotations:
@@ -27,7 +27,7 @@ worker:
   - name: CONCOURSE_GARDEN_DENY_NETWORK
     value: "169.254.169.254/32"
   resources:
-    limits:   { cpu: 1000m, memory: 6Gi }
+    limits:   { cpu: 3000m, memory: 8Gi }
     requests: { cpu: 0m,    memory: 0Gi  }
 
 concourse:
