@@ -45,3 +45,7 @@ concourse:
 secrets:
   hostKeyPub: ${host_key_pub}
   workerKey: ${worker_key}
+
+persistence:
+  worker:
+    size: 50Gi
