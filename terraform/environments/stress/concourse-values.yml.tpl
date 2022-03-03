@@ -78,6 +78,10 @@ concourse:
       host: ${db_ip}
       database: ${db_database}
       sslmode: verify-ca
+    tracing:
+      serviceName: ${tracing_service_name}
+      otlpAddress: 127.0.0.1:55680
+      otlpUseTls: false
 
 secrets:
   postgresUser: ${db_user}
