@@ -31,7 +31,7 @@ resources:
   type: git
   icon: github
   source:
-    uri: git@github.com:concourse/greenpeace.git
+    uri: git@github.com:concourse/infrastructure.git
     private_key: ((greenpeace_private_key))
 
 - name: greenpeace-tf-module
@@ -48,7 +48,7 @@ resources:
   type: git
   icon: github
   source:
-    uri: git@github.com:concourse/greenpeace.git
+    uri: git@github.com:concourse/infrastructure.git
     branch: master
     private_key: ((greenpeace_private_key))
 
