@@ -6,8 +6,6 @@ postgresql:
   postgresqlUsername: concourse
   postgresqlPassword: ${db_password}
   postgresqlDatabase: concourse
-  service:
-    clusterIP: null
 
 web:
   annotations:
