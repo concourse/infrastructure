@@ -1,6 +1,6 @@
 concourse_web_image_repo: concourse/concourse
-concourse_web_image_digest: sha256:2b01d370155875ce5a54c8a467272482f5830dc6342e08a68b3ae9cb45fb2eb4
+concourse_web_image_digest: sha256:898674bd470826235ab2ebd0aab6cb994bc65b17e68ea49b5cfa52f32486c2e5
 concourse_worker_image_repo: concourse/concourse
-concourse_worker_image_digest: sha256:2b01d370155875ce5a54c8a467272482f5830dc6342e08a68b3ae9cb45fb2eb4
-concourse_windows_bundle_url: https://github.com/concourse/concourse/releases/download/v7.7.0/concourse-7.7.0-windows-amd64.zip
-concourse_darwin_bundle_url: https://github.com/concourse/concourse/releases/download/v7.7.0/concourse-7.7.0-darwin-amd64.tgz
+concourse_worker_image_digest: sha256:898674bd470826235ab2ebd0aab6cb994bc65b17e68ea49b5cfa52f32486c2e5
+concourse_windows_bundle_url: https://github.com/concourse/concourse/releases/download/v7.7.1/concourse-7.7.1-windows-amd64.zip
+concourse_darwin_bundle_url: https://github.com/concourse/concourse/releases/download/v7.7.1/concourse-7.7.1-darwin-amd64.tgz
