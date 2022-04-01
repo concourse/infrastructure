@@ -49,3 +49,4 @@ secrets:
 persistence:
   worker:
     size: 50Gi
+    storageClass: ssd
