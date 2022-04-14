@@ -59,7 +59,7 @@ resources:
   source:
     endpoint: storage.googleapis.com
     bucket: golang
-    regexp: 'go(\d+\.\d+(\.\d+)?)\.darwin-amd64\.pkg'
+    regexp: 'go(\d+\.\d+(\.\d+)?)\.darwin-amd64\.pkg$'
 
 - name: golang-windows
   type: s3
