@@ -107,6 +107,10 @@ concourse:
     baggageclaim: { driver: overlay }
     healthcheckTimeout: 40s
 
+persistence:
+  worker:
+    size: 50Gi
+
 secrets:
   githubClientId: ${github_client_id}
   githubClientSecret: ${github_client_secret}
