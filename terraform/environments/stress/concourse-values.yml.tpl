@@ -16,11 +16,11 @@ web:
 
   resources:
     requests:
-      cpu: 1000m
-      memory: 1Gi
+      cpu: 2000m
+      memory: 3Gi
     limits:
-      cpu: 1500m
-      memory: 1Gi
+      cpu: 3000m
+      memory: 5Gi
 
   service:
     api:
