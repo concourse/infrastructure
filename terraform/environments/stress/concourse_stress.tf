@@ -15,12 +15,12 @@ module "stress_database" {
   source = "../../dependencies/database"
 
   name            = "stress"
-  cpus            = "4"
-  disk_size_gb    = "150"
-  memory_mb       = "5120"
+  cpus            = "8"
+  disk_size_gb    = "600"
+  memory_mb       = "10120"
   region          = var.region
   zone            = var.zone
-  max_connections = "200"
+  max_connections = "300"
 }
 
 data "template_file" "concourse_stress_values" {
@@ -58,7 +58,7 @@ data "template_file" "concourse_stress_values" {
     vault_client_private_key = jsonencode(module.vault.client_private_key_pem)
 
     otelcol_config_map_name = kubernetes_config_map.otel_collector_stress.metadata.0.name
-    tracing_service_name = "stress-web"
+    tracing_service_name    = "stress-web"
   }
 }
 
