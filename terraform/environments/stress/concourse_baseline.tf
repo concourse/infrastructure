@@ -17,7 +17,7 @@ module "baseline_database" {
   name            = "baseline"
   cpus            = "8"
   disk_size_gb    = "600"
-  memory_mb       = "10120"
+  memory_mb       = "10240"
   region          = var.region
   zone            = var.zone
   max_connections = "300"
