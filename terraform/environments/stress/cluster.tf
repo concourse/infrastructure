@@ -1,11 +1,11 @@
 module "cluster" {
   source = "../../dependencies/cluster"
 
-  name    = "stress"
-  project = var.project
-  region  = var.region
-  zone    = var.zone
-  initial_node_count = 21
+  name               = "stress"
+  project            = var.project
+  region             = var.region
+  zone               = var.zone
+  initial_node_count = 30
 
   release_channel = "REGULAR"
 
@@ -32,7 +32,7 @@ module "cluster" {
       image           = "UBUNTU_CONTAINERD"
       local_ssds      = 0
       machine_type    = "custom-8-16384"
-      max             = 15
+      max             = 20
       min             = 0
       preemptible     = false
       service_account = null
@@ -47,7 +47,7 @@ module "cluster" {
       image           = "UBUNTU_CONTAINERD"
       local_ssds      = 0
       machine_type    = "custom-8-16384"
-      max             = 15
+      max             = 20
       min             = 0
       preemptible     = false
       service_account = null
