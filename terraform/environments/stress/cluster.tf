@@ -5,7 +5,7 @@ module "cluster" {
   project            = var.project
   region             = var.region
   zone               = var.zone
-  initial_node_count = 30
+  initial_node_count = 44
 
   release_channel = "REGULAR"
 
@@ -32,7 +32,7 @@ module "cluster" {
       image           = "UBUNTU_CONTAINERD"
       local_ssds      = 0
       machine_type    = "custom-8-16384"
-      max             = 20
+      max             = 40
       min             = 0
       preemptible     = false
       service_account = null
@@ -47,7 +47,7 @@ module "cluster" {
       image           = "UBUNTU_CONTAINERD"
       local_ssds      = 0
       machine_type    = "custom-8-16384"
-      max             = 20
+      max             = 40
       min             = 0
       preemptible     = false
       service_account = null
