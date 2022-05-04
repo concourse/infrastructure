@@ -8,7 +8,7 @@ web:
   enabled: false
 
 worker:
-  replicas: 26
+  replicas: 25
   nodeSelector:
     cloud.google.com/gke-nodepool: ${cluster_name}-workers
   annotations:
