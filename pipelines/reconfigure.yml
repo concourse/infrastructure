@@ -22,7 +22,7 @@ jobs:
     passed: [reconfigure-self]
   - across:
     - var: env
-      values: [production]
+      values: [production, stress]
       max_in_flight: all
     do:
     - task: render-pipeline
