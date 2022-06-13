@@ -15,7 +15,7 @@ module "k8s_topgun_cluster" {
       disk_type       = "pd-ssd"
       image           = "COS"
       local_ssds      = 0
-      machine_type    = "n1-standard-8"
+      machine_type    = "e2-standard-8"
       max             = 3
       min             = 1
       preemptible     = false
@@ -30,7 +30,7 @@ module "k8s_topgun_cluster" {
       disk_type       = "pd-ssd"
       image           = "Ubuntu"
       local_ssds      = 0
-      machine_type    = "n1-highcpu-8"
+      machine_type    = "e2-highcpu-8"
       max             = 10
       min             = 1
       preemptible     = false
@@ -48,7 +48,7 @@ module "k8s_topgun_cluster" {
       disk_type       = "pd-ssd"
       image           = "COS"
       local_ssds      = 0
-      machine_type    = "n1-highcpu-8"
+      machine_type    = "e2-highcpu-8"
       max             = 10
       min             = 1
       preemptible     = false

@@ -17,7 +17,7 @@ module "cluster" {
       disk_type       = "pd-ssd"
       image           = "COS"
       local_ssds      = 0
-      machine_type    = "n1-standard-8"
+      machine_type    = "e2-standard-8"
       max             = 5
       min             = 1
       preemptible     = false
@@ -32,7 +32,7 @@ module "cluster" {
       disk_type       = "pd-ssd"
       image           = "Ubuntu"
       local_ssds      = 0
-      machine_type    = "custom-8-16384"
+      machine_type    = "e2-standard-4"
       max             = 10
       min             = 1
       preemptible     = false
@@ -47,7 +47,7 @@ module "cluster" {
       disk_type       = "pd-ssd"
       image           = "Ubuntu"
       local_ssds      = 0
-      machine_type    = "custom-8-16384"
+      machine_type    = "e2-standard-4"
       max             = 5
       min             = 1
       preemptible     = false
