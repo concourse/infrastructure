@@ -13,7 +13,7 @@ persistence:
     size: 750Gi
 
 worker:
-  replicas: 8
+  replicas: 4
   nodeSelector:
     cloud.google.com/gke-nodepool: ci-workers
   annotations:
@@ -28,7 +28,7 @@ worker:
     timeoutSeconds: 45
   hardAntiAffinity: true
   resources:
-    limits:   { cpu: 7500m, memory: 14Gi }
+    limits:   { cpu: 7500m, memory: 29Gi }
     requests: { cpu: 0m,    memory: 0Gi  }
 
 concourse:
