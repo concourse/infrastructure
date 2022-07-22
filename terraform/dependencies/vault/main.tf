@@ -95,7 +95,7 @@ resource "google_project_iam_member" "policy" {
     "kmsEncrypt" = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   }
 
-  project = "${var.project}"
+  project = var.project
   role   = each.value
   member = "serviceAccount:${google_service_account.vault.email}"
 }

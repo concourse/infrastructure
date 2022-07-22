@@ -3,9 +3,10 @@ imageDigest: ${image_digest}
 
 postgresql:
   enabled: true
-  postgresqlUsername: concourse
-  postgresqlPassword: ${db_password}
-  postgresqlDatabase: concourse
+  auth:
+    username: concourse
+    password: ${db_password}
+    database: concourse
 
 web:
   annotations:
