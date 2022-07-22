@@ -10,7 +10,6 @@ resource "tls_private_key" "ca" {
 }
 
 resource "tls_self_signed_cert" "ca" {
-  key_algorithm   = tls_private_key.ca.algorithm
   private_key_pem = tls_private_key.ca.private_key_pem
 
   subject {
@@ -44,7 +43,6 @@ module "server_cert" {
     "127.0.0.1",
   ]
 
-  ca_key_algorithm   = tls_private_key.ca.algorithm
   ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
   ca_private_key_pem = tls_private_key.ca.private_key_pem
 }
@@ -59,7 +57,6 @@ module "client_cert" {
     "client_auth",
   ]
 
-  ca_key_algorithm   = tls_private_key.ca.algorithm
   ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
   ca_private_key_pem = tls_private_key.ca.private_key_pem
 }

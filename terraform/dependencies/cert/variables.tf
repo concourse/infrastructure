@@ -26,11 +26,6 @@ variable "validity_period_hours" {
   type        = number
 }
 
-variable "ca_key_algorithm" {
-  description = "The name of the algorithm for the key provided in ca_private_key_pem."
-  type        = string
-}
-
 variable "ca_private_key_pem" {
   description = "PEM-encoded private key data for the CA."
   type        = string
