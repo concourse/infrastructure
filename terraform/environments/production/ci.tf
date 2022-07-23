@@ -12,6 +12,20 @@ resource "kubernetes_namespace" "ci" {
   ]
 }
 
+resource "kubernetes_namespace" "ci_workers" {
+  metadata {
+    name = "ci-workers"
+
+    labels = {
+      name = "ci-workers"
+    }
+  }
+
+  depends_on = [
+    module.cluster.node_pools
+  ]
+}
+
 resource "random_password" "encryption_key" {
   length  = 32
   special = true
@@ -121,7 +135,7 @@ data "template_file" "ci_workers_values" {
 }
 
 resource "helm_release" "ci_workers" {
-  namespace  = kubernetes_namespace.ci.id
+  namespace  = kubernetes_namespace.ci_workers.id
   name       = "ci-workers"
   repository = "https://concourse-charts.storage.googleapis.com"
   chart      = "concourse"
