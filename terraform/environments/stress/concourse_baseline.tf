@@ -57,7 +57,6 @@ data "template_file" "concourse_baseline_values" {
     vault_client_cert        = jsonencode(module.vault.client_cert_pem)
     vault_client_private_key = jsonencode(module.vault.client_private_key_pem)
 
-    otelcol_config_map_name = kubernetes_config_map.otel_collector_baseline.metadata.0.name
     tracing_service_name    = "baseline-web"
   }
 }

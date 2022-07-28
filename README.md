@@ -60,7 +60,6 @@ the bootstrapping pipeline, since this repo is private.
 It will also prompt you to ensure that the required secrets have been added
 to GCP Secret Manager. The following secrets must be created:
 
-* `production-wavefront_token` - the wavefront token for sending metrics/traces
 * `production-ci-github_client_id` - the client ID of the Github application
   for authenticating with the CI concourse deployment
 * `production-ci-github_client_secret` - the client ID of the Github

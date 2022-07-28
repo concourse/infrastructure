@@ -39,7 +39,6 @@ jq -n '{ "greenpeace_gcp_credentials_json": $credentials[] | tojson,
 # TODO: actually validate that these secrets are present with gcloud cli
 echo
 echo "ensure that the following secrets have been added to GCP Secret Manager:"
-echo "- production-wavefront_token"
 echo "- production-ci-github_client_id"
 echo "- production-ci-github_client_secret"
 echo "- dispatcher-concourse-github_client_id"

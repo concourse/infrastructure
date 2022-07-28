@@ -34,19 +34,6 @@ web:
       type: LoadBalancer
       loadBalancerIP: ${lb_address}
 
-  sidecarContainers:
-    - name: otel-collector
-      image: otel/opentelemetry-collector-contrib:0.15.0
-      args: ['--config=/etc/config/otelcol.yml']
-      volumeMounts:
-        - name: otelcol-config
-          mountPath: /etc/config
-
-  additionalVolumes:
-    - name: otelcol-config
-      configMap:
-        name: ${otelcol_config_map_name}
-
 worker:
   replicas: 1
   annotations:

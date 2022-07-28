@@ -37,18 +37,6 @@ web:
       type: LoadBalancer
       loadBalancerIP: ${lb_address}
 
-  sidecarContainers:
-    - name: otel-collector
-      image: otel/opentelemetry-collector-contrib:0.15.0
-      args: ['--config=/etc/config/otelcol.yml']
-      volumeMounts:
-        - name: otelcol-config
-          mountPath: /etc/config
-  additionalVolumes:
-    - name: otelcol-config
-      configMap:
-        name: ${otelcol_config_map_name}
-
 concourse:
   web:
     auth:
@@ -78,10 +66,6 @@ concourse:
       createTeamNamespaces: false
     prometheus:
       enabled: true
-    tracing:
-      serviceName: web
-      otlpAddress: 127.0.0.1:55680
-      otlpUseTls: false
     vault:
       enabled: true
       url: https://vault.vault.svc.cluster.local:8200
