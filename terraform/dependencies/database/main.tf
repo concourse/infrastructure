@@ -56,7 +56,7 @@ resource "google_sql_database_instance" "main" {
     }
   }
   // set this to "false" if you need to delete the instance
-  deletion_protection = true
+  deletion_protection = false
 
   lifecycle {
     ignore_changes = [
