@@ -101,7 +101,7 @@ resource "google_compute_managed_ssl_certificate" "dutyfree" {
   }
 }
 
-resource "kubernetes_ingress" "dutyfree" {
+resource "kubernetes_ingress_v1" "dutyfree" {
   metadata {
     name      = "dutyfree"
     namespace = kubernetes_namespace.dutyfree.id
@@ -119,8 +119,12 @@ resource "kubernetes_ingress" "dutyfree" {
       http {
         path {
           backend {
-            service_name = kubernetes_service.dutyfree.metadata.0.name
-            service_port = 80
+            service {
+              name = kubernetes_service.dutyfree.metadata.0.name
+              port {
+                number = 80
+              }
+            }
           }
         }
       }
