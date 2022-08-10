@@ -39,7 +39,9 @@ resource "google_compute_instance" "windows_worker" {
     }
   }
 
-  metadata_startup_script = data.template_file.startup_script.rendered
+  metadata = {
+    windows-startup-script-ps1 = data.template_file.startup_script.rendered
+  }
 
   service_account {
     scopes = [
