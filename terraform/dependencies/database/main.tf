@@ -13,7 +13,7 @@ resource "random_id" "instance_name" {
 resource "google_sql_database_instance" "main" {
   name             = "${var.name}-${random_id.instance_name.hex}"
   region           = var.region
-  database_version = "POSTGRES_9_6"
+  database_version = "POSTGRES_14"
 
   settings {
     availability_type = "ZONAL"
@@ -56,7 +56,7 @@ resource "google_sql_database_instance" "main" {
     }
   }
   // set this to "false" if you need to delete the instance
-  deletion_protection = false
+  deletion_protection = true
 
   lifecycle {
     ignore_changes = [
