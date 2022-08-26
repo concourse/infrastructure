@@ -13,7 +13,7 @@ module "k8s_topgun_cluster" {
       auto_upgrade    = true
       disk_size       = "20"
       disk_type       = "pd-ssd"
-      image           = "COS"
+      image           = "cos_containerd"
       local_ssds      = 0
       machine_type    = "e2-standard-8"
       max             = 3
@@ -28,7 +28,7 @@ module "k8s_topgun_cluster" {
       auto_upgrade    = true
       disk_size       = "100"
       disk_type       = "pd-ssd"
-      image           = "Ubuntu"
+      image           = "ubuntu_containerd"
       local_ssds      = 0
       machine_type    = "e2-highcpu-8"
       max             = 10
@@ -46,7 +46,7 @@ module "k8s_topgun_cluster" {
       auto_upgrade    = true
       disk_size       = "100"
       disk_type       = "pd-ssd"
-      image           = "COS"
+      image           = "cos_containerd"
       local_ssds      = 0
       machine_type    = "e2-highcpu-8"
       max             = 10
