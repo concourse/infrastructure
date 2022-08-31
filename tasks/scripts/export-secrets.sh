@@ -6,6 +6,7 @@ source greenpeace/scripts/tfhelpers.sh
 
 echo "$GCP_CREDENTIALS_JSON" > /tmp/service-account.json
 gcloud auth activate-service-account --key-file /tmp/service-account.json
+apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
 
 apt-get update
 apt-get install -y unzip jq xxd
