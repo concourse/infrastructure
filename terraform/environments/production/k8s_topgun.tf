@@ -6,7 +6,7 @@ module "k8s_topgun_cluster" {
   region  = var.region
   zone    = var.zone
 
-  release_channel = "REGULAR"
+  release_channel = "STABLE"
 
   node_pools = {
     "ci-workers" = {
