@@ -41,7 +41,7 @@ concourse:
   web:
     auth:
       mainTeam:
-        localUser: admin
+        localUser: admin,svc-security
         github:
           team: concourse:maintainers
       github:

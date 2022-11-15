@@ -36,6 +36,11 @@ resource "random_password" "admin_password" {
   special = true
 }
 
+resource "random_password" "svc_security_password" {
+  length  = 32
+  special = true
+}
+
 resource "tls_private_key" "host_key" {
   algorithm = "RSA"
   rsa_bits  = 4096
@@ -87,7 +92,7 @@ data "template_file" "ci_values" {
     db_private_key = jsonencode(module.ci_database.private_key)
 
     encryption_key = jsonencode(random_password.encryption_key.result)
-    local_users    = jsonencode("${var.concourse_admin_username}:${random_password.admin_password.result}")
+    local_users    = jsonencode("${var.concourse_admin_username}:${random_password.admin_password.result},${var.concourse_svc_security_username}:${random_password.svc_security_password.result}")
 
     host_key     = jsonencode(tls_private_key.host_key.private_key_pem)
     host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)

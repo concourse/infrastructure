@@ -111,6 +111,11 @@ variable "concourse_admin_username" {
   default = "admin"
 }
 
+variable "concourse_svc_security_username" {
+  type    = string
+  default = "svc-security"
+}
+
 variable "go_windows_package_url" {
   type = string
 }
