@@ -13,7 +13,7 @@ persistence:
     size: 750Gi
 
 worker:
-  replicas: 4
+  replicas: 5
   nodeSelector:
     cloud.google.com/gke-nodepool: ci-workers
   annotations:
