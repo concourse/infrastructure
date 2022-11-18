@@ -21,14 +21,6 @@ web:
   - name: CONCOURSE_ENABLE_RESOURCE_CAUSALITY
     value: "true"
 
-  resources:
-    requests:
-      cpu: 1500m
-      memory: 1Gi
-    limits:
-      cpu: 1500m
-      memory: 1Gi
-
   service:
     api:
       type: LoadBalancer
