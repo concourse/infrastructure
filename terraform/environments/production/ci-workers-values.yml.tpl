@@ -28,7 +28,7 @@ worker:
     timeoutSeconds: 45
   hardAntiAffinity: true
   resources:
-    limits:   { cpu: 7500m, memory: 29Gi }
+    limits:   { cpu: 3500m, memory: 29Gi }
     requests: { cpu: 0m,    memory: 0Gi  }
 
 concourse:

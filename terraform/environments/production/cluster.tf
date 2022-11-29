@@ -32,7 +32,7 @@ module "cluster" {
       disk_type       = "pd-ssd"
       image           = "ubuntu_containerd"
       local_ssds      = 0
-      machine_type    = "e2-standard-2"
+      machine_type    = "e2-highmem-4"
       max             = 10
       min             = 1
       preemptible     = false
