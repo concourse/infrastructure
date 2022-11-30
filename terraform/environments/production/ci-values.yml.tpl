@@ -43,7 +43,7 @@ concourse:
     clusterName: ci
     logLevel: debug
     containerPlacementStrategy: limit-active-tasks
-    limitActiveTasks: 5
+    limitActiveTasks: 2 
     streamingArtifactsCompression: zstd
     enableGlobalResources: true
     enableAcrossStep: true

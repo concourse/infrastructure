@@ -32,7 +32,7 @@ module "cluster" {
       disk_type       = "pd-ssd"
       image           = "ubuntu_containerd"
       local_ssds      = 0
-      machine_type    = "e2-highmem-4"
+      machine_type    = "e2-standard-4"
       max             = 10
       min             = 1
       preemptible     = false
@@ -45,9 +45,9 @@ module "cluster" {
       auto_upgrade    = true
       disk_size       = "50"
       disk_type       = "pd-ssd"
-      image           = "Ubuntu"
+      image           = "Ubuntu_containerd"
       local_ssds      = 0
-      machine_type    = "e2-highmem-4"
+      machine_type    = "e2-standard-4"
       max             = 5
       min             = 1
       preemptible     = false
