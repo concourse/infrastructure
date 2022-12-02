@@ -1,6 +1,6 @@
-concourse_web_image_repo: concourse/concourse-dev
-concourse_web_image_digest: sha256:cb1d35e2892bd6b8a3aaa11ff14fa93153828323cf3b03c596480392e3c28a37
-concourse_worker_image_repo: concourse/concourse-dev
-concourse_worker_image_digest: sha256:cb1d35e2892bd6b8a3aaa11ff14fa93153828323cf3b03c596480392e3c28a37
-concourse_windows_bundle_url: https://storage.googleapis.com/concourse-artifacts/dev/concourse-7.8.1+dev.1659725718.f7a0bb07b.windows.amd64.zip
-concourse_darwin_bundle_url: https://storage.googleapis.com/concourse-artifacts/dev/concourse-7.8.1+dev.1659725718.f7a0bb07b.darwin.amd64.tgz
+concourse_web_image_repo: concourse/concourse
+concourse_web_image_digest: sha256:da472f3513021a9d1a62c3588ddc0e34aeffad8387790d900938be89b0748442
+concourse_worker_image_repo: concourse/concourse
+concourse_worker_image_digest: sha256:da472f3513021a9d1a62c3588ddc0e34aeffad8387790d900938be89b0748442
+concourse_windows_bundle_url: https://github.com/concourse/concourse/releases/download/v7.9.0/concourse-7.9.0-windows-amd64.zip
+concourse_darwin_bundle_url: https://github.com/concourse/concourse/releases/download/v7.9.0/concourse-7.9.0-darwin-amd64.tgz
