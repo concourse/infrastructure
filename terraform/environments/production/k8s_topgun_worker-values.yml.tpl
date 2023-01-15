@@ -1,5 +1,5 @@
-image: ${image_repo}
-imageDigest: ${image_digest}
+image: concourse/concourse-dev
+imageDigest: sha256:0d6acb5b399c71f115b01d41270b913d687ab56cd3ef451a91464f6f88e8f094
 
 postgresql:
   enabled: false
@@ -40,7 +40,7 @@ concourse:
     rebalanceInterval: 2h
     baggageclaim: { driver: overlay }
     healthcheckTimeout: 40s
-    runtime: guardian
+    runtime: containerd
     containerd:
       networkPool: "10.254.0.0/16"
       maxContainers: "500"
