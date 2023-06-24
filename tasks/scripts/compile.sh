@@ -6,4 +6,4 @@ output="$(pwd)/compiled/"
 
 cd repo
 [ ! -z "$CONTEXT" ] && cd "$CONTEXT"
-go build -o "$output" "$PACKAGE_PATH"
+CGO_ENABLED=0 go build -o "$output" "$PACKAGE_PATH"
