@@ -1,5 +1,5 @@
 image: concourse/concourse-dev
-imageDigest: sha256:0d6acb5b399c71f115b01d41270b913d687ab56cd3ef451a91464f6f88e8f094
+imageDigest: sha256:6a8fe98df6bf8c0a6902f01e1b33f49bbfd308e2384811b1a3ae48dc31bcdfba
 
 postgresql:
   enabled: false
