@@ -116,6 +116,8 @@ resources:
       credentials: ((greenpeace_gcp_credentials_json))
     vars:
       credentials: ((greenpeace_gcp_credentials_json))
+    env:
+      TF_LOG: DEBUG
 
 - name: secrets
   type: gcs
