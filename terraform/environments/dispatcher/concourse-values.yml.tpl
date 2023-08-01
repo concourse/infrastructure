@@ -20,7 +20,7 @@ web:
 
   resources:
     requests:
-      cpu: 500m
+      cpu: 750m
       memory: 1Gi
     limits:
       cpu: 1500m
