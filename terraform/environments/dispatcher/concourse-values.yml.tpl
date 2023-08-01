@@ -20,10 +20,10 @@ web:
 
   resources:
     requests:
-      cpu: 1000m
+      cpu: 2000m
       memory: 1Gi
     limits:
-      cpu: 1500m
+      cpu: 3000m
       memory: 1Gi
 
   service:
