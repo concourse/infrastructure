@@ -180,10 +180,6 @@ our vaults)
   * The command will generate a `gsutil` command to upload the encrypted bundle
     to `gs://concourse-greenpeace/vault/production/data.tar`
 
-#### vault ca cert expires
-
-When the vault ca cert expires, it is automatically re-created through the terraform job for that environment. For example, if the dispatcher vault ca cert expires, it would be through [terraform job in the dispatcher pipeline](https://ci.concourse-ci.org/teams/main/pipelines/dispatcher-greenpeace/jobs/terraform). Once this terraform job has deleted the old ca cert, created a new one and run successfully, you might have to restart the vault pod manually using `kubectl delete pod -n <namespace> vault-0`.
-
 #### encryption
 
 There are two encryption keys used to encrypt the vault data:
@@ -193,6 +189,36 @@ There are two encryption keys used to encrypt the vault data:
 
 This is because KMS crypto keys can only encode small payloads.
 
+#### vault ca cert expires
+
+When the vault ca cert expires, it is automatically re-created through the terraform job for that environment. For example, if the dispatcher vault ca cert expires, it would be through [terraform job in the dispatcher pipeline](https://ci.concourse-ci.org/teams/main/pipelines/dispatcher-greenpeace/jobs/terraform). Once this terraform job has deleted the old ca cert, created a new one and run successfully, you might have to restart the vault pod manually using `kubectl delete pod -n <namespace> vault-0`.
+
+In strange cases, the terraform job won't actually recreate the expired vault CA certs though.  i, that is, clarp tincan, haven't figured out what causes it, but was able to develop a procedure to fix it at the very least.  You might not ever need these steps, but hopefully they'll save you a LOT of time and turmoil if you ever do.  The basic goal is to use [the new `-replace` flag in Terraform 1.5](https://developer.hashicorp.com/terraform/cli/commands/plan#replace-address), though it takes a bit of work to get there:
+* Install terraform 1.5+ on your local machine.  i did this on v1.5.4.
+* `cd` to whichever `terraform/environments/[deployment]` directory has the expired vault CA cert.
+* Delete the `.terraform.lock.hcl` file and `.terraform/` folder, if present.
+* Run the following to end up with a 1.5.x-syntaxed version of the above files/folders:
+    * `terraform init`
+    * `gcloud container clusters get-credentials [deployment]`
+    * `terraform workspace select [deployment]`
+* Rename the `variables.yml` file to `variables.tfvars`, and make the following syntax changes to make it 1.5 compatible:
+    * Change all the ":" separators to "=".
+    * Put double quotes around all the argument values.
+* Go to the CF-Concourse-Production GCP project, and make an IAM user with the following roles: Editor, Secret Manager Secret Accessor.  Save its json secrets locally, because we'll need it in a second.
+* Run this command to (hopefully) force terraform to rotate the cert and all the certs that derive from it.  You'll know if it worked because it'll say something like "9 replaced" and show the changes to the CA cert and its derivatives.  
+    * `terraform apply -var 'concourse_chart_version=17.1.1' -var credentials="$(cat [path_to_iam_user_json_secrets_file])" -var-file='variables.tfvars' -replace='module.vault.tls_self_signed_cert.ca'`
+* To get vault to pick up the new cert, you'll next have to delete the vault pods currently running in Kubernetes as outlined at the beginning of this section.  When they get remade, they should be healthy.
+* Then finally, run the `initialize-vault` job from the opposite-deployment you updated.  So if you're fixing production, you'd run the job from dispatcher and vice versa.
+
+If this didn't work, consider crying.
+
+If crying didn't work, consider weeping profusely.
+
+If the problem still persists, welp.
+
+Also worth noting, here are some things that didn't work for me:
+* Just deleting the old, expired cert from GCP and running the terraform-dispatcher job from the opposite deployment's ci. i forget what happened, but i think the job just complains that the file doesn't exist and fails.
+* Downloading the deployment's tfstate (gcp://CF-Concourse-Production/concourse-greenpeace/terraform/[deployment].tfstate), deleting the CA cert by hand, and reuploading it. Terraform just somehow restores the old cert and keeps using it - it doesn't trigger it to get recreated. i tried like every combination of deleting entire fields or just deleting values in the entire file, and nothing worked.
 
 
 

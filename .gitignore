@@ -6,3 +6,5 @@ terraform/**/.terraform
 .terraform.lock.hcl
 
 *.swp
+.idea
+.DS_Store
