@@ -1,6 +1,6 @@
 concourse_web_image_repo: concourse/concourse-rc
-concourse_web_image_digest: sha256:89c3824a60b277daf4f66ccb1c8a8188cb90c78972d9aad93b9a33d074d40af3
+concourse_web_image_digest: sha256:c02daa0d84f0d9183ceabceee4b1f3ef9d0734c769f67312dd776923ab483af2
 concourse_worker_image_repo: concourse/concourse-rc
-concourse_worker_image_digest: sha256:89c3824a60b277daf4f66ccb1c8a8188cb90c78972d9aad93b9a33d074d40af3
-concourse_windows_bundle_url: https://storage.googleapis.com/concourse-artifacts/rcs/concourse-7.11.0-rc.3+ebeefc578.windows.amd64.zip
-concourse_darwin_bundle_url: https://storage.googleapis.com/concourse-artifacts/rcs/concourse-7.11.0-rc.3+ebeefc578.darwin.amd64.tgz
+concourse_worker_image_digest: sha256:c02daa0d84f0d9183ceabceee4b1f3ef9d0734c769f67312dd776923ab483af2
+concourse_windows_bundle_url: https://storage.googleapis.com/concourse-artifacts/rcs/concourse-7.11.0-rc.35+ebeefc578.windows.amd64.zip
+concourse_darwin_bundle_url: https://storage.googleapis.com/concourse-artifacts/rcs/concourse-7.11.0-rc.35+ebeefc578.darwin.amd64.tgz
