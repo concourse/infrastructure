@@ -1,8 +1,3 @@
-sensitive/*
-!sensitive/.gitkeep
-bootstrap/.terraform/
-bootstrap/*.backup
-terraform/**/.terraform
 .terraform.lock.hcl
 
 *.swp
