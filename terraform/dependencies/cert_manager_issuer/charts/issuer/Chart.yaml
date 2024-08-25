@@ -1,6 +1,0 @@
-name: cert-manager-issuer
-apiVersion: v1
-version: 0.0.1
-appVersion: 0.0.1
-description: Creates a cert-manager issuer using letsencrypt
-
