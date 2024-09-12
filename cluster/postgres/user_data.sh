@@ -10,7 +10,9 @@ sudo hostname postgres
 curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up --auth-key="${tailscale_auth_key}"
 sudo tailscale up --ssh
 
-sudo dnf install -y podman podman-compose
+sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo systemctl start docker
 
 volume=$(ls /mnt)
 volume_dir="/mnt/$volume"
@@ -47,4 +49,4 @@ services:
       POSTGRES_PASSWORD: ${db_password}
 EOF
 
-sudo podman-compose up -d
+sudo docker compose up -d

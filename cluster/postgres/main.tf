@@ -29,6 +29,10 @@ resource "hcloud_volume" "main" {
   format            = "ext4"
   delete_protection = true
   server_id         = hcloud_server.main.id
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 data "hcloud_network" "main" {
