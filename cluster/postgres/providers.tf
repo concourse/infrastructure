@@ -1,5 +1,10 @@
 terraform {
-  backend "local" {}
+  backend "pg" {
+    # Set env vars PGUSER and PGPASSWORD to access the state file
+    conn_str    = "postgres://postgres/terraform_backend?sslmode=disable"
+    schema_name = "postgres"
+  }
+
   required_providers {
     hcloud = {
       source  = "hetznercloud/hcloud"
