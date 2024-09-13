@@ -1,7 +1,7 @@
 resource "hcloud_server" "main" {
   name        = "vault"
   image       = "fedora-40"
-  server_type = "ccx13"
+  server_type = "cx22"
   ssh_keys    = ["concourse"]
   location    = "fsn1"
   user_data = templatefile("${path.module}/user_data.sh",
