@@ -50,6 +50,7 @@ mv -f Caddyfile /etc/caddy/Caddyfile
 # ALlow Caddy to fetch certs from the tailscale network
 sudo echo "TS_PERMIT_CERT_UID=caddy" >> /etc/default/tailscaled
 sudo systemctl restart tailscaled
+sleep 5s
 
 sudo systemctl enable vault
 sudo systemctl start vault
