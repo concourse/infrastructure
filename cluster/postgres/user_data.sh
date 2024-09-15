@@ -7,7 +7,9 @@ cd /workspace
 
 sudo hostname postgres
 
-curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up --auth-key="${tailscale_auth_key}"
+curl -fsSL https://tailscale.com/install.sh | sh
+
+sudo tailscale up --auth-key="${tailscale_auth_key}"
 sudo tailscale up --ssh
 
 sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
