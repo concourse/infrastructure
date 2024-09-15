@@ -2,43 +2,56 @@
 
 set -euo pipefail
 
-mkdir /workspace
-cd /workspace
-
 sudo hostname vault
 
-curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up --auth-key="${tailscale_auth_key}"
+curl -fsSL https://tailscale.com/install.sh | sh
+
+# Enable Caddy to fetch certs from the tailscale network
+sudo echo "TS_PERMIT_CERT_UID=caddy" >> /etc/default/tailscaled
+
+sudo tailscale up --auth-key="${tailscale_auth_key}"
 sudo tailscale up --ssh
 
-sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-sudo systemctl start docker
-
-cat << EOF > compose.yml
-services:
-  vault:
-    image: docker.io/hashicorp/vault:latest
-    restart: always
-    ports:
-    - 8200:8200
-    logging:
-      driver: journald
-    environment:
-      PGDATA: /var/lib/postgresql/data
-EOF
+sudo dnf install -y dnf-plugins-core
+sudo dnf config-manager --add-repo https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
+sudo dnf -y install vault
 
 cat << EOF > vault.hcl
 storage "postgresql" {
-  connection_url = "postgres://${db_user}:${db_password}@postgres:5432/concourse?sslmode=disable"
+  connection_url = "postgres://${db_user}:${db_password}@postgres:5432/vault?sslmode=disable"
 }
 
 listener "tcp" {
-  address = "0.0.0.0:8200"
+  address = "127.0.0.1:8200"
+  tls_cert_file = "/opt/vault/tls/tls.crt"
+  tls_key_file = "/opt/vault/tls/tls.key"
 }
 
 ui = true
-api_addr = "http://0.0.0.0:8200"
+api_addr = "http://127.0.0.1:8200"
 cluster_name = "Vault"
 EOF
 
-# sudo docker compose up -d
+mv -f vault.hcl /etc/vault.d/vault.hcl
+
+sudo dnf -y install 'dnf-command(copr)'
+sudo dnf copr -y enable @caddy/caddy
+sudo dnf -y install caddy
+
+cat << EOF > Caddyfile
+vault.tail54de49.ts.net {
+	reverse_proxy https://127.0.0.1:8200 {
+		transport http {
+                        tls_insecure_skip_verify
+                }
+	}
+}
+EOF
+
+mv -f Caddyfile /etc/caddy/Caddyfile
+
+sudo systemctl enable vault
+sudo systemctl start vault
+
+sudo systemctl enable caddy
+sudo systemctl start caddy
