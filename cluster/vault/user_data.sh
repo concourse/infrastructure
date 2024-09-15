@@ -6,9 +6,6 @@ sudo hostname vault
 
 curl -fsSL https://tailscale.com/install.sh | sh
 
-# Enable Caddy to fetch certs from the tailscale network
-sudo echo "TS_PERMIT_CERT_UID=caddy" >> /etc/default/tailscaled
-
 sudo tailscale up --auth-key="${tailscale_auth_key}"
 sudo tailscale up --ssh
 
@@ -49,6 +46,10 @@ vault.tail54de49.ts.net {
 EOF
 
 mv -f Caddyfile /etc/caddy/Caddyfile
+
+# ALlow Caddy to fetch certs from the tailscale network
+sudo echo "TS_PERMIT_CERT_UID=caddy" >> /etc/default/tailscaled
+sudo systemctl restart tailscaled
 
 sudo systemctl enable vault
 sudo systemctl start vault
