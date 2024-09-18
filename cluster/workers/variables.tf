@@ -1,8 +1,3 @@
-variable "number_of_workers" {
-  type    = number
-  default = 1
-}
-
 variable "tailscale_auth_key" {
   type        = string
   sensitive   = true

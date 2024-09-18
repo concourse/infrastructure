@@ -51,6 +51,7 @@ services:
     volumes:
     - /workspace/keys:/concourse-keys
     environment:
+      CONCOURSE_NAME: worker-${unique_id}-${index}
       CONCOURSE_RUNTIME: containerd
       CONCOURSE_TSA_PUBLIC_KEY: /concourse-keys/tsa_host_key.pub
       CONCOURSE_TSA_WORKER_PRIVATE_KEY: /concourse-keys/worker_key

@@ -1,8 +1,12 @@
-# TODO: add block storage for more disk space? Old workers had 500GB space I believe
-resource "hcloud_server" "main" {
-  count = var.number_of_workers
+locals {
+  number_of_workers = 5
+}
 
-  name        = "concourse-worker-${random_string.main.result}"
+# TODO: add block storage for more disk space? Old workers had 500GB space I believe
+resource "hcloud_server" "workers" {
+  count = local.number_of_workers
+
+  name        = "concourse-worker-${random_string.main.result}-${count.index}"
   image       = "fedora-40"
   server_type = "ccx23"
   ssh_keys    = ["concourse"]
@@ -64,6 +68,6 @@ resource "random_string" "main" {
     tsa_host_public_key  = var.tsa_host_public_key
     worker_private_key   = var.worker_private_key
     web_load_balancer_ip = local.web.web_private_ip
-    workers              = var.number_of_workers
+    workers              = local.number_of_workers
   }
 }

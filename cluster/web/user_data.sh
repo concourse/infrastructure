@@ -87,7 +87,6 @@ services:
       CONCOURSE_VAULT_AUTH_BACKEND: "approle"
       CONCOURSE_VAULT_AUTH_PARAM: "role_id:${vault_role_id},secret_id:${vault_secret_id}"
 
-      CONCOURSE_ENABLE_P2P_VOLUME_STREAMING: "true"
       CONCOURSE_ENABLE_PIPELINE_INSTANCES: "true"
       CONCOURSE_ENABLE_ACROSS_STEP: "true"
       CONCOURSE_ENABLE_GLOBAL_RESOURCES: "true"
