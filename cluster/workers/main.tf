@@ -69,5 +69,6 @@ resource "random_string" "main" {
     worker_private_key   = var.worker_private_key
     web_load_balancer_ip = local.web.web_private_ip
     workers              = local.number_of_workers
+    user_data            = sha256(file("${path.module}/user_data.sh"))
   }
 }
