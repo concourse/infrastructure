@@ -40,7 +40,7 @@ cd /workspace
 
 cat << EOF > compose.yml
 services:
-  web:
+  worker:
     image: docker.io/concourse/concourse:${image_tag}
     command: worker
     privileged: true
