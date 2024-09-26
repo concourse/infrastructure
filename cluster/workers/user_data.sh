@@ -44,6 +44,7 @@ services:
     image: docker.io/concourse/concourse:${image_tag}
     command: worker
     privileged: true
+    cgroup: host
     restart: unless-stopped
     logging:
       driver: journald
