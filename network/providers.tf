@@ -3,7 +3,7 @@ terraform {
     # Need to set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
     bucket                      = "concourse-tf-state"
     key                         = "network"
-    region                      = "eu-central-1"
+    region                      = "fsn1"
     skip_credentials_validation = true
     skip_region_validation      = true
     skip_metadata_api_check     = true
