@@ -4,6 +4,7 @@ resources:
   icon: github
   source:
     uri: git@github.com:concourse/greenpeace.git
+    branch: master
     private_key: ((greenpeace_private_key))
     paths: [pipelines, tasks]
 
