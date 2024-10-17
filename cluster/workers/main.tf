@@ -44,7 +44,7 @@ data "hcloud_network" "main" {
 }
 
 data "terraform_remote_state" "web" {
-  backend = "pg"
+  backend = "s3"
 
   config = {
     bucket                      = "concourse-tf-state"
