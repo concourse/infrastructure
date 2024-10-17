@@ -15,7 +15,7 @@ module "cluster" {
       auto_upgrade    = true
       disk_size       = "50"
       disk_type       = "pd-ssd"
-      image           = "COS"
+      image           = "cos_containerd"
       local_ssds      = 0
       machine_type    = "e2-standard-2"
       max             = 2
