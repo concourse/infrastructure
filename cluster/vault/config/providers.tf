@@ -1,8 +1,17 @@
 terraform {
-  backend "pg" {
-    # Set env vars PGUSER and PGPASSWORD to access the state file
-    conn_str    = "postgres://postgres/terraform_backend?sslmode=disable"
-    schema_name = "vault_config"
+  backend "s3" {
+    # Need to set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
+    bucket                      = "concourse-tf-state"
+    key                         = "cluster/vault/config"
+    region                      = "fsn1"
+    skip_credentials_validation = true
+    skip_region_validation      = true
+    skip_metadata_api_check     = true
+    skip_requesting_account_id  = true
+    skip_s3_checksum            = true
+    endpoints = {
+      s3 = "https://fsn1.your-objectstorage.com"
+    }
   }
 
   required_providers {
