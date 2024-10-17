@@ -44,3 +44,9 @@ variable "greenpeace_kms_key_name" {
   description = "The name of the greenpeace shared crypto key"
   default     = "greenpeace-key"
 }
+
+variable "vault_root_ca_validity_period" {
+  description = "Vault root CA cert expiry time, in hours. 8760 is 1 year btw."
+  type        = number
+  default     = 8760
+}

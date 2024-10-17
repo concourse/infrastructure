@@ -16,7 +16,7 @@ resource "tls_self_signed_cert" "ca" {
     common_name = "vault_ca"
   }
 
-  validity_period_hours = 8760
+  validity_period_hours = var.vault_root_ca_validity_period
   is_ca_certificate     = true
 
   allowed_uses = [

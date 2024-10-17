@@ -206,7 +206,7 @@ In strange cases, the terraform job won't actually recreate the expired vault CA
     * Put double quotes around all the argument values.
 * Go to the CF-Concourse-Production GCP project, and make an IAM user with the following roles: Editor, Secret Manager Secret Accessor.  Save its json secrets locally, because we'll need it in a second.
 * Run this command to (hopefully) force terraform to rotate the cert and all the certs that derive from it.  You'll know if it worked because it'll say something like "9 replaced" and show the changes to the CA cert and its derivatives.  
-    * `terraform apply -var 'concourse_chart_version=17.1.1' -var credentials="$(cat [path_to_iam_user_json_secrets_file])" -var-file='variables.tfvars' -replace='module.vault.tls_self_signed_cert.ca'`
+    * `terraform apply -var 'concourse_chart_version=17.1.1' -var 'vault_root_ca_validity_period=87600' -var credentials="$(cat [path_to_iam_user_json_secrets_file])" -var-file='variables.tfvars' -replace='module.vault.tls_self_signed_cert.ca'`
 * To get vault to pick up the new cert, you'll next have to delete the vault pods currently running in Kubernetes as outlined at the beginning of this section.  When they get remade, they should be healthy.
 * Then finally, run the `initialize-vault` job from the opposite-deployment you updated.  So if you're fixing production, you'd run the job from dispatcher and vice versa.
 
