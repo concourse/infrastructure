@@ -207,7 +207,28 @@ In strange cases, the terraform job won't actually recreate the expired vault CA
 * Go to the CF-Concourse-Production GCP project, and make an IAM user with the following roles: Editor, Secret Manager Secret Accessor.  Save its json secrets locally, because we'll need it in a second.
 * Run this command to (hopefully) force terraform to rotate the cert and all the certs that derive from it.  You'll know if it worked because it'll say something like "9 replaced" and show the changes to the CA cert and its derivatives.  
     * `terraform apply -var 'concourse_chart_version=17.1.1' -var 'vault_root_ca_validity_period=87600' -var credentials="$(cat [path_to_iam_user_json_secrets_file])" -var-file='variables.tfvars' -replace='module.vault.tls_self_signed_cert.ca'`
-* To get vault to pick up the new cert, you'll next have to delete the vault pods currently running in Kubernetes as outlined at the beginning of this section.  When they get remade, they should be healthy.
+* To get the vault container to pick up the new cert, you'll next have to delete the vault pods currently running in Kubernetes as outlined at the beginning of this section.  When they get remade, they should be healthy.
+* If both production and dispatcher had expired CA certs, you've been in a deadlock situation this whole time where neither CI system can access either Vault.  This makes it impossible to use CI to replace the old certs.  If you're in this state, you'll have to break the deadlock yourself by manually replacing each cert.  Do this procedure twice, once for dispatcher and once for production:
+    * Get the deployment's Vault root key from the CF-Concourse-Production GCP project:
+        ```bash
+        gsutil cat "gs://concourse-greenpeace/vault/[DEPLOYMENT]/root-token.enc" | \
+          base64 --decode | \
+            gcloud kms decrypt \
+              --key "projects/cf-concourse-production/locations/global/keyRings/greenpeace-kr/cryptoKeys/greenpeace-key" \
+              --ciphertext-file - \
+              --plaintext-file -
+        ```
+    * SSH into the Vault K8s container: `scripts/connect-to-vault [deployment]`
+    * Log into the Vault using the decrypted Vault root token: `vault login token=[root_token]`
+    * Get the expired root CA definition: `vault read auth/cert/certs/concourse`
+    * As a safety-check, manually copy-paste that root CA into a text file and open it up.  Use the issue and expiration fields to confirm this is indeed the failing cert.
+        * `openssl x509 -noout -text -in '[cert_file_path]'`
+        * Keep this file until you've successfully rotated certs, just to be on the safe side.
+    * Because you recreated the Vault K8s container earlier, it contains a local copy of the new cert.  Use the environment variable `VAULT_CACERT` to find its location.  Open it up using the same openssl command and validate that the issue / expiry dates look correct.
+        * Just in case the environment isn't working, as of time of writing (10/17/24): `VAULT_CACERT=/vault/userconfig/vault-server-tls/vault.ca`
+    * Now that you've validated the new cert, write it to Vault with this command: `vault write auth/cert/certs/concourse "policies=concourse" "certificate=$(cat $VAULT_CACERT)"`
+    * Wait a couple of minutes for the changes to propagate. Resource checks in CI should now succeed.
+    * Make sure to repeat these steps with the other deployment.
 * Then finally, run the `initialize-vault` job from the opposite-deployment you updated.  So if you're fixing production, you'd run the job from dispatcher and vice versa.
 
 If this didn't work, consider crying.
@@ -219,6 +240,7 @@ If the problem still persists, welp.
 Also worth noting, here are some things that didn't work for me:
 * Just deleting the old, expired cert from GCP and running the terraform-dispatcher job from the opposite deployment's ci. i forget what happened, but i think the job just complains that the file doesn't exist and fails.
 * Downloading the deployment's tfstate (gcp://CF-Concourse-Production/concourse-greenpeace/terraform/[deployment].tfstate), deleting the CA cert by hand, and reuploading it. Terraform just somehow restores the old cert and keeps using it - it doesn't trigger it to get recreated. i tried like every combination of deleting entire fields or just deleting values in the entire file, and nothing worked.
+* Simply deleting and recreating K8s containers isn't enough to get the new certs into Vault itself.  Your only options are to access Vault directly and manually replace the certs, or delete the entire Vault instance, recreate it from scratch, restore its contents using backups from GCP, and hope you haven't lost anything important.  
 
 
 
