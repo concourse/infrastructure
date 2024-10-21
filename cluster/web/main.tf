@@ -12,6 +12,7 @@ resource "hcloud_server" "main" {
       tailscale_auth_key   = var.tailscale_auth_key
       db_user              = var.db_user
       db_password          = var.db_password
+      image_name           = var.image_name
       image_tag            = var.image_tag
       github_client_id     = var.github_client_id
       github_client_secret = var.github_client_secret

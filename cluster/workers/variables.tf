@@ -4,9 +4,14 @@ variable "tailscale_auth_key" {
   description = "You can get a new copy of this key from the Tailscale web console when adding a device. https://login.tailscale.com/admin/settings/keys"
 }
 
+variable "image_name" {
+  type        = string
+  description = "Name of an image at docker.io/concourse/*"
+}
+
 variable "image_tag" {
   type        = string
-  description = "A tag for the docker.io/concourse/concourse image"
+  description = "A tag for the docker.io/concourse/* image"
 }
 
 variable "worker_private_key" {

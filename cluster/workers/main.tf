@@ -18,6 +18,7 @@ resource "hcloud_server" "workers" {
       # and use volumes that no longer exist
       unique_id            = random_string.main.result
       tailscale_auth_key   = var.tailscale_auth_key
+      image_name           = var.image_name
       image_tag            = var.image_tag
       tsa_host_public_key  = var.tsa_host_public_key
       worker_private_key   = var.worker_private_key

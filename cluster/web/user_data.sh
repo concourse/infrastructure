@@ -46,7 +46,7 @@ lan_ip=$(ip addr show | awk '/inet / {print $2}' | grep '10.6' | tr -d '/32')
 cat << EOF > compose.yml
 services:
   web:
-    image: docker.io/concourse/concourse:${image_tag}
+    image: docker.io/concourse/${image_name}:${image_tag}
     command: web
     restart: unless-stopped
     logging:

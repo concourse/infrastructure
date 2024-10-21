@@ -41,7 +41,7 @@ cd /workspace
 cat << EOF > compose.yml
 services:
   worker:
-    image: docker.io/concourse/concourse:${image_tag}
+    image: docker.io/concourse/${image_name}:${image_tag}
     command: worker
     privileged: true
     cgroup: host

@@ -19,9 +19,14 @@ variable "db_password" {
   sensitive = true
 }
 
+variable "image_name" {
+  type        = string
+  description = "Name of an image at docker.io/concourse/*"
+}
+
 variable "image_tag" {
   type        = string
-  description = "A tag for the docker.io/concourse/concourse image"
+  description = "A tag for the docker.io/concourse/* image"
 }
 
 variable "github_client_id" {
