@@ -76,7 +76,7 @@ resource "helm_release" "dispatcher_concourse" {
   chart      = "concourse"
   version    = var.concourse_chart_version
 
-  timeout = 36000
+  timeout = 3600
 
   values = [
     data.template_file.concourse_values.rendered,
