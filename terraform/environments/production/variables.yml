@@ -1,6 +1,6 @@
-concourse_web_image_repo: concourse/concourse
-concourse_web_image_digest: sha256:c36fd4c23def9beacdf7de3a480aacb2b6788ac03808bfb190514858d28a7b94
-concourse_worker_image_repo: concourse/concourse
-concourse_worker_image_digest: sha256:c36fd4c23def9beacdf7de3a480aacb2b6788ac03808bfb190514858d28a7b94
-concourse_windows_bundle_url: https://github.com/concourse/concourse/releases/download/v7.11.0/concourse-7.11.0-windows-amd64.zip
-concourse_darwin_bundle_url: https://github.com/concourse/concourse/releases/download/v7.11.0/concourse-7.11.0-darwin-amd64.tgz
+concourse_web_image_repo: concourse/concourse-rc
+concourse_web_image_digest: sha256:a6cd759f03982833c0ad21e52bb7da5df754141f116c3564b22a6bc93538eb26
+concourse_worker_image_repo: concourse/concourse-rc
+concourse_worker_image_digest: sha256:a6cd759f03982833c0ad21e52bb7da5df754141f116c3564b22a6bc93538eb26
+concourse_windows_bundle_url: https://storage.googleapis.com/concourse-artifacts/rcs/concourse-7.13.0-rc.3+2dd45e280.windows.amd64.zip
+concourse_darwin_bundle_url: https://storage.googleapis.com/concourse-artifacts/rcs/concourse-7.13.0-rc.3+2dd45e280.darwin.amd64.tgz
