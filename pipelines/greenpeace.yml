@@ -371,33 +371,39 @@ jobs:
 - name: terraform
   max_in_flight: 1
   plan:
-  - get: greenpeace
-    resource: greenpeace-tf-module
-    trigger: true
-  - get: concourse-chart
-  - load_var: concourse_chart_version
-    file: concourse-chart/version
+  - in_parallel:
+    - get: greenpeace
+      resource: greenpeace-tf-module
+      trigger: true
+    - do:
+      - get: concourse-chart
+      - load_var: concourse_chart_version
+        file: concourse-chart/version
   #@ vars = {}
   #@ vars["concourse_chart_version"] = "((.:concourse_chart_version))"
   #@ if cluster == "production":
-  - get: golang-darwin
-    trigger: true
-    params: {skip_download: "true"}
-  - load_var: go_darwin_package_url
-    file: golang-darwin/url
-  - get: golang-windows
-    trigger: true
-    params: {skip_download: "true"}
-  - load_var: go_windows_package_url
-    file: golang-windows/url
-  - get: boarding-pass-image
-    trigger: true
-  - load_var: boarding_pass_image_digest
-    file: boarding-pass-image/digest
-  - get: dutyfree-image
-    trigger: true
-  - load_var: dutyfree_image_digest
-    file: dutyfree-image/digest
+    - do:
+      - get: golang-darwin
+        trigger: true
+        params: {skip_download: "true"}
+      - load_var: go_darwin_package_url
+        file: golang-darwin/url
+    - do:
+      - get: golang-windows
+        trigger: true
+        params: {skip_download: "true"}
+      - load_var: go_windows_package_url
+        file: golang-windows/url
+    - do:
+      - get: boarding-pass-image
+        trigger: true
+      - load_var: boarding_pass_image_digest
+        file: boarding-pass-image/digest
+    - do:
+      - get: dutyfree-image
+        trigger: true
+      - load_var: dutyfree_image_digest
+        file: dutyfree-image/digest
     #@ vars["macstadium_ip"] = "((macstadium.ip))"
     #@ vars["macstadium_username"] = "((macstadium.username))"
     #@ vars["macstadium_password"] = "((macstadium.password))"
