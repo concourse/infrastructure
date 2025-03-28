@@ -165,16 +165,3 @@ module "windows_worker" {
   worker_key           = tls_private_key.worker_key.private_key_pem
   go_package_url       = var.go_windows_package_url
 }
-
-module "darwin_worker" {
-  source = "../../dependencies/darwin-worker"
-
-  macstadium_ip        = var.macstadium_ip
-  macstadium_username  = var.macstadium_username
-  macstadium_password  = var.macstadium_password
-  concourse_bundle_url = var.concourse_darwin_bundle_url
-  tsa_host             = "${module.concourse_ci_address.address}:2222"
-  tsa_host_public_key  = tls_private_key.host_key.public_key_openssh
-  worker_key           = tls_private_key.worker_key.private_key_pem
-  go_package_url       = var.go_darwin_package_url
-}
