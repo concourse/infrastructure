@@ -13,12 +13,6 @@ resource_types:
     repository: ljfranklin/terraform-resource
     tag: *tfversion
 
-- name: registry-image
-  type: registry-image
-  source:
-    repository: concourse/registry-image-resource
-    tag: latest
-
 - name: gcs
   type: registry-image
   source:
