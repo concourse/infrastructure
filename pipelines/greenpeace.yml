@@ -77,15 +77,6 @@ resources:
     bucket: golang
     regexp: 'go(\d+\.\d+(\.\d+)?)\.windows-amd64\.msi$'
 
-- name: boarding-pass-image
-  type: registry-image
-  icon: docker
-  source:
-    repository: gcr.io/cf-concourse-production/boarding-pass
-    tag: latest
-    username: _json_key
-    password: ((greenpeace_gcp_credentials_json))
-
 - name: dutyfree-image
   icon: docker
   type: registry-image
@@ -401,11 +392,6 @@ jobs:
       - load_var: go_windows_package_url
         file: golang-windows/url
     - do:
-      - get: boarding-pass-image
-        trigger: true
-      - load_var: boarding_pass_image_digest
-        file: boarding-pass-image/digest
-    - do:
       - get: dutyfree-image
         trigger: true
       - load_var: dutyfree_image_digest
@@ -413,7 +399,6 @@ jobs:
     #@ vars["macstadium_ip"] = "((macstadium.ip))"
     #@ vars["macstadium_username"] = "((macstadium.username))"
     #@ vars["macstadium_password"] = "((macstadium.password))"
-    #@ vars["boarding_pass_image_digest"] = "((.:boarding_pass_image_digest))"
     #@ vars["dutyfree_image_digest"] = "((.:dutyfree_image_digest))"
     #@ vars["dutyfree_github_token"] = "((dutyfree_github_token))"
     #@ vars["go_windows_package_url"] = "((.:go_windows_package_url))"
