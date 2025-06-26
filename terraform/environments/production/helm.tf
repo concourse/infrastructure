@@ -1,5 +1,5 @@
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     host = "https://${module.cluster.endpoint}"
 
     token = data.google_client_config.provider.access_token
@@ -11,7 +11,7 @@ provider "helm" {
 provider "helm" {
   alias = "k8s_topgun"
 
-  kubernetes {
+  kubernetes = {
     host = "https://${module.k8s_topgun_cluster.endpoint}"
 
     token = data.google_client_config.provider.access_token
