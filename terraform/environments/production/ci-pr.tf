@@ -17,7 +17,7 @@ locals {
       host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
       worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
 
-      host = "${helm_release.ci.metadata[0].name}-web-worker-gateway.${kubernetes_namespace.ci.id}.svc.cluster.local:2222"
+      host = "${helm_release.ci.metadata.name}-web-worker-gateway.${kubernetes_namespace.ci.id}.svc.cluster.local:2222"
   })
 }
 
@@ -48,7 +48,7 @@ resource "kubernetes_network_policy" "ci_pr_only_external" {
   spec {
     pod_selector {
       match_labels = {
-        release = helm_release.ci_pr.metadata[0].name
+        release = helm_release.ci_pr.metadata.name
       }
     }
 
@@ -72,7 +72,7 @@ resource "kubernetes_network_policy" "ci_pr_only_external" {
         }
         pod_selector {
           match_labels = {
-            app = "${helm_release.ci.metadata[0].name}-web"
+            app = "${helm_release.ci.metadata.name}-web"
           }
         }
       }
