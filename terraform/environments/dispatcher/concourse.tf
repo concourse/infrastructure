@@ -38,9 +38,8 @@ resource "tls_private_key" "session_signing_key" {
   rsa_bits  = 4096
 }
 
-data "template_file" "concourse_values" {
-  template = file("${path.module}/concourse-values.yml.tpl")
-  vars = {
+locals {
+  concourse_values = templatefile("${path.module}/concourse-values.yml.tpl", {
     image_repo   = var.concourse_image_repo
     image_digest = var.concourse_image_digest
 
@@ -66,7 +65,7 @@ data "template_file" "concourse_values" {
     vault_ca_cert            = jsonencode(module.vault.ca_pem)
     vault_client_cert        = jsonencode(module.vault.client_cert_pem)
     vault_client_private_key = jsonencode(module.vault.client_private_key_pem)
-  }
+  })
 }
 
 resource "helm_release" "dispatcher_concourse" {
@@ -79,7 +78,7 @@ resource "helm_release" "dispatcher_concourse" {
   timeout = 3600
 
   values = [
-    data.template_file.concourse_values.rendered,
+    local.concourse_values,
   ]
 
   depends_on = [

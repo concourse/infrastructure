@@ -8,17 +8,17 @@ resource "kubernetes_namespace" "ci_pr" {
   ]
 }
 
-data "template_file" "ci_pr_values" {
-  template = file("${path.module}/ci-pr-values.yml.tpl")
-  vars = {
-    image_repo   = var.concourse_worker_image_repo
-    image_digest = var.concourse_worker_image_digest
+locals {
+  ci_pr_values = templatefile("${path.module}/ci-pr-values.yml.tpl",
+    {
+      image_repo   = var.concourse_worker_image_repo
+      image_digest = var.concourse_worker_image_digest
 
-    host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
-    worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
+      host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
+      worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
 
-    host = "${helm_release.ci.metadata[0].name}-web-worker-gateway.${kubernetes_namespace.ci.id}.svc.cluster.local:2222"
-  }
+      host = "${helm_release.ci.metadata[0].name}-web-worker-gateway.${kubernetes_namespace.ci.id}.svc.cluster.local:2222"
+  })
 }
 
 resource "helm_release" "ci_pr" {
@@ -31,7 +31,7 @@ resource "helm_release" "ci_pr" {
   timeout = 1800
 
   values = [
-    data.template_file.ci_pr_values.rendered,
+    local.ci_pr_values,
   ]
 
   depends_on = [

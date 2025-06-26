@@ -71,41 +71,41 @@ module "ci_database" {
   max_connections = "200"
 }
 
-data "template_file" "ci_values" {
-  template = file("${path.module}/ci-values.yml.tpl")
-  vars = {
-    image_repo   = var.concourse_web_image_repo
-    image_digest = var.concourse_web_image_digest
+locals {
+  ci_values = templatefile("${path.module}/ci-values.yml.tpl",
+    {
+      image_repo   = var.concourse_web_image_repo
+      image_digest = var.concourse_web_image_digest
 
-    lb_address   = module.concourse_ci_address.address
-    external_url = "https://${var.subdomain}.${var.domain}"
+      lb_address   = module.concourse_ci_address.address
+      external_url = "https://${var.subdomain}.${var.domain}"
 
-    github_client_id     = data.google_secret_manager_secret_version.github_client_id.secret_data
-    github_client_secret = data.google_secret_manager_secret_version.github_client_secret.secret_data
+      github_client_id     = data.google_secret_manager_secret_version.github_client_id.secret_data
+      github_client_secret = data.google_secret_manager_secret_version.github_client_secret.secret_data
 
-    db_ip          = module.ci_database.ip
-    db_user        = module.ci_database.user
-    db_password    = module.ci_database.password
-    db_database    = module.ci_database.database
-    db_ca_cert     = jsonencode(module.ci_database.ca_cert)
-    db_cert        = jsonencode(module.ci_database.cert)
-    db_private_key = jsonencode(module.ci_database.private_key)
+      db_ip          = module.ci_database.ip
+      db_user        = module.ci_database.user
+      db_password    = module.ci_database.password
+      db_database    = module.ci_database.database
+      db_ca_cert     = jsonencode(module.ci_database.ca_cert)
+      db_cert        = jsonencode(module.ci_database.cert)
+      db_private_key = jsonencode(module.ci_database.private_key)
 
-    encryption_key = jsonencode(random_password.encryption_key.result)
-    local_users    = jsonencode("${var.concourse_admin_username}:${random_password.admin_password.result},${var.concourse_svc_security_username}:${random_password.svc_security_password.result}")
+      encryption_key = jsonencode(random_password.encryption_key.result)
+      local_users    = jsonencode("${var.concourse_admin_username}:${random_password.admin_password.result},${var.concourse_svc_security_username}:${random_password.svc_security_password.result}")
 
-    host_key     = jsonencode(tls_private_key.host_key.private_key_pem)
-    host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
+      host_key     = jsonencode(tls_private_key.host_key.private_key_pem)
+      host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
 
-    worker_key     = jsonencode(tls_private_key.worker_key.private_key_pem)
-    worker_key_pub = jsonencode(tls_private_key.worker_key.public_key_openssh)
+      worker_key     = jsonencode(tls_private_key.worker_key.private_key_pem)
+      worker_key_pub = jsonencode(tls_private_key.worker_key.public_key_openssh)
 
-    session_signing_key = jsonencode(tls_private_key.session_signing_key.private_key_pem)
+      session_signing_key = jsonencode(tls_private_key.session_signing_key.private_key_pem)
 
-    vault_ca_cert            = jsonencode(module.vault.ca_pem)
-    vault_client_cert        = jsonencode(module.vault.client_cert_pem)
-    vault_client_private_key = jsonencode(module.vault.client_private_key_pem)
-  }
+      vault_ca_cert            = jsonencode(module.vault.ca_pem)
+      vault_client_cert        = jsonencode(module.vault.client_cert_pem)
+      vault_client_private_key = jsonencode(module.vault.client_private_key_pem)
+  })
 }
 
 resource "helm_release" "ci" {
@@ -116,7 +116,7 @@ resource "helm_release" "ci" {
   version    = var.concourse_chart_version
 
   values = [
-    data.template_file.ci_values.rendered,
+    local.ci_values,
   ]
 
   depends_on = [
@@ -124,17 +124,17 @@ resource "helm_release" "ci" {
   ]
 }
 
-data "template_file" "ci_workers_values" {
-  template = file("${path.module}/ci-workers-values.yml.tpl")
-  vars = {
-    image_repo   = var.concourse_worker_image_repo
-    image_digest = var.concourse_worker_image_digest
+locals {
+  ci_workers_values = templatefile("${path.module}/ci-workers-values.yml.tpl",
+    {
+      image_repo   = var.concourse_worker_image_repo
+      image_digest = var.concourse_worker_image_digest
 
-    host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
-    worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
+      host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
+      worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
 
-    host = "${helm_release.ci.metadata[0].name}-web-worker-gateway.${kubernetes_namespace.ci.id}.svc.cluster.local:2222"
-  }
+      host = "${helm_release.ci.metadata[0].name}-web-worker-gateway.${kubernetes_namespace.ci.id}.svc.cluster.local:2222"
+  })
 }
 
 resource "helm_release" "ci_workers" {
@@ -147,7 +147,7 @@ resource "helm_release" "ci_workers" {
   timeout = 1800
 
   values = [
-    data.template_file.ci_workers_values.rendered,
+    local.ci_workers_values,
   ]
 
   depends_on = [

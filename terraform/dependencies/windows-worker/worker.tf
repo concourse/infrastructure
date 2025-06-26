@@ -40,7 +40,13 @@ resource "google_compute_instance" "windows_worker" {
   }
 
   metadata = {
-    windows-startup-script-ps1 = data.template_file.startup_script.rendered
+    windows-startup-script-ps1 = templatefile("${path.module}/scripts/startup.ps1.tmpl", {
+      concourse_bundle_url = var.concourse_bundle_url
+      tsa_host             = var.tsa_host
+      tsa_host_public_key  = var.tsa_host_public_key
+      worker_key           = var.worker_key
+      go_package_url       = var.go_package_url
+    })
   }
 
   service_account {
@@ -56,16 +62,4 @@ resource "google_compute_instance" "windows_worker" {
     enable_integrity_monitoring = false
   }
 
-}
-
-data "template_file" "startup_script" {
-  template = file("${path.module}/scripts/startup.ps1.tmpl")
-
-  vars = {
-    concourse_bundle_url = var.concourse_bundle_url
-    tsa_host             = var.tsa_host
-    tsa_host_public_key  = var.tsa_host_public_key
-    worker_key           = var.worker_key
-    go_package_url       = var.go_package_url
-  }
 }

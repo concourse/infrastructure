@@ -98,14 +98,6 @@ resource "kubernetes_deployment" "main" {
   }
 }
 
-data "template_file" "cluster_metrics_configmap" {
-  template = file("${path.module}/configmap.yml.tpl")
-  vars = {
-    url              = var.url
-    metrics_endpoint = var.metrics_endpoint
-  }
-}
-
 resource "kubernetes_config_map" "main" {
   metadata {
     name      = "otel-config"
@@ -113,6 +105,9 @@ resource "kubernetes_config_map" "main" {
   }
 
   data = {
-    "otelcol.yml" = data.template_file.cluster_metrics_configmap.rendered
+    "otelcol.yml" = templatefile("${path.module}/configmap.yml.tpl", {
+      url              = var.url
+      metrics_endpoint = var.metrics_endpoint
+    })
   }
 }

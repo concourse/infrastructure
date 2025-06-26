@@ -1,8 +1,19 @@
+locals {
+  startup_script = templatefile("${path.module}/scripts/startup.sh.tmpl", {
+    password             = var.macstadium_password,
+    concourse_bundle_url = var.concourse_bundle_url,
+    go_package_url       = var.go_package_url
+  })
+  concourse_startup = templatefile("${path.module}/scripts/concourse.sh.tmpl", {
+    tsa_host = var.tsa_host,
+  })
+}
+
 resource "null_resource" "instance" {
   triggers = {
     ip                = var.macstadium_ip
-    trigger           = sha256(data.template_file.startup_script.rendered)
-    concourse-startup = sha256(data.template_file.concourse_startup.rendered)
+    trigger           = sha256(local.startup_script)
+    concourse-startup = sha256(local.concourse_startup)
   }
 
   connection {
@@ -23,31 +34,13 @@ resource "null_resource" "instance" {
   }
 
   provisioner "file" {
-    content = data.template_file.concourse_startup.rendered
+    content     = local.concourse_startup
     destination = "/Users/administrator/concourse.sh"
   }
 
   provisioner "remote-exec" {
     inline = [
-      data.template_file.startup_script.rendered,
+      local.startup_script
     ]
-  }
-}
-
-data "template_file" "startup_script" {
-  template = file("${path.module}/scripts/startup.sh.tmpl")
-
-  vars = {
-    password             = var.macstadium_password,
-    concourse_bundle_url = var.concourse_bundle_url,
-    go_package_url       = var.go_package_url
-  }
-}
-
-data "template_file" "concourse_startup" {
-  template = file("${path.module}/scripts/concourse.sh.tmpl")
-
-  vars = {
-      tsa_host = var.tsa_host,
   }
 }

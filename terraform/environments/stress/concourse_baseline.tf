@@ -23,42 +23,42 @@ module "baseline_database" {
   max_connections = "300"
 }
 
-data "template_file" "concourse_baseline_values" {
-  template = file("${path.module}/concourse-values.yml.tpl")
-  vars = {
-    cluster_name = "baseline"
+locals {
+  concourse_baseline_values = templatefile("${path.module}/concourse-values.yml.tpl",
+    {
+      cluster_name = "baseline"
 
-    image_repo   = var.concourse_baseline_image_repo
-    image_digest = var.concourse_baseline_image_digest
+      image_repo   = var.concourse_baseline_image_repo
+      image_digest = var.concourse_baseline_image_digest
 
-    lb_address   = module.concourse_baseline_address.address
-    external_url = "https://${var.baseline_subdomain}.${var.domain}"
+      lb_address   = module.concourse_baseline_address.address
+      external_url = "https://${var.baseline_subdomain}.${var.domain}"
 
-    db_ip          = module.baseline_database.ip
-    db_user        = module.baseline_database.user
-    db_password    = jsonencode(module.baseline_database.password)
-    db_database    = module.baseline_database.database
-    db_ca_cert     = jsonencode(module.baseline_database.ca_cert)
-    db_cert        = jsonencode(module.baseline_database.cert)
-    db_private_key = jsonencode(module.baseline_database.private_key)
+      db_ip          = module.baseline_database.ip
+      db_user        = module.baseline_database.user
+      db_password    = jsonencode(module.baseline_database.password)
+      db_database    = module.baseline_database.database
+      db_ca_cert     = jsonencode(module.baseline_database.ca_cert)
+      db_cert        = jsonencode(module.baseline_database.cert)
+      db_private_key = jsonencode(module.baseline_database.private_key)
 
-    encryption_key = jsonencode(random_password.encryption_key.result)
-    local_users    = jsonencode("admin:${random_password.admin_password.result}")
+      encryption_key = jsonencode(random_password.encryption_key.result)
+      local_users    = jsonencode("admin:${random_password.admin_password.result}")
 
-    host_key     = jsonencode(tls_private_key.host_key.private_key_pem)
-    host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
+      host_key     = jsonencode(tls_private_key.host_key.private_key_pem)
+      host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
 
-    worker_key     = jsonencode(tls_private_key.worker_key.private_key_pem)
-    worker_key_pub = jsonencode(tls_private_key.worker_key.public_key_openssh)
+      worker_key     = jsonencode(tls_private_key.worker_key.private_key_pem)
+      worker_key_pub = jsonencode(tls_private_key.worker_key.public_key_openssh)
 
-    session_signing_key = jsonencode(tls_private_key.session_signing_key.private_key_pem)
+      session_signing_key = jsonencode(tls_private_key.session_signing_key.private_key_pem)
 
-    vault_ca_cert            = jsonencode(module.vault.ca_pem)
-    vault_client_cert        = jsonencode(module.vault.client_cert_pem)
-    vault_client_private_key = jsonencode(module.vault.client_private_key_pem)
+      vault_ca_cert            = jsonencode(module.vault.ca_pem)
+      vault_client_cert        = jsonencode(module.vault.client_cert_pem)
+      vault_client_private_key = jsonencode(module.vault.client_private_key_pem)
 
-    tracing_service_name    = "baseline-web"
-  }
+      tracing_service_name = "baseline-web"
+  })
 }
 
 resource "helm_release" "concourse_baseline" {
@@ -71,7 +71,7 @@ resource "helm_release" "concourse_baseline" {
   timeout = 4000
 
   values = [
-    data.template_file.concourse_baseline_values.rendered,
+    local.concourse_baseline_values,
   ]
 
   depends_on = [
@@ -79,19 +79,19 @@ resource "helm_release" "concourse_baseline" {
   ]
 }
 
-data "template_file" "baseline_workers_values" {
-  template = file("${path.module}/concourse-worker-values.yml.tpl")
-  vars = {
-    cluster_name = "baseline"
+locals {
+  baseline_workers_values = templatefile("${path.module}/concourse-worker-values.yml.tpl",
+    {
+      cluster_name = "baseline"
 
-    image_repo   = var.concourse_baseline_image_repo
-    image_digest = var.concourse_baseline_image_digest
+      image_repo   = var.concourse_baseline_image_repo
+      image_digest = var.concourse_baseline_image_digest
 
-    host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
-    worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
+      host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
+      worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
 
-    host = "${helm_release.concourse_baseline.metadata[0].name}-web-worker-gateway.${kubernetes_namespace.baseline.id}.svc.cluster.local:2222"
-  }
+      host = "${helm_release.concourse_baseline.metadata[0].name}-web-worker-gateway.${kubernetes_namespace.baseline.id}.svc.cluster.local:2222"
+  })
 }
 
 resource "helm_release" "baseline_workers" {
@@ -104,7 +104,7 @@ resource "helm_release" "baseline_workers" {
   timeout = 4000
 
   values = [
-    data.template_file.baseline_workers_values.rendered,
+    local.baseline_workers_values,
   ]
 
   depends_on = [

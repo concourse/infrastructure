@@ -93,17 +93,17 @@ resource "kubernetes_namespace" "ci_topgun_worker" {
   ]
 }
 
-data "template_file" "ci_topgun_worker_values" {
-  template = file("${path.module}/k8s_topgun_worker-values.yml.tpl")
-  vars = {
-    image_repo   = var.concourse_worker_image_repo
-    image_digest = var.concourse_worker_image_digest
+locals {
+  ci_topgun_worker_values = templatefile("${path.module}/k8s_topgun_worker-values.yml.tpl",
+    {
+      image_repo   = var.concourse_worker_image_repo
+      image_digest = var.concourse_worker_image_digest
 
-    host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
-    worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
+      host_key_pub = jsonencode(tls_private_key.host_key.public_key_openssh)
+      worker_key   = jsonencode(tls_private_key.worker_key.private_key_pem)
 
-    host = "${var.subdomain}.${var.domain}:2222"
-  }
+      host = "${var.subdomain}.${var.domain}:2222"
+  })
 }
 
 resource "helm_release" "k8s_topgun_worker" {
@@ -118,7 +118,7 @@ resource "helm_release" "k8s_topgun_worker" {
   timeout = 1800
 
   values = [
-    data.template_file.ci_topgun_worker_values.rendered,
+    local.ci_topgun_worker_values,
   ]
 
   depends_on = [

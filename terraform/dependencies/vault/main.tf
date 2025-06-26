@@ -96,8 +96,8 @@ resource "google_project_iam_member" "policy" {
   }
 
   project = var.project
-  role   = each.value
-  member = "serviceAccount:${google_service_account.vault.email}"
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.vault.email}"
 }
 
 resource "google_service_account_iam_binding" "workload_identity" {
@@ -113,24 +113,6 @@ resource "google_storage_bucket_iam_member" "policy" {
   bucket = google_storage_bucket.vault.name
   role   = "roles/storage.objectAdmin"
   member = "serviceAccount:${google_service_account.vault.email}"
-}
-
-data "template_file" "values" {
-  template = file("${path.module}/values.yml.tpl")
-  vars = {
-    gcp_project     = var.project
-    gcp_region      = var.greenpeace_kms_region
-    key_ring_name   = var.greenpeace_kms_kr_name
-    crypto_key_name = var.greenpeace_kms_key_name
-
-    ca_cert            = jsonencode(tls_self_signed_cert.ca.cert_pem)
-    server_cert        = jsonencode(module.server_cert.cert_pem)
-    server_private_key = jsonencode(module.server_cert.private_key_pem)
-
-    gcs_bucket = google_storage_bucket.vault.name
-
-    gcp_serviceaccount = google_service_account.vault.email
-  }
 }
 
 resource "kubernetes_secret" "server_tls" {
@@ -152,11 +134,23 @@ resource "helm_release" "vault" {
   chart     = "${path.module}/charts/vault-helm"
 
   values = [
-    data.template_file.values.rendered,
+    templatefile("${path.module}/values.yml.tpl", {
+      gcp_project     = var.project
+      gcp_region      = var.greenpeace_kms_region
+      key_ring_name   = var.greenpeace_kms_kr_name
+      crypto_key_name = var.greenpeace_kms_key_name
+
+      ca_cert            = jsonencode(tls_self_signed_cert.ca.cert_pem)
+      server_cert        = jsonencode(module.server_cert.cert_pem)
+      server_private_key = jsonencode(module.server_cert.private_key_pem)
+
+      gcs_bucket = google_storage_bucket.vault.name
+
+      gcp_serviceaccount = google_service_account.vault.email
+    })
   ]
 
   depends_on = [
     kubernetes_secret.server_tls,
   ]
 }
-
