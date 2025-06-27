@@ -86,22 +86,6 @@ variable "concourse_windows_bundle_url" {
   description = "URL to the Concourse windows .zip file containing the concourse binary. Can be from the concourse-artifacts bucket or from a GitHub release"
 }
 
-variable "concourse_darwin_bundle_url" {
-  description = "URL to the Concourse darwin .tgz file containing the concourse binary. Can be from the concourse-artifacts bucket or from a GitHub release"
-}
-
-variable "macstadium_ip" {
-  type = string
-}
-
-variable "macstadium_username" {
-  type = string
-}
-
-variable "macstadium_password" {
-  type = string
-}
-
 variable "concourse_admin_username" {
   type    = string
   default = "admin"
@@ -113,9 +97,5 @@ variable "concourse_svc_security_username" {
 }
 
 variable "go_windows_package_url" {
-  type = string
-}
-
-variable "go_darwin_package_url" {
   type = string
 }
