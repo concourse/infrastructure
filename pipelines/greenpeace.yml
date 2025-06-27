@@ -381,7 +381,6 @@ jobs:
         #@ vars["go_windows_package_url"] = "((.:go_windows_package_url))"
       #@ end
       - put: terraform
-        no_get: true
         inputs: detect
         params:
           terraform_source: #@ "greenpeace/terraform/environments/" + cluster
