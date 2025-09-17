@@ -34,7 +34,7 @@ resource "google_sql_database_instance" "main" {
 
     ip_configuration {
       ipv4_enabled = "true"
-      require_ssl  = "true"
+      ssl_mode     = "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
 
       authorized_networks {
         name  = "all"

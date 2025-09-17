@@ -20,6 +20,7 @@ resource "google_container_cluster" "main" {
 
   remove_default_node_pool = true
   initial_node_count       = var.initial_node_count
+  enable_shielded_nodes    = false
 
   lifecycle {
     ignore_changes = [

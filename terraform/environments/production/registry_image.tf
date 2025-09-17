@@ -12,8 +12,9 @@ resource "google_project_iam_member" "registry_image_tester" {
     "gcrWriter"    = "roles/artifactregistry.writer"
   }
 
-  role   = each.value
-  member = "serviceAccount:${google_service_account.registry_image_tester.email}"
+  project = "cf-concourse-production"
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.registry_image_tester.email}"
 }
 
 resource "google_service_account_key" "registry_image_tester" {

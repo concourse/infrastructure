@@ -137,8 +137,9 @@ resource "google_project_iam_member" "k8s_topgun" {
     "containerAdmin" = "roles/container.admin"
   }
 
-  role   = each.value
-  member = "serviceAccount:${google_service_account.k8s_topgun.email}"
+  project = "cf-concourse-production"
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.k8s_topgun.email}"
 }
 
 resource "google_service_account_key" "k8s_topgun" {
