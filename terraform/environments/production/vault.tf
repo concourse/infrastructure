@@ -7,6 +7,8 @@ module "vault" {
 
   bucket_name = "concourse-production-vault"
 
+  vault_root_ca_validity_period = 87600 # 10 years
+
   depends_on = [
     module.cluster.node_pools
   ]
