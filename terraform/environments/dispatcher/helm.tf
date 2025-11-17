@@ -1,5 +1,5 @@
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     host = "https://${module.cluster.endpoint}"
 
     token = data.google_client_config.provider.access_token
