@@ -234,7 +234,8 @@ do:
         (@- end @)
       COMMIT: #@ "bump " + cluster + " to concourse " + target
   - put: greenpeace-bump
-    inputs: [greenpeace-bumped]
+    inputs: detect
+    no_get: true
     params:
       repository: greenpeace-bumped
       branch: master
@@ -341,6 +342,8 @@ jobs:
     plan:
       - get: production-secrets
       - put: secrets
+        inputs: detect
+        no_get: true
         params:
           file: production-secrets/data.tar
   #@ end
@@ -382,6 +385,7 @@ jobs:
       #@ end
       - put: terraform
         inputs: detect
+        no_get: true
         params:
           terraform_source: #@ "greenpeace/terraform/environments/" + cluster
           vars: #@ vars
@@ -442,6 +446,8 @@ jobs:
           GCP_CREDENTIALS_JSON: ((greenpeace_gcp_credentials_json))
           TERRAFORM_VERSION: *tfversion
       - put: secrets
+        inputs: detect
+        no_get: true
         params:
           file: secrets/data.tar
 
@@ -450,6 +456,7 @@ jobs:
     plan:
       - get: greenpeace
       - put: terraform
+        inputs: detect
         params:
           terraform_source: #@ "greenpeace/terraform/environments/" + cluster
           action: destroy
