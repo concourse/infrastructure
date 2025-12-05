@@ -8,3 +8,6 @@ terraform/**/.terraform
 *.swp
 .idea
 .DS_Store
+
+bosh/bosh-topgun-bbl-state/
+bosh/topgun-gcp-key.json
