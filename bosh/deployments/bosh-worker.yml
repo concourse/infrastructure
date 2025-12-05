@@ -19,6 +19,8 @@ instance_groups:
   - name: bosh-worker
     instances: 1
     vm_type: medium
+    vm_extensions:
+      - 100GB_ephemeral_disk
     stemcell: jammy
     azs: [z1]
     networks:
