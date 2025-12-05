@@ -189,6 +189,33 @@ There are two encryption keys used to encrypt the vault data:
 
 This is because KMS crypto keys can only encode small payloads.
 
+#### Connecting to Vault
+
+```sh
+gsutil cat "gs://concourse-greenpeace/vault/production/root-token.enc" | \
+  base64 --decode | \
+    gcloud kms decrypt \
+      --key "projects/cf-concourse-production/locations/global/keyRings/greenpeace-kr/cryptoKeys/greenpeace-key" \
+      --ciphertext-file - \
+      --plaintext-file -
+```
+
+Will print the Vault root token. Then exec onto the vault container:
+
+```sh
+gcloud container clusters get-credentials production --zone us-central1-a --project cf-concourse-production
+kubectl exec -it -n vault vault-0 -- sh
+```
+
+Then set these env vars:
+
+```sh
+export VAULT_SKIP_VERIFY="true"
+export VAULT_TOKEN='TOKEN-FROM-FIRST-COMMAND'
+```
+
+Vault commands should work now.
+
 #### vault ca cert expires
 
 When the vault ca cert expires, it is automatically re-created through the terraform job for that environment. For example, if the dispatcher vault ca cert expires, it would be through [terraform job in the dispatcher pipeline](https://ci.concourse-ci.org/teams/main/pipelines/dispatcher-greenpeace/jobs/terraform). Once this terraform job has deleted the old ca cert, created a new one and run successfully, you might have to restart the vault pod manually using `kubectl delete pod -n <namespace> vault-0`.
@@ -240,7 +267,7 @@ If the problem still persists, welp.
 Also worth noting, here are some things that didn't work for me:
 * Just deleting the old, expired cert from GCP and running the terraform-dispatcher job from the opposite deployment's ci. i forget what happened, but i think the job just complains that the file doesn't exist and fails.
 * Downloading the deployment's tfstate (gcp://CF-Concourse-Production/concourse-greenpeace/terraform/[deployment].tfstate), deleting the CA cert by hand, and reuploading it. Terraform just somehow restores the old cert and keeps using it - it doesn't trigger it to get recreated. i tried like every combination of deleting entire fields or just deleting values in the entire file, and nothing worked.
-* Simply deleting and recreating K8s containers isn't enough to get the new certs into Vault itself.  Your only options are to access Vault directly and manually replace the certs, or delete the entire Vault instance, recreate it from scratch, restore its contents using backups from GCP, and hope you haven't lost anything important.  
+* Simply deleting and recreating K8s containers isn't enough to get the new certs into Vault itself.  Your only options are to access Vault directly and manually replace the certs, or delete the entire Vault instance, recreate it from scratch, restore its contents using backups from GCP, and hope you haven't lost anything important.
 
 
 
