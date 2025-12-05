@@ -71,7 +71,7 @@ but safest is being on the same version as the last deployment.
 
 Go into `./bosh-topgun-bbl-state/vars/` and rename all `*-vars-store.yml` files
 so they end with `.bak`. The missing vars-stores will cause `bbl` to generate
-new certificates and re-deploy the jumpbox and director with them. To being
+new certificates and re-deploy the jumpbox and director with them. To begin
 that process run:
 
 ```sh
