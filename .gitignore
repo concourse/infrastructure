@@ -4,6 +4,7 @@ bootstrap/.terraform/
 bootstrap/*.backup
 terraform/**/.terraform
 .terraform.lock.hcl
+*auto.tfvars
 
 *.swp
 .idea
