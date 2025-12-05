@@ -10,7 +10,7 @@ Release page. The Homebrew tap has not been updated for a few years.
 With the bosh environment setup, we then deploy a Concourse worker. That worker
 is used to reach the director and run our Topgun tests.
 
-## Connecting to the Bosh Director
+## Connecting to the Bosh Director and Credhub
 
 Starting in this directory `./bosh` as your PWD:
 
@@ -43,7 +43,8 @@ cd bosh-topgun-bbl-state
 eval "$(bbl print-env)"
 ```
 
-You can now run `bosh` commands. Try `bosh deployments`.
+You can now run `bosh` or `credhub` commands. Try `bosh deployments` or
+`credhub find`.
 
 ## Updating the Bosh worker for ci.concourse-ci.org
 

@@ -1,0 +1,57 @@
+---
+# This is manually deployed.
+
+name: bosh-worker
+
+releases:
+  # https://bosh.io/releases/github.com/concourse/concourse-bosh-release
+  - name: "concourse"
+    version: "7.14.3"
+    url: "https://bosh.io/d/github.com/concourse/concourse-bosh-release?v=7.14.3"
+    sha1: sha256:6e4d19bfab17a8283bbb114510b1d4777ee2b9690439f7e37455d55b13f5426d
+
+stemcells:
+  - alias: jammy
+    os: ubuntu-jammy
+    version: latest
+
+instance_groups:
+  - name: bosh-worker
+    instances: 1
+    vm_type: medium
+    stemcell: jammy
+    azs: [z1]
+    networks:
+      - name: default
+    jobs:
+      - name: worker
+        release: concourse
+        properties:
+          team: main
+          tags: [bosh]
+
+          runtime: containerd
+          baggageclaim:
+            driver: overlay
+
+          drain_timeout: 10m
+
+          worker_gateway:
+            hosts: ["ci.concourse-ci.org:2222"]
+            rebalance_interval: 30m
+
+            # manually entered into credhub
+            # credhub set -n /bosh-{bbl env-id}/{deployment name}/worker_key -t rsa -p private_key_file -u pub_key_file
+            # credhub set -n /bosh-{bbl env-id}/{deployment name}/host_public_key -t value -v 'host_public_key_value'
+            # when deploying, grab the current creds by running `bosh -d bosh-worker manifest > current.yml`
+            # and copying the secrets to a vars-store.yml file.
+            host_public_key: ((host_public_key))
+            worker_key: ((worker_key))
+
+update:
+  canaries: 1
+  canary_watch_time: 1000-60000
+  max_in_flight: 2
+  serial: false
+  update_watch_time: 1000-60000
+
