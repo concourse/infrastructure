@@ -17,7 +17,6 @@ Starting in this directory `./bosh` as your PWD:
 ```sh
 rm -rf bosh-topgun-bbl-state
 gsutil -m cp -r gs://bosh-topgun-bbl-state/ .
-export BBL_STATE_DIR=$PWD/bosh-topgun-bbl-state
 ```
 
 You need a GCP service account key. Create and download one in JSON format
@@ -28,6 +27,7 @@ Save and name the account key `topgun-gcp-key.json` in the root of this folder.
 Set the following env vars in your terminal:
 
 ```sh
+export BBL_STATE_DIR=$PWD/bosh-topgun-bbl-state
 export BBL_IAAS=gcp
 export BBL_GCP_REGION=us-central1
 export BBL_GCP_SERVICE_ACCOUNT_KEY=$PWD/topgun-gcp-key.json
@@ -45,6 +45,14 @@ eval "$(bbl print-env)"
 
 You can now run `bosh` or `credhub` commands. Try `bosh deployments` or
 `credhub find`.
+
+If you change any of the files under `./bosh-topgun-bbl-state` make sure to
+upload them back up to GCS:
+
+```sh
+cd ./bosh-topgun-bbl-state
+gsutil -m cp -r . gs://bosh-topgun-bbl-state/
+```
 
 ## Updating the Bosh worker for ci.concourse-ci.org
 
