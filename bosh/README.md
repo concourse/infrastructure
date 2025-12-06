@@ -86,3 +86,5 @@ that process run:
 bbl plan
 bbl up
 ```
+
+Other tips here: https://github.com/cloudfoundry/bosh-bootloader/issues/424
