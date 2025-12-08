@@ -12,12 +12,7 @@ is used to reach the director and run our Topgun tests.
 
 ## Connecting to the Bosh Director and Credhub
 
-Starting in this directory `./bosh` as your PWD:
-
-```sh
-rm -rf bosh-topgun-bbl-state
-gsutil -m cp -r gs://bosh-topgun-bbl-state/ .
-```
+First, download the bbl state files by running `download-bbl-state.sh`.
 
 You need a GCP service account key. Create and download one in JSON format
 here: https://console.cloud.google.com/apis/credentials/serviceaccountkey
@@ -47,12 +42,7 @@ You can now run `bosh` or `credhub` commands. Try `bosh deployments` or
 `credhub find`.
 
 If you change any of the files under `./bosh-topgun-bbl-state` make sure to
-upload them back up to GCS:
-
-```sh
-cd ./bosh-topgun-bbl-state
-gsutil -m cp -r . gs://bosh-topgun-bbl-state/
-```
+upload them back up to GCS by running `upload-local-bbl-state.sh`.
 
 ## Updating the Bosh worker for ci.concourse-ci.org
 
@@ -114,9 +104,9 @@ Update the cloud-config:
 ```sh
 bosh update-cloud-config \
   "${BBL_STATE_DIR}/cloud-config/cloud-config.yml" \
-  -o  ${BBL_STATE_DIR}/cloud-config/ops.yml \
-  -o  ${BBL_STATE_DIR}/cloud-config/bosh-open.yml \
-  --vars-file  ${BBL_STATE_DIR}/vars/cloud-config-vars.yml
+  -o ${BBL_STATE_DIR}/cloud-config/ops.yml \
+  -o ${BBL_STATE_DIR}/cloud-config/bosh-open.yml \
+  --vars-file ${BBL_STATE_DIR}/vars/cloud-config-vars.yml
 ```
 
 Now the worker can be successfully deployed.
