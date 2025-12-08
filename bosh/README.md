@@ -88,3 +88,35 @@ bbl up
 ```
 
 Other tips here: https://github.com/cloudfoundry/bosh-bootloader/issues/424
+
+## Setting up Network Access Between the Worker and Director
+
+Network access is managed via network tags. The bbl env creates a "*-bosh-open"
+tag for access between the Jumpbox and Director. We can re-use this tag to
+create access between the Worker and Director too.
+
+First we need to update the bosh cloud-config to add a new `vm_extension`. This
+is how we apply arbitrary tags to vm's.
+
+```yaml
+# File: bosh-open.yaml
+# Location: ${BBL_STATE_DIR}/cloud-config/
+- type: replace
+  path: /vm_extensions/-
+  value:
+    name: bosh-open
+    cloud_properties:
+      # Replace this with the tag from the Jumpbox VM. Look it up in the GCP console.
+      tags: [bbl-env-great-salt-2025-12-05t17-29z-bosh-open]
+```
+
+Update the cloud-config:
+```sh
+bosh update-cloud-config \
+  "${BBL_STATE_DIR}/cloud-config/cloud-config.yml" \
+  -o  ${BBL_STATE_DIR}/cloud-config/ops.yml \
+  -o  ${BBL_STATE_DIR}/cloud-config/bosh-open.yml \
+  --vars-file  ${BBL_STATE_DIR}/vars/cloud-config-vars.yml
+```
+
+Now the worker can be successfully deployed.
