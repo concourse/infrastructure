@@ -41,7 +41,7 @@ eval "$(bbl print-env)"
 You can now run `bosh` or `credhub` commands. Try `bosh deployments` or
 `credhub find`.
 
-If you change any of the files under `./bosh-topgun-bbl-state` make sure to
+If you change any of the files under `bosh-topgun-bbl-state` make sure to
 upload them back up to GCS by running `upload-local-bbl-state.sh`.
 
 ## Updating the Bosh worker for ci.concourse-ci.org
@@ -76,6 +76,9 @@ that process run:
 bbl plan
 bbl up
 ```
+
+You can delete the `*.bak` files once everything completes successfully. Make
+sure to upload everything to GCS using `upload-local-bbl-state.sh`.
 
 Other tips here: https://github.com/cloudfoundry/bosh-bootloader/issues/424
 
