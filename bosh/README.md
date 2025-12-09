@@ -10,6 +10,14 @@ Release page. The Homebrew tap has not been updated for a few years.
 With the bosh environment setup, we then deploy a Concourse worker. That worker
 is used to reach the director and run our Topgun tests.
 
+We have some customizations for the following:
+- Allowing network access between the worker and director
+- Disabling the use of DNS addresses
+
+See [this
+page](https://github.com/cloudfoundry/bosh-bootloader/blob/main/docs/customization.md)
+for the hooks `bbl` gives us to do these customizations.
+
 ## Connecting to the Bosh Director and Credhub
 
 First, download the bbl state files by running `download-bbl-state.sh`.
