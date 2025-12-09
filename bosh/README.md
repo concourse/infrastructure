@@ -89,7 +89,7 @@ First we need to update the bosh cloud-config to add a new `vm_extension`. This
 is how we apply arbitrary tags to vm's.
 
 ```yaml
-# File: bosh-open.yaml
+# File: bosh-open.yml
 # Location: ${BBL_STATE_DIR}/cloud-config/
 - type: replace
   path: /vm_extensions/-
@@ -100,13 +100,11 @@ is how we apply arbitrary tags to vm's.
       tags: [bbl-env-great-salt-2025-12-05t17-29z-bosh-open]
 ```
 
-Update the cloud-config:
+`bbl` will detect the `bosh-open.yml` ops files and use it.
 ```sh
-bosh update-cloud-config \
-  "${BBL_STATE_DIR}/cloud-config/cloud-config.yml" \
-  -o ${BBL_STATE_DIR}/cloud-config/ops.yml \
-  -o ${BBL_STATE_DIR}/cloud-config/bosh-open.yml \
-  --vars-file ${BBL_STATE_DIR}/vars/cloud-config-vars.yml
+cd ./bosh-topgun-bbl-state
+bbl plan
+bbl up
 ```
 
-Now the worker can be successfully deployed.
+Now the worker can be successfully deployed using the `bosh-open` vm extension.
