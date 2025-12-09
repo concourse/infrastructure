@@ -20,7 +20,7 @@ instance_groups:
     instances: 1
     vm_type: medium
     vm_extensions:
-      - 100GB_ephemeral_disk
+      - 500GB_ephemeral_disk
       # Custom vm_extension in the cloud-config that applies a tag to allow
       # network access between the worker and the bosh director.
       - bosh-open
