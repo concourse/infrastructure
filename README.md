@@ -1,6 +1,6 @@
-# greenpeace
+# Infrastructure
 
-automate everything
+All project infrastructure is managed here.
 
 ## deploying from zero
 
