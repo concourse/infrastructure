@@ -13,7 +13,7 @@ resource "random_id" "instance_name" {
 resource "google_sql_database_instance" "main" {
   name             = "${var.name}-${random_id.instance_name.hex}"
   region           = var.region
-  database_version = "POSTGRES_14"
+  database_version = "POSTGRES_18"
 
   settings {
     availability_type = "ZONAL"
