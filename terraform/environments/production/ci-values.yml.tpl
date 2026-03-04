@@ -46,8 +46,6 @@ concourse:
     limitActiveTasks: 2
     streamingArtifactsCompression: zstd
     enableGlobalResources: true
-    enableAcrossStep: true
-    enablePipelineInstances: true
     enableResourceCausality: true
     baggageclaimResponseHeaderTimeout: 5m
     encryption:
