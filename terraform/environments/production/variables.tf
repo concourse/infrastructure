@@ -54,14 +54,6 @@ variable "greenpeace_kms_key_link" {
   default     = "projects/cf-concourse-production/locations/global/keyRings/greenpeace-kr/cryptoKeys/greenpeace-key"
 }
 
-variable "dutyfree_image_digest" {
-  description = "Digest of the dutyfree image"
-}
-
-variable "dutyfree_github_token" {
-  description = "Github API token for dutyfree"
-}
-
 variable "concourse_web_image_repo" {
   description = "Concourse image repo to use for the ATC"
 }
