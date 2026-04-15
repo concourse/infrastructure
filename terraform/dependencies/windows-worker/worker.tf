@@ -25,7 +25,7 @@ resource "google_compute_instance" "windows_worker" {
 
   boot_disk {
     initialize_params {
-      image = "windows-2016-core"
+      image = "windows-2022-core"
       size  = "256"
       type  = "pd-ssd"
     }
