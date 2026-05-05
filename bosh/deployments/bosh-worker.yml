@@ -6,9 +6,9 @@ name: bosh-worker
 releases:
   # https://bosh.io/releases/github.com/concourse/concourse-bosh-release
   - name: "concourse"
-    version: "7.14.3"
-    url: "https://bosh.io/d/github.com/concourse/concourse-bosh-release?v=7.14.3"
-    sha1: sha256:6e4d19bfab17a8283bbb114510b1d4777ee2b9690439f7e37455d55b13f5426d
+    version: "8.1.1"
+    url: "https://bosh.io/d/github.com/concourse/concourse-bosh-release?v=8.1.1"
+    sha1: sha256:4d4e4b69ce957e295199163ee7c28e4d0b0275616b76a0bf29458de8d3098bb7
 
 stemcells:
   - alias: jammy
@@ -43,7 +43,7 @@ instance_groups:
 
           worker_gateway:
             hosts: ["ci.concourse-ci.org:2222"]
-            rebalance_interval: 30m
+            rebalance_interval: 2h
 
             # manually entered into credhub and using the same values from the workers on k8s
             # credhub set -n /bosh-{bbl env-id}/{deployment name}/worker_key -t rsa -p private_key_file -u pub_key_file
