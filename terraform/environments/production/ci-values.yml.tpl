@@ -35,7 +35,7 @@ concourse:
       mainTeam:
         localUser: admin,svc-security
         github:
-          team: concourse:maintainers
+          team: concourse:wg-concourse-leads
       github:
         enabled: true
     externalUrl: ${external_url}
