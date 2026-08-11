@@ -5,10 +5,13 @@ name: bosh-worker
 
 releases:
   # https://bosh.io/releases/github.com/concourse/concourse-bosh-release
-  - name: "concourse"
-    version: "8.2.3"
-    url: "https://bosh.io/d/github.com/concourse/concourse-bosh-release?v=8.2.3"
-    sha1: sha256:655f798149d35fa1fca5811479d1e0d7488f009b43c9b811b92c6d68186c9dd4
+  # - name: concourse
+  #   version: "8.2.3"
+  #   url: "https://bosh.io/d/github.com/concourse/concourse-bosh-release?v=8.2.3"
+  #   sha1: sha256:655f798149d35fa1fca5811479d1e0d7488f009b43c9b811b92c6d68186c9dd4
+  # Use this format to deploy a RC version of Concourse. Can run "bosh releases" to verify version
+  - name: concourse
+    version: 8.2.6-dev.20260811T051147Z.commit.776cc88
 
 stemcells:
   - alias: jammy
