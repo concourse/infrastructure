@@ -17,6 +17,20 @@ resource "google_compute_firewall" "windows_worker" {
   target_tags = ["windows-worker"]
 }
 
+locals {
+  start_script = templatefile("${path.module}/scripts/startup.ps1.tmpl", {
+    concourse_bundle_url = var.concourse_bundle_url
+    tsa_host             = var.tsa_host
+    tsa_host_public_key  = var.tsa_host_public_key
+    worker_key           = var.worker_key
+    go_package_url       = var.go_package_url
+  })
+}
+
+resource "terraform_data" "start_script" {
+  triggers_replace = sha256(local.start_script)
+}
+
 resource "google_compute_instance" "windows_worker" {
   name         = var.resource_name
   machine_type = "e2-highcpu-8"
@@ -39,13 +53,14 @@ resource "google_compute_instance" "windows_worker" {
     }
   }
 
-  metadata_startup_script = templatefile("${path.module}/scripts/startup.ps1.tmpl", {
-    concourse_bundle_url = var.concourse_bundle_url
-    tsa_host             = var.tsa_host
-    tsa_host_public_key  = var.tsa_host_public_key
-    worker_key           = var.worker_key
-    go_package_url       = var.go_package_url
-  })
+
+  metadata = {
+    windows-startup-script-ps1 = local.start_script
+  }
+
+  lifecycle {
+    replace_triggered_by = [terraform_data.start_script]
+  }
 
   service_account {
     scopes = [
